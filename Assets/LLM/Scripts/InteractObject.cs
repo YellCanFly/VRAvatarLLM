@@ -55,4 +55,34 @@ public class InteractObject : MonoBehaviour
         // Reset the flag to false after the duration
         isGazed = false; 
     }
+
+    public RelativePosition GetRelativePositionToMainCameraDirection()
+    {
+        // Get the main camera's position
+        Vector3 cameraPosition = Camera.main.transform.position;
+        // Calculate the relative position of this object to the camera
+        Vector3 relativePosition = transform.position - cameraPosition;
+
+        RelativePosition result = new RelativePosition(
+            x: Vector3.Dot(relativePosition, Camera.main.transform.right),
+            y: Vector3.Dot(relativePosition, Camera.main.transform.up),
+            z: Vector3.Dot(relativePosition, Camera.main.transform.forward)
+            );
+
+        return result;
+    }
+}
+
+[System.Serializable]
+public struct RelativePosition
+{
+    public float x;
+    public float y;
+    public float z;
+    public RelativePosition(float x, float y, float z)
+    {
+        this.x = x;
+        this.y = y;
+        this.z = z;
+    }
 }

@@ -1,19 +1,24 @@
 using OpenAI;
 using OpenAI.Realtime;
 using OpenAI.Models;
+using OpenAI.Audio;
+
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
-using System;
 using System.Collections;
-using UnityEngine;
-using Utilities.Audio;
 using System.Threading;
-using Utilities.Encoding.Wav;
 using System.Linq;
-using TMPro;
+
+using UnityEngine;
 using UnityEngine.Events;
-using OpenAI.Audio;
+
+using Utilities.Audio;
+using Utilities.Encoding.Wav;
+
+using TMPro;
+using Newtonsoft.Json;
 
 [RequireComponent(typeof(AudioSource))]
 public class AudioRealTimeAPI : MonoBehaviour
@@ -388,18 +393,51 @@ public class AudioRealTimeAPI : MonoBehaviour
             ? string.Join(", ", allVisibleObjects)
             : "null";
 
+        Dictionary<string, RelativePosition> objRelativePosDict = new();
+        foreach (var obj in allVisibleObjects)
+        {
+            var interactObj = InteractObjectManager.Instance?.GetObjectByName(obj);
+            if (interactObj != null && !objRelativePosDict.ContainsKey(obj))
+            {
+                objRelativePosDict.Add(obj, interactObj.GetRelativePositionToMainCameraDirection());
+            }
+        }
+        foreach (var obj in gazeHistoryList)
+        {
+            var interactObj = InteractObjectManager.Instance?.GetObjectByName(obj);
+            if (interactObj != null && !objRelativePosDict.ContainsKey(obj))
+            {
+                objRelativePosDict.Add(obj, interactObj.GetRelativePositionToMainCameraDirection());
+            }
+        }
+        string objRelativePosDictJson = JsonConvert.SerializeObject(objRelativePosDict, Formatting.Indented);
+        Debug.Log("Object relative position JSON: \n" + objRelativePosDictJson);
+
+
         string promptTemplate =
         @"The user asked: ""{0}""
 
-        To help you answer this question:
-        The most recent object the user looked at is: {1}.
-        Previously, the user also looked at: {2}.
-        Currently, all visible objects in the user's view are: {3}.
-        The user also pointed at the following objects: {4}
+        To help you answer this question, here is contextual information:
 
-        Use the information above to answer the user's question. ";
+        - The most recent object the user looked at is: {1}.
+        - Previously, the user also looked at: {2}.
+        - Currently, all visible objects in the user's view are: {3}.
+        - The user also pointed at the following objects: {4}.
 
-        return string.Format(promptTemplate, userQuery, gazeData, gazeHistoryStr, allObjectsStr, pointingData);
+        Each mentioned object includes its name and relative position to the MainCamera.
+
+        Relative position format is based on a local coordinate frame of the MainCamera:
+        - x: Projection onto the Right vector ¡ª positive means right of the user, negative means left
+        - y: Projection onto the Up vector ¡ª positive means above the user, negative means below
+        - z: Projection onto the Forward vector ¡ª positive means in front of the user, negative means behind
+
+        The relative positions of all mentioned objects are provided below:
+
+        {5} // JSON array of objects with ""name"" and ""relative_position"" (x, y, z)
+
+        Use the user¡¯s question and the spatial and attentional context to respond with a natural, human-sounding answer.";
+
+        return string.Format(promptTemplate, userQuery, gazeData, gazeHistoryStr, allObjectsStr, pointingData, objRelativePosDictJson);
     }
 
     void Update()
