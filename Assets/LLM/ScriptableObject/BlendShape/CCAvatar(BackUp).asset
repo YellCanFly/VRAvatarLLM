@@ -1,0 +1,129 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7d43f23f4561f724ea64ea2134d7d5ba, type: 3}
+  m_Name: CCAvatar(BackUp)
+  m_EditorClassIdentifier: 
+  Mappings:
+  - Type: 0
+    Groups:
+    - Name: Left Eye Blink
+      Targets:
+      - Index: 16
+        TargetValue: 100
+    - Name: Right Eye Blink
+      Targets:
+      - Index: 17
+        TargetValue: 100
+  - Type: 1
+    Groups:
+    - Name: sil
+      Targets: []
+    - Name: PP
+      Targets:
+      - Index: 1
+        TargetValue: 100
+    - Name: FF
+      Targets:
+      - Index: 3
+        TargetValue: 60
+    - Name: TH
+      Targets:
+      - Index: 7
+        TargetValue: 100
+      - Index: 148
+        TargetValue: 22.5
+      - Index: 150
+        TargetValue: 80
+    - Name: DD
+      Targets:
+      - Index: 3
+        TargetValue: 10
+      - Index: 7
+        TargetValue: 100
+      - Index: 148
+        TargetValue: 20
+    - Name: kk
+      Targets:
+      - Index: 117
+        TargetValue: 100
+      - Index: 114
+        TargetValue: 60
+    - Name: CH
+      Targets:
+      - Index: 117
+        TargetValue: 100
+      - Index: 114
+        TargetValue: 100
+      - Index: 3
+        TargetValue: 20
+    - Name: SS
+      Targets:
+      - Index: 5
+        TargetValue: 100
+      - Index: 7
+        TargetValue: 100
+    - Name: nn
+      Targets:
+      - Index: 5
+        TargetValue: 100
+      - Index: 7
+        TargetValue: 100
+      - Index: 117
+        TargetValue: 40
+    - Name: RR
+      Targets:
+      - Index: 7
+        TargetValue: 50
+      - Index: 66
+        TargetValue: 30
+      - Index: 67
+        TargetValue: 30
+      - Index: 107
+        TargetValue: 100
+    - Name: aa
+      Targets:
+      - Index: 148
+        TargetValue: 50
+    - Name: E
+      Targets:
+      - Index: 68
+        TargetValue: 30
+      - Index: 69
+        TargetValue: 30
+      - Index: 148
+        TargetValue: 20
+    - Name: ih
+      Targets:
+      - Index: 68
+        TargetValue: 25
+      - Index: 69
+        TargetValue: 25
+      - Index: 117
+        TargetValue: 50
+      - Index: 148
+        TargetValue: 10
+    - Name: oh
+      Targets:
+      - Index: 0
+        TargetValue: 100
+      - Index: 1
+        TargetValue: 100
+      - Index: 3
+        TargetValue: 100
+      - Index: 148
+        TargetValue: 40
+    - Name: ou
+      Targets:
+      - Index: 0
+        TargetValue: 100
+      - Index: 3
+        TargetValue: 40

@@ -1,0 +1,58 @@
+using System.Collections;
+using UnityEngine;
+
+public class InteractObject : MonoBehaviour
+{
+    public string objectName = "Object"; // Name of the object
+    public string objectDescription = "Description"; // Description of the object
+
+    private Material mat;
+    private Color baseColor;
+    public Color gazeHightlightColor = Color.red;
+    bool isGazed = false; // Flag to check if the object is gazed at
+    public bool IsGazed => isGazed; // Public property to access the gazed state
+
+    private void OnDisable()
+    {
+        InteractObjectManager.Instance?.Unregister(this); // Unregister this object from the manager
+    }
+
+    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    void Start()
+    {
+        objectName = gameObject.name;
+        InteractObjectManager.Instance?.Register(this); // Register this object with the manager
+        InitDefaultColor();
+    }
+
+    private void InitDefaultColor()
+    {
+        mat = GetComponent<Renderer>().material;
+        if (mat.HasProperty("_BaseColor"))
+            baseColor = mat.GetColor("_BaseColor");
+        else if (mat.HasProperty("_Color"))
+            baseColor = mat.GetColor("_Color");
+        else
+            baseColor = Color.white; // fallback
+    }
+
+    public void ChangeColorForDuration(Color color, float duration)
+    {
+        // Set the flag to true when the object is gazed at
+        isGazed = true; 
+        // Change the color of the object
+        GetComponent<Renderer>().material.color = baseColor * gazeHightlightColor;
+        // Start a coroutine to reset the color after the duration
+        StartCoroutine(ResetColorAfterDuration(duration, baseColor));
+    }
+
+    IEnumerator ResetColorAfterDuration(float duration, Color defaultColor)
+    {
+        // Wait for the specified duration
+        yield return new WaitForSeconds(duration);
+        // Reset the color to white
+        GetComponent<Renderer>().material.color = defaultColor;
+        // Reset the flag to false after the duration
+        isGazed = false; 
+    }
+}
