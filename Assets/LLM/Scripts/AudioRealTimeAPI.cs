@@ -44,7 +44,11 @@ public class AudioRealTimeAPI : MonoBehaviour
         You should respond in a single natual, human-sound sentence.
         Include a short explanation in your answer.
         Even if you do not have enough information or an exact answer is unknown, 
-        you should still provide an estimate or a range of possible answers.""
+        you should still provide an estimate or a range of possible answers.
+
+        If the user¡¯s request is ambiguous or referentially unclear (e.g., ¡°that one,¡± ¡°over there,¡± or vague descriptions), 
+        respond with a natural clarification question. You may support the clarification using gaze or pointing toward candidate objects. 
+        Your goal is to ensure mutual understanding through conversational grounding.
 
         Return your answer in **strict JSON format only**, with the following keys:
         - ""answer"": The answer to the user's question including a short explanation.
@@ -57,6 +61,33 @@ public class AudioRealTimeAPI : MonoBehaviour
             ""answer"": ""Your answer sentence."",
             ""gaze_and_pointing_object"": ""Object name / user / null""
         }}";
+
+    private static string promptTemplate =
+        @"The user asked: ""{0}""
+
+        To help you answer this question, here is contextual information:
+
+        - The most recent object the user looked at is: {1}.
+        - Previously, the user also looked at: {2}.
+        - Currently, all visible objects in the user's view are: {3}.
+        - The user also pointed at the following objects: {4}.
+
+        Each mentioned object includes its name and relative position to the MainCamera.
+
+        Relative position format is based on a local coordinate frame of the MainCamera:
+        - x: Projection onto the Right vector ¡ª positive means right of the user, negative means left
+        - y: Projection onto the Up vector ¡ª positive means above the user, negative means below
+        - z: Projection onto the Forward vector ¡ª positive means in front of the user, negative means behind
+
+        The relative positions of all mentioned objects are provided below:
+
+        {5} // JSON array of objects with ""name"" and ""relative_position"" (x, y, z)
+
+        Use the user¡¯s question and the spatial and attentional context to respond with a natural, human-sounding answer.
+        If the user's question is ambiguous or contains unclear references, ask a clarification question naturally. 
+        You may use gaze and pointing to help identify what you're referring to. 
+        Your goal is to achieve mutual understanding through interactive grounding.
+        ";
 
     // Audio variables
     private bool isRecording = false;
@@ -412,30 +443,6 @@ public class AudioRealTimeAPI : MonoBehaviour
         }
         string objRelativePosDictJson = JsonConvert.SerializeObject(objRelativePosDict, Formatting.Indented);
         Debug.Log("Object relative position JSON: \n" + objRelativePosDictJson);
-
-
-        string promptTemplate =
-        @"The user asked: ""{0}""
-
-        To help you answer this question, here is contextual information:
-
-        - The most recent object the user looked at is: {1}.
-        - Previously, the user also looked at: {2}.
-        - Currently, all visible objects in the user's view are: {3}.
-        - The user also pointed at the following objects: {4}.
-
-        Each mentioned object includes its name and relative position to the MainCamera.
-
-        Relative position format is based on a local coordinate frame of the MainCamera:
-        - x: Projection onto the Right vector ¡ª positive means right of the user, negative means left
-        - y: Projection onto the Up vector ¡ª positive means above the user, negative means below
-        - z: Projection onto the Forward vector ¡ª positive means in front of the user, negative means behind
-
-        The relative positions of all mentioned objects are provided below:
-
-        {5} // JSON array of objects with ""name"" and ""relative_position"" (x, y, z)
-
-        Use the user¡¯s question and the spatial and attentional context to respond with a natural, human-sounding answer.";
 
         return string.Format(promptTemplate, userQuery, gazeData, gazeHistoryStr, allObjectsStr, pointingData, objRelativePosDictJson);
     }
