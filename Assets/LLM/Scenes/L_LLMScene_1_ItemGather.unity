@@ -3915,7 +3915,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enableDebug: 0
-  isMuted: 0
+  systemPromptAsset: {fileID: 4900000, guid: cca17de6689167b4590c4e0a29d94e8c, type: 3}
+  promptTemplateAsset: {fileID: 4900000, guid: b1e6aa3b6cd526c4e8ebb5b90cb7cd6d, type: 3}
+  systemPrompt: 
   inputField: {fileID: 1373224182}
   responseText: {fileID: 972138021}
   gazeSphereDetector: {fileID: 1018995294}

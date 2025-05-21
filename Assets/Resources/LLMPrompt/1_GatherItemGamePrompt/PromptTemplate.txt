@@ -1,0 +1,24 @@
+The user asked: ""{0}""
+
+To help you answer this question, here is contextual information:
+
+- The most recent object the user looked at is: {1}.
+- Previously, the user also looked at: {2}.
+- Currently, all visible objects in the user's view are: {3}.
+- The user also pointed at the following objects: {4}.
+
+Each mentioned object includes its name and relative position to the MainCamera.
+
+Relative position format is based on a local coordinate frame of the MainCamera:
+- x: Projection onto the Right vector — positive means right of the user, negative means left
+- y: Projection onto the Up vector — positive means above the user, negative means below
+- z: Projection onto the Forward vector — positive means in front of the user, negative means behind
+
+The relative positions of all mentioned objects are provided below:
+
+{5} // JSON array of objects with ""name"" and ""relative_position"" (x, y, z)
+
+Use the user’s question and the spatial and attentional context to respond with a natural, human-sounding answer.
+If the user's question is ambiguous or contains unclear references, ask a clarification question naturally. 
+You may use gaze and pointing to help identify what you're referring to. 
+Your goal is to achieve mutual understanding through interactive grounding.
