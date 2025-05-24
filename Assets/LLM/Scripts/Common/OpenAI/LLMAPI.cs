@@ -92,17 +92,16 @@ public class LLMAPI : MonoBehaviour
 
         if (
             (isVRConnected && OVRInput.GetDown(OVRInput.Button.One, OVRInput.Controller.LTouch)) ||
-            (!isVRConnected && Input.GetKeyDown(KeyCode.Space))
+            (!isVRConnected && Input.GetKeyDown(KeyCode.Return))
         )
         {
             Debug.Log("Start recording triggered");
             StartMicRecording();
         }
 
-        // ËÉ¿ªÍ£Ö¹Â¼Òô
         if (
             (isVRConnected && OVRInput.GetUp(OVRInput.Button.One, OVRInput.Controller.LTouch)) ||
-            (!isVRConnected && Input.GetKeyUp(KeyCode.Space))
+            (!isVRConnected && Input.GetKeyUp(KeyCode.Return))
         )
         {
             Debug.Log("Stop recording triggered");

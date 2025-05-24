@@ -51,7 +51,7 @@ public class LLMAPIVirtualAgent : LLMAPI
                 var interactObj = InteractObjectManager.Instance?.GetObjectByName(obj);
                 if (interactObj != null && !objRelativePosDict.ContainsKey(obj))
                 {
-                    objRelativePosDict.Add(obj, interactObj.GetRelativePositionToMainCameraDirection());
+                    objRelativePosDict.Add(obj, interactObj.GetRelativePositionToCamera(Camera.main.transform));
                 }
             }
             foreach (var obj in gazeObjectNameList)
@@ -59,7 +59,7 @@ public class LLMAPIVirtualAgent : LLMAPI
                 var interactObj = InteractObjectManager.Instance?.GetObjectByName(obj);
                 if (interactObj != null && !objRelativePosDict.ContainsKey(obj))
                 {
-                    objRelativePosDict.Add(obj, interactObj.GetRelativePositionToMainCameraDirection());
+                    objRelativePosDict.Add(obj, interactObj.GetRelativePositionToCamera(Camera.main.transform));
                 }
             }
 

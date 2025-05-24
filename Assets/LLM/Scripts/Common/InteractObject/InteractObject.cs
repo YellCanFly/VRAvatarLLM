@@ -56,17 +56,17 @@ public class InteractObject : MonoBehaviour
         isGazed = false; 
     }
 
-    public RelativePosition GetRelativePositionToMainCameraDirection()
+    public RelativePosition GetRelativePositionToCamera(Transform camTransform)
     {
         // Get the main camera's position
-        Vector3 cameraPosition = Camera.main.transform.position;
+        Vector3 cameraPosition = camTransform.position;
         // Calculate the relative position of this object to the camera
         Vector3 relativePosition = transform.position - cameraPosition;
 
         RelativePosition result = new RelativePosition(
-            x: Vector3.Dot(relativePosition, Camera.main.transform.right),
-            y: Vector3.Dot(relativePosition, Camera.main.transform.up),
-            z: Vector3.Dot(relativePosition, Camera.main.transform.forward)
+            x: Vector3.Dot(relativePosition, camTransform.right),
+            y: Vector3.Dot(relativePosition, camTransform.up),
+            z: Vector3.Dot(relativePosition, camTransform.forward)
             );
 
         return result;
