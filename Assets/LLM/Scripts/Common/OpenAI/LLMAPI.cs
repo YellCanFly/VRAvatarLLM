@@ -81,6 +81,8 @@ public class LLMAPI : MonoBehaviour
         ResetMessages();
 
         audioSource = GetComponent<AudioSource>();
+        onStartSpeak += AvatarAnimationWhileSpeaking;
+
     }
 
     /// <summary>
@@ -150,7 +152,7 @@ public class LLMAPI : MonoBehaviour
         audioSource.clip = speechClip;
         audioSource.Play();
         Debug.Log("Clip Length = " + speechClip.Length);
-        AvatarStartPointingByName(currentPointingObject, speechClip.Length);
+        onStartSpeak?.Invoke(speechClip.Length);
 
         // Debug output
         float ttsTime = Time.time - debugTime;
@@ -224,6 +226,12 @@ public class LLMAPI : MonoBehaviour
 
 
     #region Avatar Animation
+    protected virtual void AvatarAnimationWhileSpeaking(float speechDuration)
+    {
+        Debug.Log("Avatar is speaking while pointing an object.");
+        AvatarStartPointingByName(currentPointingObject, speechDuration);
+    }
+
     protected void AvatarStartPointingByName(string objectName, float pointDuration)
     {
         var gazeObject = InteractObjectManager.Instance?.GetObjectByName(objectName);

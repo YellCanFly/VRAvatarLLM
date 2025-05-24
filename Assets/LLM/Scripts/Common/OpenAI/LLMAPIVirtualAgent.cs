@@ -20,6 +20,9 @@ public class LLMAPIVirtualAgent : LLMAPI
     public TextMeshProUGUI responseText;
     public Button sendButton;
 
+
+    protected bool confirmAndHandOver = false;
+
     protected override void Init()
     {
         base.Init();
@@ -117,10 +120,25 @@ public class LLMAPIVirtualAgent : LLMAPI
         // Update current point object
         currentPointingObject = jsonObjResponse.gaze_and_pointing_object;
 
+        // Check if the avatar should confirm and hand over the object
+        confirmAndHandOver = jsonObjResponse.confirm_and_hand_over;
+
         // Send TTS Request
         await TextToSpeechRequest(jsonObjResponse.answer);
     }
 
+    protected override void AvatarAnimationWhileSpeaking(float speechDuration)
+    {
+        if (confirmAndHandOver)
+        {
+            Debug.Log("Avatar is confirming and handing over the object: " + currentPointingObject);
+        }
+        else
+        {
+            Debug.Log("Avatar is speaking while pointing an object.");
+            AvatarStartPointingByName(currentPointingObject, speechDuration);
+        }
+    }
 
     public void OnSendButtonClick()
     {
@@ -175,5 +193,8 @@ public class LLMAPIVirtualAgent : LLMAPI
 
         [JsonProperty("gaze_and_pointing_object")]
         public string gaze_and_pointing_object { get; private set; }
+
+        [JsonProperty("confirm_and_hand_over")]
+        public bool confirm_and_hand_over { get; private set; }
     }
 }
