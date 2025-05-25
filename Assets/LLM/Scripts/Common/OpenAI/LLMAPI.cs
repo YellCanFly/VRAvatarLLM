@@ -1,11 +1,12 @@
 using UnityEngine;
-using TMPro;
+using UnityEngine.Events;
 
 using Utilities.Audio;
 using Utilities.Encoding.Wav;
 
 using System;
 using System.Collections.Generic;
+using System.Collections;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
@@ -14,10 +15,6 @@ using OpenAI;
 using OpenAI.Models;
 using OpenAI.Chat;
 using OpenAI.Audio;
-using System.Collections;
-using UnityEngine.Events;
-using UnityEditor.Experimental.GraphView;
-
 
 
 [RequireComponent(typeof(AudioSource))]
@@ -39,9 +36,10 @@ public class LLMAPI : MonoBehaviour
     public string systemPrompt;
 
     [Header("Interaction Settings")]
+    public bool isAvatarEmbodied = true;
     public GazeSphereDetector gazeSphereDetector;
     public AvatarController avatarController;
-    protected string currentPointingObject = "";
+    protected string currentInteractObject = "";
 
     [Header("Voice Recording Settings")]
     public bool isRecording;
@@ -83,8 +81,8 @@ public class LLMAPI : MonoBehaviour
         ResetMessages();
 
         audioSource = GetComponent<AudioSource>();
-        onStartSpeak += AvatarAnimationWhileSpeaking;
 
+        onStartSpeak += AvatarAnimationWhileSpeaking;
     }
 
     /// <summary>
@@ -250,7 +248,7 @@ public class LLMAPI : MonoBehaviour
     protected virtual void AvatarAnimationWhileSpeaking(float speechDuration)
     {
         Debug.Log("Avatar is speaking while pointing an object.");
-        AvatarStartPointingByName(currentPointingObject, speechDuration);
+        AvatarStartPointingByName(currentInteractObject, speechDuration);
     }
 
     protected void AvatarStartPointingByName(string objectName, float pointDuration)
@@ -258,6 +256,7 @@ public class LLMAPI : MonoBehaviour
         var gazeObject = InteractObjectManager.Instance?.GetObjectByName(objectName);
         if (gazeObject != null)
         {
+            currentInteractObject = objectName;
             Vector3 gazeObjectPosition = gazeObject.transform.position;
             // Todo: Add gaze and point logic here
             if (avatarController != null)
@@ -282,7 +281,13 @@ public class LLMAPI : MonoBehaviour
     {
         yield return new WaitForSeconds(pointDuration);
         avatarController.StopPointing();
-        currentPointingObject = "";
+        currentInteractObject = "";
     }
     #endregion
+}
+public enum InteractCondition
+{
+    Baseline = 0,
+    UniDirectional = 1,
+    BiDirectional = 2,
 }

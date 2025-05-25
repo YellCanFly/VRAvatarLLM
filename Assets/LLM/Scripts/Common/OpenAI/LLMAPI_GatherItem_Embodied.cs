@@ -5,7 +5,6 @@ using OpenAI.Chat;
 using OpenAI;
 
 using System.Collections.Generic;
-using System.Collections;
 using System.Linq;
 
 using Newtonsoft.Json;
@@ -13,7 +12,7 @@ using TMPro;
 using UnityEditor;
 
 
-public class LLMAPIVirtualAgent : LLMAPI
+public class LLMAPI_GatherItem_Embodied : LLMAPI
 {
     [Header("UI Settings")]
     // UI references
@@ -27,7 +26,7 @@ public class LLMAPIVirtualAgent : LLMAPI
     protected override void Init()
     {
         base.Init();
-        if (sendButton != null )
+        if (sendButton != null)
         {
             sendButton.onClick.AddListener(OnSendButtonClick);
         }

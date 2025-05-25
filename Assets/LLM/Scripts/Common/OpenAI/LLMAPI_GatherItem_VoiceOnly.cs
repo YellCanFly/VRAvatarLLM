@@ -5,7 +5,6 @@ using OpenAI.Chat;
 using OpenAI;
 
 using System.Collections.Generic;
-using System.Collections;
 using System.Linq;
 
 using Newtonsoft.Json;
@@ -13,7 +12,7 @@ using TMPro;
 using UnityEditor;
 
 
-public class LLMAPIVirtualAgent : LLMAPI
+public class LLMAPI_GatherItem_VoiceOnly : LLMAPI
 {
     [Header("UI Settings")]
     // UI references
@@ -26,8 +25,10 @@ public class LLMAPIVirtualAgent : LLMAPI
 
     protected override void Init()
     {
+        isAvatarEmbodied = false;
+
         base.Init();
-        if (sendButton != null )
+        if (sendButton != null)
         {
             sendButton.onClick.AddListener(OnSendButtonClick);
         }
@@ -102,32 +103,6 @@ public class LLMAPIVirtualAgent : LLMAPI
         HandleAIResponse(jsonObjResponse, response);
     }
 
-    public async void HandleAIResponse(AIResponse jsonObjResponse, ChatResponse rawResponse)
-    {
-        if (jsonObjResponse == null)
-        {
-            Debug.LogError("Error: Response is null!");
-            return;
-        }
-
-        Debug.Log("Raw Chat Response: " + rawResponse);
-
-        // Add response to message list
-        AddMessage(new Message(Role.Assistant, rawResponse));
-
-        // Update UI textg
-        responseText.text = jsonObjResponse.answer;
-
-        // Update current point object
-        currentInteractObject = jsonObjResponse.gaze_and_pointing_object;
-
-        // Check if the avatar should confirm and hand over the object
-        confirmAndHandOver = jsonObjResponse.confirm_and_hand_over;
-
-        // Send TTS Request
-        await TextToSpeechRequest(jsonObjResponse.answer);
-    }
-
     protected override void AvatarAnimationWhileSpeaking(float speechDuration)
     {
         if (confirmAndHandOver)
@@ -152,11 +127,31 @@ public class LLMAPIVirtualAgent : LLMAPI
                 Debug.LogWarning($"Object '{currentInteractObject}' not found in InteractObjectManager.");
             }
         }
-        else
+    }
+
+    public async void HandleAIResponse(AIResponse jsonObjResponse, ChatResponse rawResponse)
+    {
+        if (jsonObjResponse == null)
         {
-            Debug.Log("Avatar is speaking while pointing an object.");
-            AvatarStartPointingByName(currentInteractObject, speechDuration);
+            Debug.LogError("Error: Response is null!");
+            return;
         }
+
+        Debug.Log("Raw Chat Response: " + rawResponse);
+
+        // Add response to message list
+        AddMessage(new Message(Role.Assistant, rawResponse));
+
+        // Update UI textg
+        responseText.text = jsonObjResponse.answer;
+
+        currentInteractObject = jsonObjResponse.object_name;
+
+        // Check if the avatar should confirm and hand over the object
+        confirmAndHandOver = jsonObjResponse.confirm_and_hand_over;
+
+        // Send TTS Request
+        await TextToSpeechRequest(jsonObjResponse.answer);
     }
 
     public void OnSendButtonClick()
@@ -210,10 +205,10 @@ public class LLMAPIVirtualAgent : LLMAPI
         [JsonProperty("answer")]
         public string answer { get; private set; }
 
-        [JsonProperty("gaze_and_pointing_object")]
-        public string gaze_and_pointing_object { get; private set; }
-
         [JsonProperty("confirm_and_hand_over")]
         public bool confirm_and_hand_over { get; private set; }
+
+        [JsonProperty("object_name")]
+        public string object_name { get; private set; }
     }
 }

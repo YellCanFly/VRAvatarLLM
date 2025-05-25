@@ -5,7 +5,6 @@ using OpenAI.Chat;
 using OpenAI;
 
 using System.Collections.Generic;
-using System.Collections;
 using System.Linq;
 
 using Newtonsoft.Json;
@@ -13,7 +12,7 @@ using TMPro;
 using UnityEditor;
 
 
-public class LLMAPIVirtualAgent : LLMAPI
+public class LLMAPI_GatherItem_Baseline : LLMAPI
 {
     [Header("UI Settings")]
     // UI references
@@ -26,8 +25,10 @@ public class LLMAPIVirtualAgent : LLMAPI
 
     protected override void Init()
     {
+       isAvatarEmbodied = false;
+
         base.Init();
-        if (sendButton != null )
+        if (sendButton != null)
         {
             sendButton.onClick.AddListener(OnSendButtonClick);
         }
@@ -44,8 +45,6 @@ public class LLMAPIVirtualAgent : LLMAPI
         // Parse gaze data from GazeSphereDetector
         if (gazeSphereDetector != null)
         {
-            string gazeObjectName = gazeSphereDetector.GetLatestGazeObject(); // string For the latest gaze object
-            var gazeObjectNameList = gazeSphereDetector.GetGazeObjectList(); // List<string> For gaze history
             var allObjectInEyeFieldList = gazeSphereDetector.GetAllObjectInEyeFieldList(); // List<string> For all objects in eye field
 
             Dictionary<string, RelativePosition> objRelativePosDict = new();
@@ -58,17 +57,7 @@ public class LLMAPIVirtualAgent : LLMAPI
                     objRelativePosDict.Add(obj, interactObj.GetRelativePositionToCamera(Camera.main.transform));
                 }
             }
-            foreach (var obj in gazeObjectNameList)
-            {
-                var interactObj = InteractObjectManager.Instance?.GetObjectByName(obj);
-                if (interactObj != null && !objRelativePosDict.ContainsKey(obj))
-                {
-                    objRelativePosDict.Add(obj, interactObj.GetRelativePositionToCamera(Camera.main.transform));
-                }
-            }
 
-            userInput.current_gaze_object = gazeObjectName;
-            userInput.gaze_history = gazeObjectNameList;
             userInput.objects_in_view = allObjectInEyeFieldList;
             userInput.objects_info = objRelativePosDict.Select(kvp => new ObjectInfo
             {
@@ -79,8 +68,6 @@ public class LLMAPIVirtualAgent : LLMAPI
         else
         {
             // Fallback to default values if GazeSphereDetector is not available
-            userInput.current_gaze_object = "null";
-            userInput.gaze_history = new List<string>();
             userInput.objects_in_view = new List<string>();
             userInput.objects_info = new List<ObjectInfo>();
         }
@@ -100,32 +87,6 @@ public class LLMAPIVirtualAgent : LLMAPI
 
         // Handle response
         HandleAIResponse(jsonObjResponse, response);
-    }
-
-    public async void HandleAIResponse(AIResponse jsonObjResponse, ChatResponse rawResponse)
-    {
-        if (jsonObjResponse == null)
-        {
-            Debug.LogError("Error: Response is null!");
-            return;
-        }
-
-        Debug.Log("Raw Chat Response: " + rawResponse);
-
-        // Add response to message list
-        AddMessage(new Message(Role.Assistant, rawResponse));
-
-        // Update UI textg
-        responseText.text = jsonObjResponse.answer;
-
-        // Update current point object
-        currentInteractObject = jsonObjResponse.gaze_and_pointing_object;
-
-        // Check if the avatar should confirm and hand over the object
-        confirmAndHandOver = jsonObjResponse.confirm_and_hand_over;
-
-        // Send TTS Request
-        await TextToSpeechRequest(jsonObjResponse.answer);
     }
 
     protected override void AvatarAnimationWhileSpeaking(float speechDuration)
@@ -152,11 +113,29 @@ public class LLMAPIVirtualAgent : LLMAPI
                 Debug.LogWarning($"Object '{currentInteractObject}' not found in InteractObjectManager.");
             }
         }
-        else
+    }
+
+    public async void HandleAIResponse(AIResponse jsonObjResponse, ChatResponse rawResponse)
+    {
+        if (jsonObjResponse == null)
         {
-            Debug.Log("Avatar is speaking while pointing an object.");
-            AvatarStartPointingByName(currentInteractObject, speechDuration);
+            Debug.LogError("Error: Response is null!");
+            return;
         }
+
+        Debug.Log("Raw Chat Response: " + rawResponse);
+
+        // Add response to message list
+        AddMessage(new Message(Role.Assistant, rawResponse));
+
+        // Update UI textg
+        responseText.text = jsonObjResponse.answer;
+
+        // Check if the avatar should confirm and hand over the object
+        confirmAndHandOver = jsonObjResponse.confirm_and_hand_over;
+
+        // Send TTS Request
+        await TextToSpeechRequest(jsonObjResponse.answer);
     }
 
     public void OnSendButtonClick()
@@ -176,12 +155,6 @@ public class LLMAPIVirtualAgent : LLMAPI
     {
         [JsonProperty("question")]
         public string question;
-
-        [JsonProperty("current_gaze_object")]
-        public string current_gaze_object;
-
-        [JsonProperty("gaze_history")]
-        public List<string> gaze_history;
 
         [JsonProperty("objects_in_view")]
         public List<string> objects_in_view;
@@ -210,10 +183,11 @@ public class LLMAPIVirtualAgent : LLMAPI
         [JsonProperty("answer")]
         public string answer { get; private set; }
 
-        [JsonProperty("gaze_and_pointing_object")]
-        public string gaze_and_pointing_object { get; private set; }
-
         [JsonProperty("confirm_and_hand_over")]
         public bool confirm_and_hand_over { get; private set; }
+
+        [JsonProperty("object_name")]
+        public string object_name { get; private set; }
     }
 }
+
