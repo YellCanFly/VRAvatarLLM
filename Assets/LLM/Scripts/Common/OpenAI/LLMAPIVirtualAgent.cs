@@ -137,7 +137,19 @@ public class LLMAPIVirtualAgent : LLMAPI
             var gazeObject = InteractObjectManager.Instance?.GetObjectByName(currentPointingObject);
             if (gazeObject != null)
             {
-                gazeObject.gameObject.SetActive(false);
+                if (gazeObject.TryGetComponent<GatherItemObject>(out var gatherItemObject))
+                {
+                    gatherItemObject.SetItemIconGathered();
+                    gazeObject.gameObject.SetActive(false);
+                }
+                else
+                {
+                    Debug.LogWarning($"Object '{currentPointingObject}' is not a GatherItemObject.");
+                }
+            }
+            else
+            {
+                Debug.LogWarning($"Object '{currentPointingObject}' not found in InteractObjectManager.");
             }
         }
         else
