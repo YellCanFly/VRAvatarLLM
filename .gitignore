@@ -32,3 +32,6 @@ Thumbs.db
 # Rider
 .idea/
 *.sln.iml
+
+# Unity Samples
+**/Samples/
