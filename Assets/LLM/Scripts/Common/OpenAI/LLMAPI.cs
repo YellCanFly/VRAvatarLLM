@@ -29,7 +29,9 @@ public class LLMAPI : MonoBehaviour
     protected OpenAIClient openAI;
     protected Model llmModel = new Model("o4-mini", "openai");
     protected Model ttsModel = new Model("tts-1", "openai");
-    protected List<Message> messages = new List<Message>();
+    protected Queue<Message> messageQueue = new Queue<Message>();
+    protected Message systemMessage;
+    public int maxMessageCount = 10;
 
     // System prompt for the assistant
     [Header("Prompt Settings")]
@@ -111,17 +113,12 @@ public class LLMAPI : MonoBehaviour
         }
     }
 
-    public void ResetMessages()
-    {
-        messages.Clear();
-        messages.Add(new Message(Role.System, systemPrompt));
-    }
 
     /// <summary>
     /// Virtual function to handle user's input (Implemented in child classses)
     /// </summary>
     /// <param name="userContent"></param>
-    virtual public async void UserChatInput(string userContent)
+    public virtual async void UserChatInput(string userContent)
     {
         Debug.Log("User input: " + userContent);
     }
@@ -160,6 +157,31 @@ public class LLMAPI : MonoBehaviour
         Debug.Log(speechClip);
         Debug.Log("TTS Time = " + ttsTime);
     }
+
+    #region Message Management
+    public void ResetMessages()
+    {
+        systemMessage = new Message(Role.System, systemPrompt);
+        messageQueue.Clear();
+    }
+
+    public void AddMessage(Message newMessage)
+    {
+        while (messageQueue.Count >= maxMessageCount)
+        {
+            messageQueue.Dequeue();
+        }
+
+        messageQueue.Enqueue(newMessage);
+    }
+
+    public List<Message> GetAllMessages()
+    {
+        var all = new List<Message> { systemMessage };
+        all.AddRange(messageQueue);
+        return all;
+    }
+    #endregion
 
     #region Microphone Record
     /// <summary>
@@ -223,7 +245,6 @@ public class LLMAPI : MonoBehaviour
         }
     }
     #endregion
-
 
     #region Avatar Animation
     protected virtual void AvatarAnimationWhileSpeaking(float speechDuration)

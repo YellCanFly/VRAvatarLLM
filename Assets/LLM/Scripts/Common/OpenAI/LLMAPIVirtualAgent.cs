@@ -10,6 +10,7 @@ using System.Linq;
 
 using Newtonsoft.Json;
 using TMPro;
+using UnityEditor;
 
 
 public class LLMAPIVirtualAgent : LLMAPI
@@ -86,11 +87,11 @@ public class LLMAPIVirtualAgent : LLMAPI
 
         // Add user input to the message list
         string userInputJson = JsonUtility.ToJson(userInput, true);
-        messages.Add(new Message(Role.User, userInputJson));
+        AddMessage(new Message(Role.User, userInputJson));
         Debug.Log($"User: {userInputJson}");
 
         // Create a chat request and send it to OpenAI, wait until get response
-        var chatRequest = new ChatRequest(messages, llmModel);
+        var chatRequest = new ChatRequest(GetAllMessages(), llmModel);
         var (jsonObjResponse, response) = await openAI.ChatEndpoint.GetCompletionAsync<AIResponse>(chatRequest);
 
         // Debug print the LLM's inference and data communication time
@@ -112,7 +113,7 @@ public class LLMAPIVirtualAgent : LLMAPI
         Debug.Log("Raw Chat Response: " + rawResponse);
 
         // Add response to message list
-        messages.Add(new Message(Role.Assistant, rawResponse));
+        AddMessage(new Message(Role.Assistant, rawResponse));
 
         // Update UI textg
         responseText.text = jsonObjResponse.answer;
@@ -132,6 +133,12 @@ public class LLMAPIVirtualAgent : LLMAPI
         if (confirmAndHandOver)
         {
             Debug.Log("Avatar is confirming and handing over the object: " + currentPointingObject);
+            // Todo: add animation and locig to confirm and hand over the object (Current version is just disappeared)
+            var gazeObject = InteractObjectManager.Instance?.GetObjectByName(currentPointingObject);
+            if (gazeObject != null)
+            {
+                gazeObject.gameObject.SetActive(false);
+            }
         }
         else
         {
