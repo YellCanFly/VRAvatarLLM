@@ -114,8 +114,7 @@ public class LLMAPI_GatherItem_VoiceOnly : LLMAPI
             {
                 if (gazeObject.TryGetComponent<GatherItemObject>(out var gatherItemObject))
                 {
-                    gatherItemObject.SetItemIconGathered();
-                    gazeObject.gameObject.SetActive(false);
+                    gatherItemObject.SetObjectGathered();
                 }
                 else
                 {

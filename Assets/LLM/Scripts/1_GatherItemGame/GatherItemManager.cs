@@ -9,8 +9,9 @@ public class GatherItemManager : MonoBehaviour
 
     [Header("Avatar Settings")]
     public GameObject avatarBaseline;
-    public GameObject avatarVoiceOnly;
-    public GameObject avatarEmbodied;
+    public GameObject avatarUniDirecInput;
+    public GameObject avatarUniDirecOutput;
+    public GameObject avatarBiDirec;
 
     [Header("User Settings")]
     public bool isUserUseGaze = true;
@@ -37,18 +38,27 @@ public class GatherItemManager : MonoBehaviour
         {
             case InteractCondition.Baseline:
                 avatarBaseline.SetActive(true);
-                avatarVoiceOnly.SetActive(false);
-                avatarEmbodied.SetActive(false);
+                avatarUniDirecInput.SetActive(false);
+                avatarUniDirecOutput.SetActive(false);
+                avatarBiDirec.SetActive(false);
                 break;
-            case InteractCondition.UniDirectional:
+            case InteractCondition.UniDirectional_Input:
                 avatarBaseline.SetActive(false);
-                avatarVoiceOnly.SetActive(true);
-                avatarEmbodied.SetActive(false);
+                avatarUniDirecInput.SetActive(true);
+                avatarUniDirecOutput.SetActive(false);
+                avatarBiDirec.SetActive(false);
+                break;
+            case InteractCondition.UniDirectional_Output:
+                avatarBaseline.SetActive(false);
+                avatarUniDirecInput.SetActive(false);
+                avatarUniDirecOutput.SetActive(true);
+                avatarBiDirec.SetActive(false);
                 break;
             case InteractCondition.BiDirectional:
                 avatarBaseline.SetActive(false);
-                avatarVoiceOnly.SetActive(false);
-                avatarEmbodied.SetActive(true);
+                avatarUniDirecInput.SetActive(false);
+                avatarUniDirecOutput.SetActive(false);
+                avatarBiDirec.SetActive(true);
                 break;
         }
     }
@@ -64,9 +74,13 @@ public class GatherItemManager : MonoBehaviour
                 isUserUseGaze = false; // Baseline condition does not use gaze
                 gazeSphereDetector.showGazeResult = false; // Disable gaze result display
                 break;
-            case InteractCondition.UniDirectional:
-                isUserUseGaze = true; // UniDirectional condition uses gaze
+            case InteractCondition.UniDirectional_Input:
+                isUserUseGaze = true; // UniDirectionalInput condition uses gaze
                 gazeSphereDetector.showGazeResult = true; // Enable gaze result display
+                break;
+            case InteractCondition.UniDirectional_Output:
+                isUserUseGaze = false; // UniDirectionalOutput condition does not use gaze
+                gazeSphereDetector.showGazeResult = false; // Disable gaze result display
                 break;
             case InteractCondition.BiDirectional:
                 isUserUseGaze = true; // BiDirectional condition uses gaze

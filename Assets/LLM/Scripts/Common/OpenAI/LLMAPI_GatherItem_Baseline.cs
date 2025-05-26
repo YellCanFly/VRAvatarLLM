@@ -100,8 +100,7 @@ public class LLMAPI_GatherItem_Baseline : LLMAPI
             {
                 if (gazeObject.TryGetComponent<GatherItemObject>(out var gatherItemObject))
                 {
-                    gatherItemObject.SetItemIconGathered();
-                    gazeObject.gameObject.SetActive(false);
+                    gatherItemObject.SetObjectGathered();
                 }
                 else
                 {

@@ -18,6 +18,12 @@ public class GatherItemObject : MonoBehaviour
         
     }
 
+    public void SetObjectGathered()
+    {
+        SetItemIconGathered();
+        gameObject.SetActive(false); // Todo: Change to move the object to a gathering place instead of deactivating it
+    }
+
     public void SetItemIconGathered()
     {
         if (itemIcon != null)

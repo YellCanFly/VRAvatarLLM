@@ -288,6 +288,7 @@ public class LLMAPI : MonoBehaviour
 public enum InteractCondition
 {
     Baseline = 0,
-    UniDirectional = 1,
-    BiDirectional = 2,
+    UniDirectional_Input = 1,
+    UniDirectional_Output = 2,
+    BiDirectional = 3,
 }

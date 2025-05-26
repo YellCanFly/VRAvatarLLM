@@ -12,7 +12,7 @@ using TMPro;
 using UnityEditor;
 
 
-public class LLMAPI_GatherItem_Embodied : LLMAPI
+public class LLMAPI_GatherItem_UniDirec_Output : LLMAPI
 {
     [Header("UI Settings")]
     // UI references
@@ -43,8 +43,6 @@ public class LLMAPI_GatherItem_Embodied : LLMAPI
         // Parse gaze data from GazeSphereDetector
         if (gazeSphereDetector != null)
         {
-            string gazeObjectName = gazeSphereDetector.GetLatestGazeObject(); // string For the latest gaze object
-            var gazeObjectNameList = gazeSphereDetector.GetGazeObjectList(); // List<string> For gaze history
             var allObjectInEyeFieldList = gazeSphereDetector.GetAllObjectInEyeFieldList(); // List<string> For all objects in eye field
 
             Dictionary<string, RelativePosition> objRelativePosDict = new();
@@ -57,17 +55,7 @@ public class LLMAPI_GatherItem_Embodied : LLMAPI
                     objRelativePosDict.Add(obj, interactObj.GetRelativePositionToCamera(Camera.main.transform));
                 }
             }
-            foreach (var obj in gazeObjectNameList)
-            {
-                var interactObj = InteractObjectManager.Instance?.GetObjectByName(obj);
-                if (interactObj != null && !objRelativePosDict.ContainsKey(obj))
-                {
-                    objRelativePosDict.Add(obj, interactObj.GetRelativePositionToCamera(Camera.main.transform));
-                }
-            }
 
-            userInput.current_gaze_object = gazeObjectName;
-            userInput.gaze_history = gazeObjectNameList;
             userInput.objects_in_view = allObjectInEyeFieldList;
             userInput.objects_info = objRelativePosDict.Select(kvp => new ObjectInfo
             {
@@ -77,9 +65,6 @@ public class LLMAPI_GatherItem_Embodied : LLMAPI
         }
         else
         {
-            // Fallback to default values if GazeSphereDetector is not available
-            userInput.current_gaze_object = "null";
-            userInput.gaze_history = new List<string>();
             userInput.objects_in_view = new List<string>();
             userInput.objects_info = new List<ObjectInfo>();
         }
@@ -138,7 +123,7 @@ public class LLMAPI_GatherItem_Embodied : LLMAPI
             {
                 if (gazeObject.TryGetComponent<GatherItemObject>(out var gatherItemObject))
                 {
-                    gatherItemObject.SetObjectGathered();
+                    gatherItemObject.SetObjectGathered();;
                 }
                 else
                 {
@@ -174,12 +159,6 @@ public class LLMAPI_GatherItem_Embodied : LLMAPI
     {
         [JsonProperty("question")]
         public string question;
-
-        [JsonProperty("current_gaze_object")]
-        public string current_gaze_object;
-
-        [JsonProperty("gaze_history")]
-        public List<string> gaze_history;
 
         [JsonProperty("objects_in_view")]
         public List<string> objects_in_view;
