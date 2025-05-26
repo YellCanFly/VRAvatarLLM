@@ -18,6 +18,9 @@ public class GazeSphereDetector : MonoBehaviour
     private List<string> allObjectInEyeFieldList = new();
     public int maxGazeMemory = 5;
 
+    public bool showGazeResult = true;
+    public GazeFollower gazeFollower;
+
     [Header("Debug")]
     public TMPro.TextMeshProUGUI gazeObjectName;
     public bool showDebugGizmo = true;
@@ -25,6 +28,8 @@ public class GazeSphereDetector : MonoBehaviour
 
     private void Start()
     {
+        gazeFollower.gameObject.SetActive(showGazeResult);
+
         gazeObjectQueue.Clear();
     }
 
@@ -60,7 +65,7 @@ public class GazeSphereDetector : MonoBehaviour
                 }
 
                 // Highlight the object if it is not already gazed at
-                if (!interactObj.IsGazed)
+                if (!interactObj.IsGazed && showGazeResult)
                 {
                     interactObj.ChangeColorForDuration(interactObj.gazeHightlightColor, 0.1f);
                     Debug.Log("Detected InteractObject: " + interactObj.gameObject.name);

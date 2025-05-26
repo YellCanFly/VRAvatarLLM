@@ -11,10 +11,15 @@ public class GatherItemManager : MonoBehaviour
     public GameObject avatarBaseline;
     public GameObject avatarVoiceOnly;
     public GameObject avatarEmbodied;
-    
+
+    [Header("User Settings")]
+    public bool isUserUseGaze = true;
+    public GazeSphereDetector gazeSphereDetector;
+
 
     private void Awake()
     {
+        InitGazeDetector();
         InitAvatar();
     }
 
@@ -44,6 +49,28 @@ public class GatherItemManager : MonoBehaviour
                 avatarBaseline.SetActive(false);
                 avatarVoiceOnly.SetActive(false);
                 avatarEmbodied.SetActive(true);
+                break;
+        }
+    }
+
+    /// <summary>
+    /// Initializes the gaze detector based on the interaction condition.
+    /// </summary>
+    private void InitGazeDetector()
+    {
+        switch (condition)
+        {
+            case InteractCondition.Baseline:
+                isUserUseGaze = false; // Baseline condition does not use gaze
+                gazeSphereDetector.showGazeResult = false; // Disable gaze result display
+                break;
+            case InteractCondition.UniDirectional:
+                isUserUseGaze = true; // UniDirectional condition uses gaze
+                gazeSphereDetector.showGazeResult = true; // Enable gaze result display
+                break;
+            case InteractCondition.BiDirectional:
+                isUserUseGaze = true; // BiDirectional condition uses gaze
+                gazeSphereDetector.showGazeResult = true; // Enable gaze result display
                 break;
         }
     }
