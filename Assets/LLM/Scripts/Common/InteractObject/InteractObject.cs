@@ -27,7 +27,7 @@ public class InteractObject : MonoBehaviour
 
     private void InitDefaultColor()
     {
-        mat = GetComponent<Renderer>().material;
+        mat = GetComponentInChildren<Renderer>().material;
         if (mat.HasProperty("_BaseColor"))
             baseColor = mat.GetColor("_BaseColor");
         else if (mat.HasProperty("_Color"))
@@ -39,9 +39,9 @@ public class InteractObject : MonoBehaviour
     public void ChangeColorForDuration(Color color, float duration)
     {
         // Set the flag to true when the object is gazed at
-        isGazed = true; 
+        isGazed = true;
         // Change the color of the object
-        GetComponent<Renderer>().material.color = baseColor * gazeHightlightColor;
+        mat.color = baseColor * gazeHightlightColor;
         // Start a coroutine to reset the color after the duration
         StartCoroutine(ResetColorAfterDuration(duration, baseColor));
     }
@@ -51,7 +51,7 @@ public class InteractObject : MonoBehaviour
         // Wait for the specified duration
         yield return new WaitForSeconds(duration);
         // Reset the color to white
-        GetComponent<Renderer>().material.color = defaultColor;
+        mat.color = defaultColor;
         // Reset the flag to false after the duration
         isGazed = false; 
     }
