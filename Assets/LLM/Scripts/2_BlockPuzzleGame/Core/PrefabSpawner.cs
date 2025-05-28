@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEditor;
 using System.Collections.Generic;
+using TMPro;
 
 public class PrefabSpawner : MonoBehaviour
 {
@@ -16,37 +17,46 @@ public class PrefabSpawner : MonoBehaviour
     public List<GameObject> spawnedObjects = new List<GameObject>();
 
     [ContextMenu("Spawn Prefabs")]
-    public void Spawn()
-    {
-        Clear();
-
-        int totalCount = parentObjects.Count * numberPerParent;
-        List<int> shuffledIndices = new List<int>();
-        for (int i = 1; i <= totalCount; i++) shuffledIndices.Add(i);
-        Shuffle(shuffledIndices);
-
-        int index = 0;
-        foreach (Transform parent in parentObjects)
+        public void Spawn()
         {
-            for (int i = 0; i < numberPerParent; i++)
+            Clear();
+
+            int totalCount = parentObjects.Count * numberPerParent;
+            List<int> shuffledIndices = new List<int>();
+            for (int i = 1; i <= totalCount; i++) shuffledIndices.Add(i);
+            Shuffle(shuffledIndices);
+
+            int index = 0;
+            foreach (Transform parent in parentObjects)
             {
-                GameObject obj = PrefabUtility.InstantiatePrefab(prefab) as GameObject;
-                if (obj == null) continue;
+                for (int i = 0; i < numberPerParent; i++)
+                {
+                    GameObject obj = PrefabUtility.InstantiatePrefab(prefab) as GameObject;
+                    if (obj == null) continue;
 
-                obj.transform.SetParent(parent, false);
+                    obj.transform.SetParent(parent, false);
 
-                float offset = (numberPerParent - 1) * 0.5f;
+                    float offset = (numberPerParent - 1) * 0.5f;
 
-                float x = (i - offset) * xSpacing;
-                float y = (i - offset) * ySpacing;
-                float z = (i - offset) * zSpacing;
+                    float x = (i - offset) * xSpacing;
+                    float y = (i - offset) * ySpacing;
+                    float z = (i - offset) * zSpacing;
 
-                obj.transform.localPosition = new Vector3(x, y, z);
-                obj.name = $"Target{shuffledIndices[index++]}";
-                spawnedObjects.Add(obj);
+                    obj.transform.localPosition = new Vector3(x, y, z);
+
+                    int targetNumber = shuffledIndices[index++];
+                    obj.name = $"Target{targetNumber}";
+
+                    TextMeshProUGUI tmp = obj.GetComponentInChildren<TextMeshProUGUI>(true);
+                    if (tmp != null)
+                    {
+                        tmp.text = $"{targetNumber}";
+                    }
+
+                    spawnedObjects.Add(obj);
+                }
             }
         }
-    }
 
     void Shuffle(List<int> list)
     {
