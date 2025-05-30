@@ -253,10 +253,10 @@ public class LLMAPI : MonoBehaviour
     }
 
     // DEBUG
-    private void LateUpdate()
-    {
-        FakeAvatarStartPointing();
-    }
+    //private void LateUpdate()
+    //{
+    //    FakeAvatarStartPointing();
+    //}
 
     // DEBUG
     //[ContextMenu("Fake Avatar Start Pointing")]
@@ -279,6 +279,8 @@ public class LLMAPI : MonoBehaviour
             if (avatarController != null)
             {
                 avatarController.StartPointing(gazeObjectPosition);
+                if (pointDuration < 5f)
+                    pointDuration = 5f; // Ensure minimum pointing duration
                 StartCoroutine(AvatarKeepPointingInDuration(pointDuration));
             }
         }

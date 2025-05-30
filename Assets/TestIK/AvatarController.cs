@@ -67,7 +67,7 @@ public class AvatarController : MonoBehaviour
             Debug.DrawRay(AimIK.transform.position, bodyDir, Color.red);
 
             float dot = Vector3.Dot(bodyDir, targetDir);
-            bool isRight = Vector3.Cross(bodyDir, targetDir).y < 0.0f;
+            bool isRight = Vector3.Cross(bodyDir, targetDir).y > 0.0f;
 
             if (dot < 0.5f)
             {
