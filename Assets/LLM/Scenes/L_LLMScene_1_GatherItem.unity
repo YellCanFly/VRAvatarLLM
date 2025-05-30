@@ -1037,7 +1037,7 @@ CapsuleCollider:
   m_Radius: 0.5
   m_Height: 1
   m_Direction: 1
-  m_Center: {x: 0.023125345, y: 0.49999997, z: 0.073756695}
+  m_Center: {x: 0.023125349, y: 0.49999997, z: 0.073756695}
 --- !u!135 &206371084
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -1058,7 +1058,7 @@ SphereCollider:
   m_Enabled: 0
   serializedVersion: 3
   m_Radius: 0.5
-  m_Center: {x: 0.023125345, y: 0.49999997, z: 0.073756695}
+  m_Center: {x: 0.023125349, y: 0.49999997, z: 0.073756695}
 --- !u!1001 &226875649
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1481,7 +1481,7 @@ CapsuleCollider:
   m_Radius: 0.5
   m_Height: 1
   m_Direction: 1
-  m_Center: {x: 0.00061223324, y: 0.00031248323, z: 0.0010658198}
+  m_Center: {x: 0.00061223324, y: 0.0003124832, z: 0.0010658198}
 --- !u!135 &271510222
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -1502,7 +1502,7 @@ SphereCollider:
   m_Enabled: 0
   serializedVersion: 3
   m_Radius: 0.5
-  m_Center: {x: 0.00061223324, y: 0.00031248323, z: 0.0010658198}
+  m_Center: {x: 0.00061223324, y: 0.0003124832, z: 0.0010658198}
 --- !u!114 &271510223
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3190,7 +3190,7 @@ CapsuleCollider:
   m_Radius: 0.5
   m_Height: 1
   m_Direction: 1
-  m_Center: {x: 0.0002021028, y: 0.00012846981, z: -0.00065482495}
+  m_Center: {x: 0.00020210279, y: 0.0001284698, z: -0.0006548249}
 --- !u!135 &488067852
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -3211,7 +3211,7 @@ SphereCollider:
   m_Enabled: 0
   serializedVersion: 3
   m_Radius: 0.5
-  m_Center: {x: 0.0002021028, y: 0.00012846981, z: -0.00065482495}
+  m_Center: {x: 0.00020210279, y: 0.0001284698, z: -0.0006548249}
 --- !u!114 &488067853
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3284,7 +3284,7 @@ CapsuleCollider:
   m_Radius: 0.5
   m_Height: 1
   m_Direction: 1
-  m_Center: {x: -0.00023153884, y: -0.00014007432, z: -0.000099565914}
+  m_Center: {x: -0.00023153886, y: -0.00014007432, z: -0.00009956592}
 --- !u!135 &489741913
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -3305,7 +3305,7 @@ SphereCollider:
   m_Enabled: 0
   serializedVersion: 3
   m_Radius: 0.5
-  m_Center: {x: -0.00023153884, y: -0.00014007432, z: -0.000099565914}
+  m_Center: {x: -0.00023153886, y: -0.00014007432, z: -0.00009956592}
 --- !u!114 &489741914
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9558,7 +9558,7 @@ CapsuleCollider:
   m_Radius: 0.5
   m_Height: 1
   m_Direction: 1
-  m_Center: {x: 0.00020205438, y: 0.00012846981, z: -0.000654825}
+  m_Center: {x: 0.00020205438, y: 0.0001284698, z: -0.00065482495}
 --- !u!135 &1196001083
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -9579,7 +9579,7 @@ SphereCollider:
   m_Enabled: 0
   serializedVersion: 3
   m_Radius: 0.5
-  m_Center: {x: 0.00020205438, y: 0.00012846981, z: -0.000654825}
+  m_Center: {x: 0.00020205438, y: 0.0001284698, z: -0.00065482495}
 --- !u!114 &1196001084
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11416,7 +11416,7 @@ CapsuleCollider:
   m_Radius: 0.5
   m_Height: 1
   m_Direction: 1
-  m_Center: {x: 0.023125345, y: 0.5000002, z: 0.07375674}
+  m_Center: {x: 0.023125349, y: 0.5000002, z: 0.07375674}
 --- !u!135 &1468414203
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -11437,7 +11437,7 @@ SphereCollider:
   m_Enabled: 0
   serializedVersion: 3
   m_Radius: 0.5
-  m_Center: {x: 0.023125345, y: 0.5000002, z: 0.07375674}
+  m_Center: {x: 0.023125349, y: 0.5000002, z: 0.07375674}
 --- !u!1 &1487914234
 GameObject:
   m_ObjectHideFlags: 0
@@ -11933,7 +11933,7 @@ CapsuleCollider:
   m_Radius: 0.5
   m_Height: 1
   m_Direction: 1
-  m_Center: {x: -0.00023153884, y: -0.00014075408, z: -0.0000995302}
+  m_Center: {x: -0.00023153886, y: -0.0001407541, z: -0.00009953021}
 --- !u!135 &1612515337
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -11954,7 +11954,7 @@ SphereCollider:
   m_Enabled: 0
   serializedVersion: 3
   m_Radius: 0.5
-  m_Center: {x: -0.00023153884, y: -0.00014075408, z: -0.0000995302}
+  m_Center: {x: -0.00023153886, y: -0.0001407541, z: -0.00009953021}
 --- !u!114 &1612515338
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12696,7 +12696,7 @@ CapsuleCollider:
   m_Radius: 0.5
   m_Height: 1
   m_Direction: 1
-  m_Center: {x: 0.0006121174, y: 0.00031248323, z: 0.0010658198}
+  m_Center: {x: 0.0006121174, y: 0.0003124832, z: 0.0010658198}
 --- !u!135 &1704699068
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -12717,7 +12717,7 @@ SphereCollider:
   m_Enabled: 0
   serializedVersion: 3
   m_Radius: 0.5
-  m_Center: {x: 0.0006121174, y: 0.00031248323, z: 0.0010658198}
+  m_Center: {x: 0.0006121174, y: 0.0003124832, z: 0.0010658198}
 --- !u!114 &1704699069
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13777,7 +13777,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400006, guid: ce816f2e6abb0504092c23ed9b970dfd, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 400006, guid: ce816f2e6abb0504092c23ed9b970dfd, type: 3}
       propertyPath: m_LocalPosition.z
@@ -13812,6 +13812,30 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 11400002, guid: ce816f2e6abb0504092c23ed9b970dfd, type: 3}
+      propertyPath: _trackingOriginType
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400002, guid: ce816f2e6abb0504092c23ed9b970dfd, type: 3}
+      propertyPath: dynamicResolutionVersion
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400002, guid: ce816f2e6abb0504092c23ed9b970dfd, type: 3}
+      propertyPath: quest2MaxDynamicResolutionScale
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400002, guid: ce816f2e6abb0504092c23ed9b970dfd, type: 3}
+      propertyPath: quest2MinDynamicResolutionScale
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400002, guid: ce816f2e6abb0504092c23ed9b970dfd, type: 3}
+      propertyPath: quest3MaxDynamicResolutionScale
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400002, guid: ce816f2e6abb0504092c23ed9b970dfd, type: 3}
+      propertyPath: quest3MinDynamicResolutionScale
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400002, guid: ce816f2e6abb0504092c23ed9b970dfd, type: 3}
       propertyPath: requestScenePermissionOnStartup
       value: 1
       objectReference: {fileID: 0}
@@ -13822,6 +13846,18 @@ PrefabInstance:
     - target: {fileID: 11493974, guid: ce816f2e6abb0504092c23ed9b970dfd, type: 3}
       propertyPath: m_Enabled
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 14300000, guid: ce816f2e6abb0504092c23ed9b970dfd, type: 3}
+      propertyPath: m_Height
+      value: 1.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 14300000, guid: ce816f2e6abb0504092c23ed9b970dfd, type: 3}
+      propertyPath: m_Radius
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 14300000, guid: ce816f2e6abb0504092c23ed9b970dfd, type: 3}
+      propertyPath: m_Center.y
+      value: 0.9
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -14587,7 +14623,7 @@ CapsuleCollider:
   m_Radius: 0.5
   m_Height: 1
   m_Direction: 1
-  m_Center: {x: 0.00061223324, y: 0.00031248323, z: 0.0010658198}
+  m_Center: {x: 0.00061223324, y: 0.0003124832, z: 0.0010658198}
 --- !u!135 &1932415086
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -14608,7 +14644,7 @@ SphereCollider:
   m_Enabled: 0
   serializedVersion: 3
   m_Radius: 0.5
-  m_Center: {x: 0.00061223324, y: 0.00031248323, z: 0.0010658198}
+  m_Center: {x: 0.00061223324, y: 0.0003124832, z: 0.0010658198}
 --- !u!114 &1932415087
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15387,7 +15423,7 @@ CapsuleCollider:
   m_Radius: 0.5
   m_Height: 1
   m_Direction: 1
-  m_Center: {x: 0.00061223336, y: 0.00031248323, z: 0.0010658768}
+  m_Center: {x: 0.00061223336, y: 0.0003124832, z: 0.0010658768}
 --- !u!135 &2040376041
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -15408,7 +15444,7 @@ SphereCollider:
   m_Enabled: 0
   serializedVersion: 3
   m_Radius: 0.5
-  m_Center: {x: 0.00061223336, y: 0.00031248323, z: 0.0010658768}
+  m_Center: {x: 0.00061223336, y: 0.0003124832, z: 0.0010658768}
 --- !u!114 &2040376042
 MonoBehaviour:
   m_ObjectHideFlags: 0
