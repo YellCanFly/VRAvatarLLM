@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 539252882294257322}
   - component: {fileID: 4830870854069390013}
   - component: {fileID: 416530578231738926}
-  m_Layer: 5
+  m_Layer: 6
   m_Name: Text (TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -151,7 +151,7 @@ GameObject:
   - component: {fileID: 1952119707497537465}
   - component: {fileID: 5667844780528697005}
   - component: {fileID: 2296790212756152662}
-  m_Layer: 7
+  m_Layer: 6
   m_Name: GrabTarget
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -188,7 +188,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   blockId: 7358e191-33b7-43ca-b066-b2f00531ac66
-  instanceId: 39aa5840-1e18-4073-8347-4721b8f9a5ba
+  instanceId: 87ffbeb2-6c9f-44d3-ba45-259e3e9241ea
   version: 1
   installationRoutineCheckpoint:
     _installationRoutineId: 
@@ -306,8 +306,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 162128d6255a0fb4083d8717c04b323e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  objectName: 
-  objectColor: 
+  objectColorName: 
 --- !u!1 &4635360077011437322
 GameObject:
   m_ObjectHideFlags: 0
@@ -322,7 +321,7 @@ GameObject:
   - component: {fileID: 7807762080192862050}
   - component: {fileID: 2972398738875830534}
   - component: {fileID: 5312768510440532890}
-  m_Layer: 7
+  m_Layer: 6
   m_Name: '[BuildingBlock] HandGrab'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -357,7 +356,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   blockId: f8766c17-aaf8-4b55-9431-de8deea83842
-  instanceId: 3436c38b-3f2a-4188-8a10-ce7eab430551
+  instanceId: efe61c51-7d12-41e7-bdf4-20a1589cdfe8
   version: 1
   installationRoutineCheckpoint:
     _installationRoutineId: f8338144-8280-4ff6-9455-ae2bb9c20fe8
@@ -474,7 +473,7 @@ GameObject:
   - component: {fileID: 2422668300407606208}
   - component: {fileID: 3006911636115831263}
   - component: {fileID: 8986157088603898143}
-  m_Layer: 5
+  m_Layer: 6
   m_Name: Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}

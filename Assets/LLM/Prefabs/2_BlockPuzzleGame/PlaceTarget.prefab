@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7087861601216922675}
   - component: {fileID: 8286315235362160694}
   - component: {fileID: 5753794398055504721}
-  m_Layer: 12
+  m_Layer: 7
   m_Name: GazeDetector
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -106,7 +106,7 @@ GameObject:
   - component: {fileID: 2487047001453105779}
   - component: {fileID: 5156516790061264652}
   - component: {fileID: 103477189525755424}
-  m_Layer: 12
+  m_Layer: 7
   m_Name: PlaceTarget
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -211,7 +211,7 @@ GameObject:
   - component: {fileID: 6209638076580056889}
   - component: {fileID: 562675406869001234}
   - component: {fileID: 1788696873981185264}
-  m_Layer: 12
+  m_Layer: 7
   m_Name: Bottom
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -320,7 +320,7 @@ GameObject:
   - component: {fileID: 6670997019930219523}
   - component: {fileID: 4909676974804370684}
   - component: {fileID: 5830783303981358551}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -421,7 +421,7 @@ GameObject:
   - component: {fileID: 5807626264680252016}
   - component: {fileID: 5916704115207580400}
   - component: {fileID: 7110703863425628186}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: Text (TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
