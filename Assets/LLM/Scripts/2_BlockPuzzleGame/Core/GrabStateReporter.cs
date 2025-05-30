@@ -1,33 +1,36 @@
 using UnityEngine;
 using Oculus.Interaction;
 
-public class GrabbableReporter : MonoBehaviour
+namespace BlockPuzzleGame
 {
-    private Grabbable _grabbable;
-
-    private void Awake()
+    public class GrabbableReporter : MonoBehaviour
     {
-        _grabbable = GetComponent<Grabbable>();
-        _grabbable.WhenPointerEventRaised += HandlePointerEvent;
-    }
+        private Grabbable _grabbable;
 
-    private void OnDestroy()
-    {
-        if (_grabbable != null)
+        private void Awake()
         {
-            _grabbable.WhenPointerEventRaised -= HandlePointerEvent;
+            _grabbable = GetComponent<Grabbable>();
+            _grabbable.WhenPointerEventRaised += HandlePointerEvent;
         }
-    }
 
-    private void HandlePointerEvent(PointerEvent evt)
-    {
-        if (evt.Type == PointerEventType.Select)
+        private void OnDestroy()
         {
-            GrabInteractObjectManager.Instance?.SetHeldObject(gameObject.transform.parent.gameObject);
+            if (_grabbable != null)
+            {
+                _grabbable.WhenPointerEventRaised -= HandlePointerEvent;
+            }
         }
-        else if (evt.Type == PointerEventType.Unselect || evt.Type == PointerEventType.Cancel)
+
+        private void HandlePointerEvent(PointerEvent evt)
         {
-            GrabInteractObjectManager.Instance?.ClearHeldObject();
+            if (evt.Type == PointerEventType.Select)
+            {
+                GrabInteractObjectManager.Instance?.SetHeldObject(gameObject.transform.parent.gameObject.GetComponent<ObjectInfo>());
+            }
+            else if (evt.Type == PointerEventType.Unselect || evt.Type == PointerEventType.Cancel)
+            {
+                GrabInteractObjectManager.Instance?.ClearHeldObject();
+            }
         }
     }
 }

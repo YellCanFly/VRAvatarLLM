@@ -150,6 +150,7 @@ GameObject:
   - component: {fileID: 4432103568162782344}
   - component: {fileID: 1952119707497537465}
   - component: {fileID: 5667844780528697005}
+  - component: {fileID: 2296790212756152662}
   m_Layer: 7
   m_Name: GrabTarget
   m_TagString: Untagged
@@ -187,7 +188,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   blockId: 7358e191-33b7-43ca-b066-b2f00531ac66
-  instanceId: a896ae48-e552-48b1-a7b4-b4c6bebfb167
+  instanceId: 39aa5840-1e18-4073-8347-4721b8f9a5ba
   version: 1
   installationRoutineCheckpoint:
     _installationRoutineId: 
@@ -293,6 +294,20 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &2296790212756152662
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4484690210300572921}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 162128d6255a0fb4083d8717c04b323e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  objectName: 
+  objectColor: 
 --- !u!1 &4635360077011437322
 GameObject:
   m_ObjectHideFlags: 0
@@ -342,7 +357,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   blockId: f8766c17-aaf8-4b55-9431-de8deea83842
-  instanceId: 10fec5c6-7823-4cf3-90af-eb8eec8fa53e
+  instanceId: 3436c38b-3f2a-4188-8a10-ce7eab430551
   version: 1
   installationRoutineCheckpoint:
     _installationRoutineId: f8338144-8280-4ff6-9455-ae2bb9c20fe8

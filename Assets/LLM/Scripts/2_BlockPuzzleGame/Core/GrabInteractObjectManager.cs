@@ -1,34 +1,45 @@
 using UnityEngine;
 
-public class GrabInteractObjectManager : MonoBehaviour
+namespace BlockPuzzleGame
 {
-    public static GrabInteractObjectManager Instance { get; private set; }
-
-    public string CurrentHeldObjectName { get; private set; }
-
-    [SerializeField, Tooltip("Name of the currently held object (for debug)")]
-    private string _debugHeldObjectName;
-
-    private void Awake()
+    public class GrabInteractObjectManager : MonoBehaviour
     {
-        if (Instance != null && Instance != this)
+        public static GrabInteractObjectManager Instance { get; private set; }
+
+        public ObjectInfo CurrentHeldObject;
+
+        private void Awake()
         {
-            Destroy(this);
-            return;
+            if (Instance != null && Instance != this)
+            {
+                Destroy(this);
+                return;
+            }
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
         }
-        Instance = this;
-        DontDestroyOnLoad(gameObject);
-    }
 
-    public void SetHeldObject(GameObject obj)
-    {
-        CurrentHeldObjectName = obj.name;
-        _debugHeldObjectName = obj.name;
-    }
+        public void SetHeldObject(ObjectInfo obj)
+        {
+            if (obj == null)
+            {
+                ClearHeldObject();
+                return;
+            }
 
-    public void ClearHeldObject()
-    {
-        CurrentHeldObjectName = null;
-        _debugHeldObjectName = "";
+            CurrentHeldObject = obj;
+
+            // Log the name of the held object for debugging
+            Debug.Log($"Held Object Set: {obj.ObjectName}");
+        }
+
+        public void ClearHeldObject()
+        {
+            if (CurrentHeldObject != null)
+            {
+                Debug.Log($"Clearing Held Object: {CurrentHeldObject.ObjectName}");
+            }
+            CurrentHeldObject = null;
+        }
     }
 }
