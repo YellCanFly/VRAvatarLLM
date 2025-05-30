@@ -15,7 +15,8 @@ using OpenAI;
 using OpenAI.Models;
 using OpenAI.Chat;
 using OpenAI.Audio;
-
+using UnityEngine.InputSystem;
+using UnityEngine.PlayerLoop;
 
 [RequireComponent(typeof(AudioSource))]
 public class LLMAPI : MonoBehaviour
@@ -251,6 +252,22 @@ public class LLMAPI : MonoBehaviour
         AvatarStartPointingByName(currentInteractObject, speechDuration);
     }
 
+    // DEBUG
+    private void LateUpdate()
+    {
+        FakeAvatarStartPointing();
+    }
+
+    // DEBUG
+    //[ContextMenu("Fake Avatar Start Pointing")]
+    //public void FakeAvatarStartPointing()
+    //{
+    //    if (Keyboard.current.gKey.wasPressedThisFrame)
+    //    {
+    //        AvatarStartPointingByName("InteractObject_PottedPlant (1)", 5.0f);
+    //    }
+    //}
+
     protected void AvatarStartPointingByName(string objectName, float pointDuration)
     {
         var gazeObject = InteractObjectManager.Instance?.GetObjectByName(objectName);
@@ -261,8 +278,7 @@ public class LLMAPI : MonoBehaviour
             // Todo: Add gaze and point logic here
             if (avatarController != null)
             {
-                avatarController.LookAtTarget.transform.position = gazeObjectPosition;
-                avatarController.StartPointing();
+                avatarController.StartPointing(gazeObjectPosition);
                 StartCoroutine(AvatarKeepPointingInDuration(pointDuration));
             }
         }
