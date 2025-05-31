@@ -6,7 +6,7 @@ public class ExperimentManager : MonoBehaviour
 {
     public static int participantCount = 24; // Total number of participants in the experiment
     public static int participantID = 0; // Participant ID for the experiment
-    public InteractCondition[] conditionOrder;
+    public List<InteractCondition> conditionOrder;
 
     public UnityAction onParticipantIDConfirmed;
 
@@ -45,6 +45,11 @@ public class ExperimentManager : MonoBehaviour
         return order;
     }
 
+    private void Awake()
+    {
+        DontDestroyOnLoad(this.gameObject);
+    }
+
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -52,15 +57,15 @@ public class ExperimentManager : MonoBehaviour
         onParticipantIDConfirmed += OnParticipantIDConfirmed;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 
     public void OnParticipantIDConfirmed()
     {
-        GetConditionOrder(participantID);
+        conditionOrder = GetConditionOrder(participantID);
+    }
+
+    public void TurnToSceneByName(string sceneName)
+    {
+        UnityEngine.SceneManagement.SceneManager.LoadScene(sceneName);
     }
 
 

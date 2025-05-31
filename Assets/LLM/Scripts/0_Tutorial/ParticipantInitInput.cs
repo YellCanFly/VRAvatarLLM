@@ -17,19 +17,24 @@ public class ParticipantInitInput : MonoBehaviour
     public TMP_InputField idInputField;
     public Button confirmButton;
 
+    private ExperimentManager experimentManager;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        // Initialize keyboard by self otherwise it will not resopond to input interactions
+        // Initialize the experiment manager
+        experimentManager = FindFirstObjectByType<ExperimentManager>();
+        if (experimentManager == null)
+        {
+            Debug.LogError("ExperimentManager not found in the scene. Please ensure it is present.");
+            return;
+        }
+
+        // Initialize the participant ID input canvas and virtual keyboard
         virtualKeyboard.SetActive(true);
 
+        // Bind the confirm button click event
         confirmButton.onClick.AddListener(OnConfirmButtonClicked);
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
     }
 
     public bool CheckParticipantIDInputValid()
@@ -43,12 +48,12 @@ public class ParticipantInitInput : MonoBehaviour
             }
             else
             {
-                Debug.LogError("Participant ID must be between 0 and 9999.");
+                Debug.LogWarning("Participant ID must be between 0 and " + ExperimentManager.participantCount);
             }
         }
         else
         {
-            Debug.LogError("Invalid Participant ID input. Please enter a valid integer.");
+            Debug.LogWarning("Invalid Participant ID input. Please enter a valid integer.");
         }
 
         return result;
@@ -61,6 +66,9 @@ public class ParticipantInitInput : MonoBehaviour
             
             int participantID = int.Parse(idInputField.text);
             ExperimentManager.participantID = participantID;
+            experimentManager.onParticipantIDConfirmed?.Invoke();
+
+
             StartCoroutine(ShowIDConfirmedCanvasForDuration(1f));
             Debug.Log("Participant ID set to: " + idInputField.text);
         }
