@@ -131,6 +131,7 @@ public class LLMAPI_GatherItem_Embodied : LLMAPI
     {
         if (confirmAndHandOver)
         {
+            bool isAnswerCorrect = false;
             Debug.Log("Avatar is confirming and handing over the object: " + currentInteractObject);
             // Todo: add animation and locig to confirm and hand over the object (Current version is just disappeared)
             var gazeObject = InteractObjectManager.Instance?.GetObjectByName(currentInteractObject);
@@ -138,7 +139,15 @@ public class LLMAPI_GatherItem_Embodied : LLMAPI
             {
                 if (gazeObject.TryGetComponent<GatherItemObject>(out var gatherItemObject))
                 {
-                    gatherItemObject.SetObjectGathered();
+                    if (gatherItemObject == GatherItemManager.Instance.GetCurrentTargetGatherItem())
+                    {
+                        GatherItemManager.Instance.ExecuteGatherCurrentTargetItem();
+                        isAnswerCorrect = true;
+                    }
+                    else
+                    {
+                        Debug.LogWarning($"Object '{currentInteractObject}' is not the current target item.");
+                    }
                 }
                 else
                 {
@@ -148,6 +157,13 @@ public class LLMAPI_GatherItem_Embodied : LLMAPI
             else
             {
                 Debug.LogWarning($"Object '{currentInteractObject}' not found in InteractObjectManager.");
+            }
+
+            if (!isAnswerCorrect)
+            {
+                Debug.LogWarning("Avatar failed to confirm and hand over the object correctly.");
+                // Todo: Play warning voice
+
             }
         }
         else

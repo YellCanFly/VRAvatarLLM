@@ -4,6 +4,7 @@ using UnityEngine.Events;
 
 public class ExperimentManager : MonoBehaviour
 {
+    public static ExperimentManager Instance;
     public static int participantCount = 24; // Total number of participants in the experiment
     public static int participantID = 0; // Participant ID for the experiment
     public List<InteractCondition> conditionOrder;
@@ -18,7 +19,7 @@ public class ExperimentManager : MonoBehaviour
         InteractCondition.BiDirectional
     };
 
-    private static readonly int[][] latingSquare = {
+    private static readonly int[][] latinSquare = {
         new int[] { 1, 2, 3, 4 },
         new int[] { 2, 1, 4, 3 },
         new int[] { 3, 4, 1, 2 },
@@ -38,7 +39,7 @@ public class ExperimentManager : MonoBehaviour
 
         for (int i = 0; i < Conditions.Length; i++)
         {
-            int idx = latingSquare[baseIndex][i] - 1;
+            int idx = latinSquare[baseIndex][i] - 1;
             order.Add(Conditions[idx]);
         }
 
@@ -47,7 +48,15 @@ public class ExperimentManager : MonoBehaviour
 
     private void Awake()
     {
-        DontDestroyOnLoad(this.gameObject);
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(this.gameObject);
+        }
+        else
+        {
+            Destroy(this.gameObject);
+        }
     }
 
 
@@ -60,6 +69,7 @@ public class ExperimentManager : MonoBehaviour
 
     public void OnParticipantIDConfirmed()
     {
+        onParticipantIDConfirmed -= OnParticipantIDConfirmed;
         conditionOrder = GetConditionOrder(participantID);
     }
 

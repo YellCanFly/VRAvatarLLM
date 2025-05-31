@@ -36,4 +36,16 @@ public class GatherItemObject : MonoBehaviour
             Debug.LogWarning("Item icon is not set for " + gameObject.name);
         }
     }
+
+    public void SetItemIconActive(bool isActive)
+    {
+        if (gatherItemIconWidget != null)
+        {
+            gatherItemIconWidget.gameObject.SetActive(isActive);
+        }
+        else
+        {
+            Debug.LogWarning("GatherItemIcon widget is not set for " + gameObject.name);
+        }
+    }
 }
