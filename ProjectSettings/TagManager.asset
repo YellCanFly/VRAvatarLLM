@@ -14,7 +14,7 @@ TagManager:
   - UI
   - CollisionLayer
   - GazeLayer
-  - 
+  - RenderTarget
   - 
   - Character
   - MirroredCharacter

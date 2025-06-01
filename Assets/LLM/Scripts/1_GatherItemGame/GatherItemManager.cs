@@ -3,6 +3,8 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
+using Utilities.Extensions;
+using System.Collections;
 
 [RequireComponent(typeof(AudioSource))]
 public class GatherItemManager : MonoBehaviour
@@ -16,9 +18,11 @@ public class GatherItemManager : MonoBehaviour
     public UnityAction onAllConditionsFinished;
 
     [Header("Gather Item Settings")]
-    public GatherItemIconManager iconManager;
-    public GatherItemObject[] targetGatherObjects;
+    public GatherItemObject[] allGatherObjects;
+    public List<int> targetGatherItemIdList = new();
+    public int collectNumber = 3; // Number of items to collect in each round
     public int currentTargetItemIndex = 0;
+    public Camera renderCamera;
     public UnityAction onStartCollectRound;
     public UnityAction onAllTargetItemCollected;
 
@@ -59,10 +63,11 @@ public class GatherItemManager : MonoBehaviour
         }
         Instance = this;
 
+        // Variables initialization
         conditionOrders = ExperimentManager.GetConditionOrder(ExperimentManager.Instance.participantID);
         audioSource = GetComponent<AudioSource>();
 
-        // Initialize
+        // Initialize for the whole experiment process
         InitCanvasRefs();
         InitActionBinds();
     }
@@ -75,104 +80,8 @@ public class GatherItemManager : MonoBehaviour
 
 
     #region Initialization Methods
-    public void InitExperimentCondition()
-    {
-        InitAvatar();
-        InitGazeDetector();
-        InitGatherItemIcons();
-    }
 
-    /// <summary>
-    /// Initializes the avatar based on the specified interaction condition.
-    /// </summary>
-    private void InitAvatar()
-    {
-        switch (condition)
-        {
-            case InteractCondition.Baseline:
-                avatarBaseline.SetActive(true);
-                avatarUniDirecInput.SetActive(false);
-                avatarUniDirecOutput.SetActive(false);
-                avatarBiDirec.SetActive(false);
-                avatarAcitivate = avatarBaseline;
-                break;
-            case InteractCondition.UniDirectional_Input:
-                avatarBaseline.SetActive(false);
-                avatarUniDirecInput.SetActive(true);
-                avatarUniDirecOutput.SetActive(false);
-                avatarBiDirec.SetActive(false);
-                avatarAcitivate = avatarUniDirecInput;
-                break;
-            case InteractCondition.UniDirectional_Output:
-                avatarBaseline.SetActive(false);
-                avatarUniDirecInput.SetActive(false);
-                avatarUniDirecOutput.SetActive(true);
-                avatarBiDirec.SetActive(false);
-                avatarAcitivate = avatarUniDirecOutput;
-                break;
-            case InteractCondition.BiDirectional:
-                avatarBaseline.SetActive(false);
-                avatarUniDirecInput.SetActive(false);
-                avatarUniDirecOutput.SetActive(false);
-                avatarBiDirec.SetActive(true);
-                avatarAcitivate = avatarBiDirec;
-                break;
-        }
-
-        // Initialize the gaze sphere detector for the active avatar
-        avatarAcitivate.GetComponentInChildren<LLMAPI>().gazeSphereDetector = gazeSphereDetector;
-    }
-
-    /// <summary>
-    /// Initializes the gaze detector based on the interaction condition.
-    /// </summary>
-    private void InitGazeDetector()
-    {
-        switch (condition)
-        {
-            case InteractCondition.Baseline:
-                isUserUseGaze = false; // Baseline condition does not use gaze
-                gazeSphereDetector.showGazeResult = false; // Disable gaze result display
-                break;
-            case InteractCondition.UniDirectional_Input:
-                isUserUseGaze = true; // UniDirectionalInput condition uses gaze
-                gazeSphereDetector.showGazeResult = true; // Enable gaze result display
-                break;
-            case InteractCondition.UniDirectional_Output:
-                isUserUseGaze = false; // UniDirectionalOutput condition does not use gaze
-                gazeSphereDetector.showGazeResult = false; // Disable gaze result display
-                break;
-            case InteractCondition.BiDirectional:
-                isUserUseGaze = true; // BiDirectional condition uses gaze
-                gazeSphereDetector.showGazeResult = true; // Enable gaze result display
-                break;
-        }
-    }
-
-    /// <summary>
-    /// Initializes the gather item icons for each target gather object.
-    /// </summary>
-    private void InitGatherItemIcons()
-    {
-        if (iconManager == null)
-        {
-            Debug.LogError("GatherItemIconManager is not assigned in GatherItemManager.");
-            return;
-        }
-
-        foreach (var item in targetGatherObjects)
-        {
-            if (item != null)
-            {
-                // Create an icon for each gatherable item
-                GatherItemIcon icon = iconManager.CreateIcon(item.itemIcon);
-                item.gatherItemIconWidget = icon;
-                item.SetItemIconActive(false); 
-            }
-        }
-        targetGatherObjects[currentTargetItemIndex].SetItemIconActive(true); // Activate the icon for the first item
-    }
-
+    // ------ Initialization for the whole experiment process ------
     private void InitCanvasRefs()
     {
         collectGuidanceButton = collectGuidanceCanvas.GetComponentInChildren<Button>();
@@ -220,25 +129,151 @@ public class GatherItemManager : MonoBehaviour
         onAllTargetItemCollected += OnAllTargetItemCollected;
         onAllConditionsFinished += OnAllConditionsFinished;
     }
+
+    // ------ Initialization for each experiment condition ------
+    public void InitExperimentCondition()
+    {
+        InitAvatar();
+        InitGazeDetector();
+        InitRandomTargetIDList();
+        InitAllGatherItems();
+    }
+
+    private void InitAvatar()
+    {
+        switch (condition)
+        {
+            case InteractCondition.Baseline:
+                avatarBaseline.SetActive(true);
+                avatarUniDirecInput.SetActive(false);
+                avatarUniDirecOutput.SetActive(false);
+                avatarBiDirec.SetActive(false);
+                avatarAcitivate = avatarBaseline;
+                break;
+            case InteractCondition.UniDirectional_Input:
+                avatarBaseline.SetActive(false);
+                avatarUniDirecInput.SetActive(true);
+                avatarUniDirecOutput.SetActive(false);
+                avatarBiDirec.SetActive(false);
+                avatarAcitivate = avatarUniDirecInput;
+                break;
+            case InteractCondition.UniDirectional_Output:
+                avatarBaseline.SetActive(false);
+                avatarUniDirecInput.SetActive(false);
+                avatarUniDirecOutput.SetActive(true);
+                avatarBiDirec.SetActive(false);
+                avatarAcitivate = avatarUniDirecOutput;
+                break;
+            case InteractCondition.BiDirectional:
+                avatarBaseline.SetActive(false);
+                avatarUniDirecInput.SetActive(false);
+                avatarUniDirecOutput.SetActive(false);
+                avatarBiDirec.SetActive(true);
+                avatarAcitivate = avatarBiDirec;
+                break;
+        }
+
+        // Initialize the gaze sphere detector for the active avatar
+        avatarAcitivate.GetComponentInChildren<LLMAPI>().gazeSphereDetector = gazeSphereDetector;
+    }
+
+    private void InitGazeDetector()
+    {
+        switch (condition)
+        {
+            case InteractCondition.Baseline:
+                isUserUseGaze = false; // Baseline condition does not use gaze
+                gazeSphereDetector.showGazeResult = false; // Disable gaze result display
+                break;
+            case InteractCondition.UniDirectional_Input:
+                isUserUseGaze = true; // UniDirectionalInput condition uses gaze
+                gazeSphereDetector.showGazeResult = true; // Enable gaze result display
+                break;
+            case InteractCondition.UniDirectional_Output:
+                isUserUseGaze = false; // UniDirectionalOutput condition does not use gaze
+                gazeSphereDetector.showGazeResult = false; // Disable gaze result display
+                break;
+            case InteractCondition.BiDirectional:
+                isUserUseGaze = true; // BiDirectional condition uses gaze
+                gazeSphereDetector.showGazeResult = true; // Enable gaze result display
+                break;
+        }
+    }
+
+    private void InitRandomTargetIDList()
+    {
+        if (collectNumber > allGatherObjects.Length)
+        {
+            Debug.LogWarning("Collect number exceeds available gather items. Adjusting to maximum available items.");
+            collectNumber = allGatherObjects.Length; // Adjust collect number to the maximum available items
+        }
+
+        targetGatherItemIdList.Clear();
+        List<int> availableIndices = new List<int>();
+        for (int i = 0; i < allGatherObjects.Length; i++)
+        {
+            availableIndices.Add(i);
+        }
+        for (int i = 0; i < collectNumber && availableIndices.Count > 0; i++)
+        {
+            int randomIndex = Random.Range(0, availableIndices.Count);
+            targetGatherItemIdList.Add(availableIndices[randomIndex]);
+            availableIndices.RemoveAt(randomIndex); // Remove the selected index to avoid duplicates
+        }
+    }
+
+    private void InitAllGatherItems()
+    {
+        foreach (var item in allGatherObjects)
+        {
+            if (item != null)
+            {
+                item.SetActive(true); // Reactivate the item object
+                SetItemAsNoTargetItem(item);
+            }
+        }
+        currentTargetItemIndex = 0; // Reset the current target item index
+        SetItemAsTargetItem(GetCurrentTargetGatherItem()); // Set the first item as the target item
+    }
+
     #endregion
 
 
     #region Task processing methods
     public GatherItemObject GetCurrentTargetGatherItem()
     {
-        return targetGatherObjects[currentTargetItemIndex];
+        int targetItemID = targetGatherItemIdList[currentTargetItemIndex];
+        return allGatherObjects[targetItemID];
     }
 
+    public void SetItemAsTargetItem(GatherItemObject itemObject)
+    {
+        itemObject.SetItemToRenderLayer();
+        renderCamera.transform.position = itemObject.interactObject.GetObjectBounds().center + new Vector3(0, 0, -1); // Position the camera behind the target item
+    }
+
+    public void SetItemAsNoTargetItem(GatherItemObject itemObject)
+    {
+        itemObject.SetItemToDefaultLayer(); // Reset the item layer to default
+    }
+
+    [ContextMenu("Execute Gather Current Target Item")]
     public void ExecuteGatherCurrentTargetItem()
     {
         var targetItem = GetCurrentTargetGatherItem();
         if (targetItem != null)
         {
-            targetItem.SetObjectGathered(); // Mark the item as gathered
+            // Set current target item as collected
+            SetItemAsNoTargetItem(targetItem); // Reset the item layer to default
+            var defaultPosition = targetItem.transform.position; // Store the default position of the item
+            DisplayItem(targetItem); // Display the item in front of the camera
+            StartCoroutine(DelayHideTargetItem(targetItem, 2.0f, defaultPosition)); // Delay hiding the item object for 1 second
+
+            // Set next target item / check if all items are collected
             currentTargetItemIndex++;
-            if (currentTargetItemIndex < targetGatherObjects.Length)
+            if (currentTargetItemIndex < targetGatherItemIdList.Count)
             {
-                targetGatherObjects[currentTargetItemIndex].SetItemIconActive(true); // Activate the next item icon
+                SetItemAsTargetItem(GetCurrentTargetGatherItem()); // Set the next item as the target item
             }
             else
             {
@@ -247,6 +282,63 @@ public class GatherItemManager : MonoBehaviour
             }
         }
     }
+
+    IEnumerator DelayHideTargetItem(GatherItemObject itemObject, float delay, Vector3 defaultPosition)
+    {
+        yield return new WaitForSeconds(delay);
+        if (itemObject != null)
+        {
+            itemObject.transform.position = defaultPosition; // Reset the position of the item object
+            itemObject.SetActive(false); // Deactivate the item object after the delay
+        }
+        else
+        {
+            Debug.LogWarning("Item object is null, cannot hide.");
+        }
+    }
+
+    public void ExcuteShowWrongItem(GatherItemObject wrongItem)
+    {
+        if (wrongItem != null)
+        {
+            var defaultPosition = wrongItem.transform.position; // Store the default position of the wrong item
+            DisplayItem(wrongItem); // Display the wrong item in front of the camera
+            StartCoroutine(DelayPutBackWrongItem(wrongItem, 2.0f, defaultPosition)); // Delay putting back the wrong item for 1 second
+        }
+        else
+        {
+            Debug.LogWarning("Wrong item is null, cannot execute display wrong item.");
+        }
+    }
+
+    IEnumerator DelayPutBackWrongItem(GatherItemObject wrongItem, float delay, Vector3 defaultPosition)
+    {
+        yield return new WaitForSeconds(delay);
+        if (wrongItem != null)
+        {
+            wrongItem.transform.position = defaultPosition; // Reset the position of the wrong item
+        }
+        else
+        {
+            Debug.LogWarning("Wrong item is null, cannot put back.");
+        }
+    }
+
+    public void DisplayItem(GatherItemObject item)
+    {
+        item.transform.position = Camera.main.transform.position + Camera.main.transform.forward * 2; // Position the item in front of the camera
+    }
+
+    // Debug
+    //public GatherItemObject testDisplayItem;
+    //[ContextMenu("Test Display Item")]
+    //public void TestDisplay()
+    //{
+    //    if (testDisplayItem != null)
+    //        testDisplayItem.SetActive(true); // Ensure the item is active before displaying
+    //    else
+    //        Debug.LogWarning("Test display item is not assigned.");
+    //}
 
     public void StartExperimentRound(int expIndex)
     {
@@ -286,7 +378,7 @@ public class GatherItemManager : MonoBehaviour
         // Trigger to next round or finish the experiment
         if (currentExperimentIndex < conditionOrders.Count - 1)
         {
-            collectNewRoundCanvas.SetActive(true); // Show the new round canvas for the next experiment
+            collectCompletedCanvas.SetActive(true); // Show the new round canvas for the next experiment
         }
         else
         {

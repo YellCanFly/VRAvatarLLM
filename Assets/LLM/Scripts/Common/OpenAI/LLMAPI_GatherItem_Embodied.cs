@@ -147,6 +147,7 @@ public class LLMAPI_GatherItem_Embodied : LLMAPI
                     else
                     {
                         Debug.LogWarning($"Object '{currentInteractObject}' is not the current target item.");
+                        GatherItemManager.Instance.ExcuteShowWrongItem(gatherItemObject);
                     }
                 }
                 else

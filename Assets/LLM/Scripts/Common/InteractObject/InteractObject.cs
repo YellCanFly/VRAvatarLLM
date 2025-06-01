@@ -12,9 +12,17 @@ public class InteractObject : MonoBehaviour
     bool isGazed = false; // Flag to check if the object is gazed at
     public bool IsGazed => isGazed; // Public property to access the gazed state
 
+    public ObjectColliderRange colliderRange;
+
     private void OnDisable()
     {
         InteractObjectManager.Instance?.Unregister(this); // Unregister this object from the manager
+    }
+
+    private void Awake()
+    {
+        colliderRange = GetComponentInChildren<ObjectColliderRange>();
+
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -70,6 +78,19 @@ public class InteractObject : MonoBehaviour
             );
 
         return result;
+    }
+
+    public Bounds GetObjectBounds()
+    {
+        if (colliderRange != null)
+        {
+            return colliderRange.bounds;
+        }
+        else
+        {
+            Debug.LogWarning("ObjectColliderRange is not set for " + gameObject.name);
+            return new Bounds(transform.position, Vector3.one); // Return a default bounds if not set
+        }
     }
 }
 

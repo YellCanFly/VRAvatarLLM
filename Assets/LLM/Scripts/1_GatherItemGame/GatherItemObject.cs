@@ -3,49 +3,26 @@ using UnityEngine;
 [RequireComponent(typeof(InteractObject))]
 public class GatherItemObject : MonoBehaviour
 {
-    public Sprite itemIcon; // Reference to the icon sprite for the item
-    public GatherItemIcon gatherItemIconWidget; // Reference to the GatherItemIcon component for displaying the item icon
+    public InteractObject interactObject;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    private void Awake()
     {
-        
+        interactObject = GetComponent<InteractObject>();
     }
 
-    // Update is called once per frame
-    void Update()
+    public void SetItemToRenderLayer()
     {
-        
-    }
-
-    public void SetObjectGathered()
-    {
-        SetItemIconGathered();
-        gameObject.SetActive(false); // Todo: Change to move the object to a gathering place instead of deactivating it
-    }
-
-    public void SetItemIconGathered()
-    {
-        if (itemIcon != null)
+        foreach (var renderer in GetComponentsInChildren<Renderer>())
         {
-            // Set the icon to indicate that the item has been gathered
-            gatherItemIconWidget.SetIconToGathered();
-        }
-        else
-        {
-            Debug.LogWarning("Item icon is not set for " + gameObject.name);
+            renderer.gameObject.layer = LayerMask.NameToLayer("RenderTarget"); // Set the layer for rendering
         }
     }
 
-    public void SetItemIconActive(bool isActive)
+    public void SetItemToDefaultLayer()
     {
-        if (gatherItemIconWidget != null)
+        foreach (var renderer in GetComponentsInChildren<Renderer>())
         {
-            gatherItemIconWidget.gameObject.SetActive(isActive);
-        }
-        else
-        {
-            Debug.LogWarning("GatherItemIcon widget is not set for " + gameObject.name);
+            renderer.gameObject.layer = LayerMask.NameToLayer("Default"); // Set the layer back to default
         }
     }
 }
