@@ -65,7 +65,7 @@ public class ParticipantInitInput : MonoBehaviour
         {
             
             int participantID = int.Parse(idInputField.text);
-            ExperimentManager.participantID = participantID;
+            ExperimentManager.Instance.participantID = participantID;
             experimentManager.onParticipantIDConfirmed?.Invoke();
 
 

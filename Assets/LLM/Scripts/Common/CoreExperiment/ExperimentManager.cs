@@ -6,7 +6,9 @@ public class ExperimentManager : MonoBehaviour
 {
     public static ExperimentManager Instance;
     public static int participantCount = 24; // Total number of participants in the experiment
-    public static int participantID = 0; // Participant ID for the experiment
+
+
+    public int participantID; // Participant ID for the experiment
     public List<InteractCondition> conditionOrder;
 
     public UnityAction onParticipantIDConfirmed;

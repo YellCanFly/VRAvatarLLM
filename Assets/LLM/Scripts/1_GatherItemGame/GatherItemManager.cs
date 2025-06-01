@@ -1,18 +1,25 @@
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.UI;
 
 public class GatherItemManager : MonoBehaviour
 {
     public static GatherItemManager Instance { get; private set; }
 
-    [Header("Gather Item Settings")]
+    [Header("Condition Settings")]
     public InteractCondition condition = InteractCondition.Baseline;
     public List<InteractCondition> conditionOrders;
-    public GatherItemObject[] targetGatherObjects;
+    public int currentExperimentIndex = 0;
+    public UnityAction onAllConditionsFinished;
+
+    [Header("Gather Item Settings")]
     public GatherItemIconManager iconManager;
+    public GatherItemObject[] targetGatherObjects;
     public int currentTargetItemIndex = 0;
-    public UnityAction onAllTargetItemGathered;
+    public UnityAction onStartCollectRound;
+    public UnityAction onAllTargetItemCollected;
 
     [Header("Avatar Settings")]
     public GameObject avatarBaseline;
@@ -26,11 +33,20 @@ public class GatherItemManager : MonoBehaviour
     public GazeSphereDetector gazeSphereDetector;
 
     [Header("UI Settings")]
-    public GameObject gatherGuidance;
+    public GameObject collectGuidanceCanvas;
+    public GameObject collectCompletedCanvas;
+    public GameObject collectNewRoundCanvas;
+    public GameObject taskCompletedCanvas;
 
+    private Button collectGuidanceButton;
+    private Button collectCompletedButton;
+    private Button collectNewRoundButton;
+    private Button taskCompletedButton;
+    
 
     private void Awake()
     {
+        // Singleton pattern to ensure only one instance of GatherItemManager exists
         if (Instance != null && Instance != this)
         {
             Destroy(this);
@@ -38,18 +54,26 @@ public class GatherItemManager : MonoBehaviour
         }
         Instance = this;
 
-        InitExperimentCondition();
+        conditionOrders = ExperimentManager.GetConditionOrder(ExperimentManager.Instance.participantID);
+
+        // Initialize
+        InitCanvasRefs();
+        InitActionBinds();
     }
 
     void Start()
     {
-        InitGatherItemIcons();
+        currentExperimentIndex = 0; // Reset the experiment index at the start
+        StartExperimentRound(currentExperimentIndex); // Start the first experiment round
     }
 
+
+    #region Initialization Methods
     public void InitExperimentCondition()
     {
         InitAvatar();
         InitGazeDetector();
+        InitGatherItemIcons();
     }
 
     /// <summary>
@@ -143,6 +167,57 @@ public class GatherItemManager : MonoBehaviour
         targetGatherObjects[currentTargetItemIndex].SetItemIconActive(true); // Activate the icon for the first item
     }
 
+    private void InitCanvasRefs()
+    {
+        collectGuidanceButton = collectGuidanceCanvas.GetComponentInChildren<Button>();
+        collectCompletedButton = collectCompletedCanvas.GetComponentInChildren<Button>();
+        collectNewRoundButton = collectNewRoundCanvas.GetComponentInChildren<Button>();
+        taskCompletedButton = taskCompletedCanvas.GetComponentInChildren<Button>();
+
+        if (collectGuidanceButton != null)
+        {
+            collectGuidanceButton.onClick.AddListener(OnCollecGuidanceButtonClicked);
+        }
+        else
+        {
+            Debug.LogError("Collect Guidance Button is not assigned in GatherItemManager.");
+        }
+        if (collectCompletedButton != null)
+        {
+            collectCompletedButton.onClick.AddListener(OnCollectCompletedButtonClicked);
+        }
+        else
+        {
+            Debug.LogError("Collect Completed Button is not assigned in GatherItemManager.");
+        }
+        if (collectNewRoundButton != null)
+        {
+            collectNewRoundButton.onClick.AddListener(OnCollectNewRoundButtonClicked);
+        }
+        else
+        {
+            Debug.LogError("Collect New Round Button is not assigned in GatherItemManager.");
+        }
+        if (taskCompletedButton != null)
+        {
+            taskCompletedButton.onClick.AddListener(OnTaskCompletedButtonClicked);
+        }
+        else
+        {
+            Debug.LogError("Task Completed Button is not assigned in GatherItemManager.");
+        }
+    }
+
+    private void InitActionBinds()
+    {
+        onStartCollectRound += OnStartCollectItem;
+        onAllTargetItemCollected += OnAllTargetItemCollected;
+        onAllConditionsFinished += OnAllConditionsFinished;
+    }
+    #endregion
+
+
+    #region Task processing methods
     public GatherItemObject GetCurrentTargetGatherItem()
     {
         return targetGatherObjects[currentTargetItemIndex];
@@ -162,7 +237,7 @@ public class GatherItemManager : MonoBehaviour
             else
             {
                 Debug.Log("All items have been gathered.");
-                onAllTargetItemGathered?.Invoke(); // Invoke the event when all items are gathered
+                onAllTargetItemCollected?.Invoke(); // Invoke the event when all items are gathered
             }
         }
     }
@@ -179,7 +254,75 @@ public class GatherItemManager : MonoBehaviour
         InitExperimentCondition();
 
 
+        if (expIndex == 0)
+        {
+            collectGuidanceCanvas.SetActive(true); // Show guidance for the first round
+        }
+        else
+        {
+            collectNewRoundCanvas.SetActive(true); // Show new round canvas for subsequent rounds
+        }
 
     }
+    #endregion
+
+
+    #region Event Handlers
+    private void OnStartCollectItem()
+    {
+        // Todo: Implement the logic to start record conversation history, time, etc.
+    }
+
+    private void OnAllTargetItemCollected()
+    {
+        // Todo: Implement the logic to handle when all target items are collected
+
+        // Trigger to next round or finish the experiment
+        if (currentExperimentIndex < conditionOrders.Count - 1)
+        {
+            collectNewRoundCanvas.SetActive(true); // Show the new round canvas for the next experiment
+        }
+        else
+        {
+            onAllConditionsFinished?.Invoke(); // Invoke the action when all conditions are finished
+        }
+    }
+
+    private void OnAllConditionsFinished()
+    {
+        taskCompletedCanvas.SetActive(true); // Show the task completed canvas
+    }
+    #endregion
+
+
+    #region UI Button Callbacks
+    private void OnCollecGuidanceButtonClicked()
+    {
+        collectGuidanceCanvas.SetActive(false); // Hide the guidance canvas
+        onStartCollectRound?.Invoke(); // Invoke the action to start the collection round
+    }
+
+    private void OnCollectCompletedButtonClicked()
+    {
+        collectCompletedCanvas.SetActive(false); // Hide the completion canvas
+
+        currentExperimentIndex++;
+        if (currentExperimentIndex < conditionOrders.Count)
+        {
+            StartExperimentRound(currentExperimentIndex); // Start the next experiment round
+        }
+    }
+
+    private void OnCollectNewRoundButtonClicked()
+    {
+        collectNewRoundCanvas.SetActive(false); // Hide the new round canvas
+    }
+
+    private void OnTaskCompletedButtonClicked()
+    {
+        taskCompletedCanvas.SetActive(false); // Hide the task completed canvas
+        ExperimentManager.Instance.TurnToSceneByName("L_LLMScene_2_BlockPuzzle"); // Transition to the next scene
+    }
+    #endregion
 
 }
