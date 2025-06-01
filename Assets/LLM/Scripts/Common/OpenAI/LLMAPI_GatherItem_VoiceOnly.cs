@@ -138,8 +138,12 @@ public class LLMAPI_GatherItem_VoiceOnly : LLMAPI
             if (!isAnswerCorrect)
             {
                 Debug.LogWarning("Avatar failed to confirm and hand over the object correctly.");
-                // Todo: Play warning voice
-
+                GatherItemManager.Instance.PlayCollectWrongSound();
+            }
+            else
+            {
+                Debug.Log("Avatar successfully confirmed and handed over the object.");
+                GatherItemManager.Instance.PlayCollectCorrectSound();
             }
         }
     }

@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
+[RequireComponent(typeof(AudioSource))]
 public class GatherItemManager : MonoBehaviour
 {
     public static GatherItemManager Instance { get; private set; }
@@ -42,7 +43,11 @@ public class GatherItemManager : MonoBehaviour
     private Button collectCompletedButton;
     private Button collectNewRoundButton;
     private Button taskCompletedButton;
-    
+
+    [Header("Audio Settings")]
+    public AudioSource audioSource;
+    public AudioClip collectCorrectSound; // Sound to play when an item is collected correctly
+    public AudioClip collectWrongSound; // Sound to play when an item is collected incorrectly
 
     private void Awake()
     {
@@ -55,6 +60,7 @@ public class GatherItemManager : MonoBehaviour
         Instance = this;
 
         conditionOrders = ExperimentManager.GetConditionOrder(ExperimentManager.Instance.participantID);
+        audioSource = GetComponent<AudioSource>();
 
         // Initialize
         InitCanvasRefs();
@@ -324,5 +330,29 @@ public class GatherItemManager : MonoBehaviour
         ExperimentManager.Instance.TurnToSceneByName("L_LLMScene_2_BlockPuzzle"); // Transition to the next scene
     }
     #endregion
+
+    public void PlayCollectCorrectSound()
+    {
+        if (audioSource != null && collectCorrectSound != null)
+        {
+            audioSource.PlayOneShot(collectCorrectSound);
+        }
+        else
+        {
+            Debug.LogWarning("AudioSource or collectCorrectSound is not assigned.");
+        }
+    }
+
+    public void PlayCollectWrongSound()
+    {
+        if (audioSource != null && collectWrongSound != null)
+        {
+            audioSource.PlayOneShot(collectWrongSound);
+        }
+        else
+        {
+            Debug.LogWarning("AudioSource or collectWrongSound is not assigned.");
+        }
+    }
 
 }
