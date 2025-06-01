@@ -26203,7 +26203,6 @@ GameObject:
   - component: {fileID: 1812962279}
   - component: {fileID: 1812962278}
   - component: {fileID: 1812962277}
-  - component: {fileID: 1812962276}
   - component: {fileID: 1812962275}
   m_Layer: 0
   m_Name: 3_Avatar_UniDirec_Output
@@ -26246,29 +26245,6 @@ MonoBehaviour:
   systemPromptAsset: {fileID: 4900000, guid: c949b546da8bad54f9106d098a472e2e, type: 3}
   systemPrompt: 
   isAvatarEmbodied: 1
-  gazeSphereDetector: {fileID: 1814205369}
-  avatarController: {fileID: 0}
-  isRecording: 0
-  inputField: {fileID: 1373224182}
-  responseText: {fileID: 972138021}
-  sendButton: {fileID: 1976012069}
---- !u!114 &1812962276
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1812962273}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 79c49b606861d3241a989fcd0d8eb6c0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  enableDebug: 0
-  maxMessageCount: 10
-  systemPromptAsset: {fileID: 4900000, guid: c949b546da8bad54f9106d098a472e2e, type: 3}
-  systemPrompt: 
-  isAvatarEmbodied: 0
   gazeSphereDetector: {fileID: 1814205369}
   avatarController: {fileID: 0}
   isRecording: 0
@@ -27562,7 +27538,6 @@ MonoBehaviour:
   audioSource: {fileID: 1890056565}
   collectCorrectSound: {fileID: 8300000, guid: 3f0bb75fc11168a438ece3f9f4efc6f2, type: 3}
   collectWrongSound: {fileID: 8300000, guid: 4ca6878cd6808c842b2c49e4884b7c72, type: 3}
-  testDisplayItem: {fileID: 133604916}
 --- !u!4 &1890056564
 Transform:
   m_ObjectHideFlags: 0

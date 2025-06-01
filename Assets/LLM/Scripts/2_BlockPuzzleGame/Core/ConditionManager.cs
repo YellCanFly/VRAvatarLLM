@@ -5,14 +5,14 @@ namespace BlockPuzzleGame
     [ExecuteAlways]
     public class ConditionManager : MonoBehaviour
     {
-        public Condition selectedMode;
+        public InteractCondition selectedMode;
 
         public GameObject baselineObject;
         public GameObject unidirecInputObject;
         public GameObject unidirecOutputObject;
         public GameObject bidirectionalObject;
 
-        public void SetMode(Condition mode)
+        public void SetMode(InteractCondition mode)
         {
             selectedMode = mode;
             ApplyMode();
@@ -28,10 +28,10 @@ namespace BlockPuzzleGame
             if (!Application.isPlaying && !Application.isEditor)
                 return;
 
-            if (baselineObject != null) baselineObject.SetActive(selectedMode == Condition.Baseline);
-            if (unidirecInputObject != null) unidirecInputObject.SetActive(selectedMode == Condition.UnidirecInput);
-            if (unidirecOutputObject != null) unidirecOutputObject.SetActive(selectedMode == Condition.UnidirecOutput);
-            if (bidirectionalObject != null) bidirectionalObject.SetActive(selectedMode == Condition.Bidirectional);
+            if (baselineObject != null) baselineObject.SetActive(selectedMode == InteractCondition.Baseline);
+            if (unidirecInputObject != null) unidirecInputObject.SetActive(selectedMode == InteractCondition.UniDirectional_Input);
+            if (unidirecOutputObject != null) unidirecOutputObject.SetActive(selectedMode == InteractCondition.UniDirectional_Output);
+            if (bidirectionalObject != null) bidirectionalObject.SetActive(selectedMode == InteractCondition.BiDirectional);
         }
     }
 }
