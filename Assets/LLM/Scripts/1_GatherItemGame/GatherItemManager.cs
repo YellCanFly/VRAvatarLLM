@@ -448,4 +448,9 @@ public class GatherItemManager : MonoBehaviour
         }
     }
 
+    public Transform GetActivateAvatarHeadTransform()
+    {
+        return avatarAcitivate.GetComponentInChildren<Animator>().GetBoneTransform(HumanBodyBones.Head);
+    }
+
 }
