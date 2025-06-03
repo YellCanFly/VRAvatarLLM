@@ -7,7 +7,6 @@ using System.Collections;
 public class ParticipantInitInput : MonoBehaviour
 {
     [Header("Canvas Settings")]
-    public GameObject virtualKeyboard;
     public GameObject idInputCanvas;
     public GameObject idConfirmedCanvas;
     public GameObject idInvalidCanvas;
@@ -30,8 +29,6 @@ public class ParticipantInitInput : MonoBehaviour
             return;
         }
 
-        // Initialize the participant ID input canvas and virtual keyboard
-        virtualKeyboard.SetActive(true);
 
         // Bind the confirm button click event
         confirmButton.onClick.AddListener(OnConfirmButtonClicked);
@@ -87,7 +84,6 @@ public class ParticipantInitInput : MonoBehaviour
     {
         idConfirmedCanvas.SetActive(true);
         idInputCanvas.SetActive(false);
-        virtualKeyboard.SetActive(false);
 
         yield return new WaitForSeconds(duration);
 

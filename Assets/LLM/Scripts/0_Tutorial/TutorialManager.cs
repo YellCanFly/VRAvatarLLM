@@ -16,6 +16,7 @@ public class TutorialManager : MonoBehaviour
     public GameObject talkingFinish;
 
     [Header("Grab item Guidance Settings")]
+    public GameObject grabGuadanceCanvas;
     public GameObject grabItemExample;
     private Tutorial_GrabItemCheck grabItemCheck;
 
@@ -83,10 +84,23 @@ public class TutorialManager : MonoBehaviour
 
     public void ShowGrabExample()
     {
+        ShowGrabGuidanceForDuration(10f);
         grabItemExample.SetActive(true);
         grabItemCheck = grabItemExample.GetComponentInChildren<Tutorial_GrabItemCheck>();
         grabItemCheck.OnTaskFinished += OnGrabItemTaskFinished;
 
+    }
+
+    public void ShowGrabGuidanceForDuration(float duration)
+    {
+        grabGuadanceCanvas.SetActive(true);
+        StartCoroutine(DelayHideGrabGuidance(duration));
+    }
+
+    IEnumerator DelayHideGrabGuidance(float duration)
+    {
+        yield return new WaitForSeconds(duration);
+        grabGuadanceCanvas.SetActive(false);
     }
 
     private void OnGrabItemTaskFinished()

@@ -326,7 +326,8 @@ public class GatherItemManager : MonoBehaviour
 
     public void DisplayItem(GatherItemObject item)
     {
-        item.transform.position = Camera.main.transform.position + Camera.main.transform.forward * 2; // Position the item in front of the camera
+        //item.transform.position = Camera.main.transform.position + Camera.main.transform.forward * 2; // Position the item in front of the camera
+        item.transform.position = avatarAcitivate.transform.position + avatarAcitivate.transform.forward * 1 + new Vector3(0, 1f, 0); // Position the item in front of the camera
     }
 
     // Debug

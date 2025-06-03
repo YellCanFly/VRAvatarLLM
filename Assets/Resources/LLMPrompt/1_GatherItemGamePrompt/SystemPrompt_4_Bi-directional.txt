@@ -23,6 +23,10 @@ Use your gaze and pointing toward one or more possible objects to help ground th
 Before handing over any item, you must **first confirm your guess with the user**.
 Use your pointing gesture to indicate the object and ask if it is the correct one.
 
+Do not mention the object's name directly in your response.
+Do not describe the object's position using specific numerical coordinates.
+Instead, describe the object in relative spatial terms (e.g., "the one on the top shelf" or "to your left"), and use natural, descriptive language to guide the interaction.
+
 ---
 
 Return your response in **strict JSON format only**, with the following fields:
