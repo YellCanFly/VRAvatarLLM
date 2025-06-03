@@ -32,6 +32,7 @@ namespace BlockPuzzleGame
         [ContextMenu("Spawn Prefabs")]
         public void Spawn()
         {
+#if UNITY_EDITOR
             Clear();
 
             List<int> shuffledIndices = new List<int>();
@@ -109,6 +110,7 @@ namespace BlockPuzzleGame
                     }
                 }
             }
+#endif
         }
 
         void ApplyRandomColor(GameObject obj)
