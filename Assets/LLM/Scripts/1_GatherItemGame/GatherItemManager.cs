@@ -5,6 +5,8 @@ using UnityEngine.Events;
 using UnityEngine.UI;
 using Utilities.Extensions;
 using System.Collections;
+using UnityEditor.Rendering;
+using System.IO;
 
 [RequireComponent(typeof(AudioSource))]
 public class GatherItemManager : MonoBehaviour
@@ -249,7 +251,7 @@ public class GatherItemManager : MonoBehaviour
     public void SetItemAsTargetItem(GatherItemObject itemObject)
     {
         itemObject.SetItemToRenderLayer();
-        renderCamera.transform.position = itemObject.interactObject.GetObjectBounds().center + new Vector3(0, 0, -1); // Position the camera behind the target item
+        renderCamera.transform.position = itemObject.interactObject.GetObjectBounds().center + new Vector3(0, 0, -0.75f); // Position the camera behind the target item
     }
 
     public void SetItemAsNoTargetItem(GatherItemObject itemObject)
@@ -340,6 +342,37 @@ public class GatherItemManager : MonoBehaviour
     //    else
     //        Debug.LogWarning("Test display item is not assigned.");
     //}
+    [ContextMenu("Temp Move Render Camera")]
+    public void temp_MoveRenderCam()
+    {
+        StartCoroutine(ProcessRenderAndSave());
+    }
+
+    private IEnumerator ProcessRenderAndSave()
+    {
+        for (int i = 0; i < allGatherObjects.Length; i++)
+        {
+            var obj = allGatherObjects[i];
+
+            // 移动摄像机到目标物体背后
+            renderCamera.transform.position = obj.interactObject.GetObjectBounds().center + new Vector3(0, 0, -0.75f);
+
+            // 设置渲染图层
+            obj.SetItemToRenderLayer();
+
+            // 等待一帧以确保渲染生效
+            yield return new WaitForSeconds(1f);
+
+            // 保存图片
+            SaveRenderTextureAsImage(renderCamera.targetTexture, "RT_" + i + ".png");
+
+            // 等待 1 秒
+            yield return new WaitForSeconds(2f);
+
+            // 恢复图层
+            obj.SetItemToDefaultLayer();
+        }
+    }
 
     public void StartExperimentRound(int expIndex)
     {
@@ -453,4 +486,32 @@ public class GatherItemManager : MonoBehaviour
         return avatarAcitivate.GetComponentInChildren<Animator>().GetBoneTransform(HumanBodyBones.Head);
     }
 
+    public void SaveRenderTextureAsImage(RenderTexture rt, string filename)
+    {
+        RenderTexture currentRT = RenderTexture.active;
+        RenderTexture.active = rt;
+
+        Texture2D tex = new Texture2D(rt.width, rt.height, TextureFormat.RGBA32, false);
+        tex.ReadPixels(new Rect(0, 0, rt.width, rt.height), 0, 0);
+        tex.Apply();
+
+        // Gamma 修正（可选）
+        for (int y = 0; y < tex.height; y++)
+        {
+            for (int x = 0; x < tex.width; x++)
+            {
+                Color c = tex.GetPixel(x, y);
+                tex.SetPixel(x, y, c.gamma);  // 加这一行亮度会和编辑器一致
+            }
+        }
+        tex.Apply();
+
+        byte[] bytes = tex.EncodeToPNG();  // 保留 alpha 通道
+        string path = Path.Combine(Application.persistentDataPath, filename);
+        File.WriteAllBytes(path, bytes);
+
+        Debug.Log($"Saved image with transparency to: {path}");
+
+        RenderTexture.active = currentRT;
+    }
 }

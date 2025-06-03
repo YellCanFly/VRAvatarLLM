@@ -690,6 +690,7 @@ Transform:
   - {fileID: 621905279}
   - {fileID: 2025317049}
   - {fileID: 580055978}
+  - {fileID: 1764935415}
   m_Father: {fileID: 1949673436}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &58003542
@@ -1637,7 +1638,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   objectName: Object
-  objectDescription: Description
+  objectDescription: 'Tall green bamboo stalks with slender leaves grow from a light
+    sand-like base, held in a white, slightly faceted cylindrical pot. '
   gazeHightlightColor: {r: 1, g: 0, b: 0, a: 1}
   colliderRange: {fileID: 0}
 --- !u!114 &133604916
@@ -2174,6 +2176,10 @@ PrefabInstance:
     - target: {fileID: 7454149496207913996, guid: f80f5d3400041244da338e23ee04c6d5, type: 3}
       propertyPath: m_Name
       value: InteractObject_FlowerPot (6)
+      objectReference: {fileID: 0}
+    - target: {fileID: 7454149496207913996, guid: f80f5d3400041244da338e23ee04c6d5, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7798446566205910710, guid: f80f5d3400041244da338e23ee04c6d5, type: 3}
       propertyPath: m_LocalScale.x
@@ -3105,7 +3111,7 @@ GameObject:
   - component: {fileID: 271266669}
   - component: {fileID: 271266668}
   - component: {fileID: 271266667}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Collider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3624,7 +3630,7 @@ GameObject:
   - component: {fileID: 319492225}
   - component: {fileID: 319492224}
   - component: {fileID: 319492223}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Collider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3850,7 +3856,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   objectName: Object
-  objectDescription: Description
+  objectDescription: 'A single thin-trunked plant with long, narrow, pointed green
+    leaves grows from a light brown soil base in a white, faceted cylindrical pot. '
   gazeHightlightColor: {r: 1, g: 0, b: 0, a: 1}
   colliderRange: {fileID: 0}
 --- !u!114 &325399350
@@ -5459,7 +5466,7 @@ GameObject:
   - component: {fileID: 437487282}
   - component: {fileID: 437487281}
   - component: {fileID: 437487280}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Collider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5585,7 +5592,7 @@ GameObject:
   - component: {fileID: 449584193}
   - component: {fileID: 449584192}
   - component: {fileID: 449584191}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Collider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5896,6 +5903,10 @@ PrefabInstance:
     - target: {fileID: 5151449538997097129, guid: e5107538de1de6746a7450a396d4dbda, type: 3}
       propertyPath: m_Name
       value: InteractObject_FlowerPot (7)
+      objectReference: {fileID: 0}
+    - target: {fileID: 5151449538997097129, guid: e5107538de1de6746a7450a396d4dbda, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5491700642902034451, guid: e5107538de1de6746a7450a396d4dbda, type: 3}
       propertyPath: m_LocalScale.x
@@ -6230,7 +6241,7 @@ GameObject:
   - component: {fileID: 488067853}
   - component: {fileID: 488067852}
   - component: {fileID: 488067851}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Collider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6247,7 +6258,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.07546556, y: 0.06504515, z: 0.07639974}
+  m_LocalScale: {x: 0.07546549, y: 0.065045185, z: 0.07639974}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1525858354}
@@ -6274,7 +6285,7 @@ CapsuleCollider:
   m_Radius: 0.5
   m_Height: 1
   m_Direction: 1
-  m_Center: {x: 0.00020132815, y: 0.00012846981, z: -0.00065482495}
+  m_Center: {x: 0.00020248846, y: 0.00012851907, z: -0.0006548198}
 --- !u!135 &488067852
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -6295,7 +6306,7 @@ SphereCollider:
   m_Enabled: 0
   serializedVersion: 3
   m_Radius: 0.5
-  m_Center: {x: 0.00020132815, y: 0.00012846981, z: -0.00065482495}
+  m_Center: {x: 0.00020248846, y: 0.00012851907, z: -0.0006548198}
 --- !u!114 &488067853
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6310,8 +6321,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   detectorType: 1
   bounds:
-    m_Center: {x: -2.650969, y: 1.6970171, z: -0.21210206}
-    m_Extent: {x: 0.07697487, y: 0.06634605, z: 0.07792774}
+    m_Center: {x: -2.6509595, y: 1.7280222, z: -0.21213269}
+    m_Extent: {x: 0.100082636, y: 0.08626318, z: 0.10132164}
 --- !u!1 &488443695
 GameObject:
   m_ObjectHideFlags: 0
@@ -6483,7 +6494,7 @@ GameObject:
   - component: {fileID: 489741914}
   - component: {fileID: 489741913}
   - component: {fileID: 489741912}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Collider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6929,7 +6940,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 036483fdd1afc8349b7fcae42c6870d0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  participantID: 1
+  participantID: 2
   conditionOrder: 
 --- !u!1 &542597567
 GameObject:
@@ -7173,7 +7184,7 @@ GameObject:
   - component: {fileID: 559839549}
   - component: {fileID: 559839548}
   - component: {fileID: 559839547}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Collider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7405,6 +7416,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 651824721}
+  - {fileID: 2063410512}
   - {fileID: 202656328}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -7527,7 +7539,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   objectName: Object
-  objectDescription: Description
+  objectDescription: 'A wide, shallow dark brown pot with smooth sides and a thick,
+    rounded rim. '
   gazeHightlightColor: {r: 1, g: 0, b: 0, a: 1}
   colliderRange: {fileID: 0}
 --- !u!114 &580055982
@@ -8052,7 +8065,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   objectName: Object
-  objectDescription: Description
+  objectDescription: 'A small, weathered grayish clay pot with a flared rim, subtle
+    decorative ridge lines, and an uneven surface texture. '
   gazeHightlightColor: {r: 1, g: 0, b: 0, a: 1}
   colliderRange: {fileID: 0}
 --- !u!114 &621905283
@@ -8373,7 +8387,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4029142501577861840, guid: d791f791bd8a86f4bb8c86b48b625563, type: 3}
       propertyPath: m_Layer
-      value: 8
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4368970401125658730, guid: d791f791bd8a86f4bb8c86b48b625563, type: 3}
       propertyPath: m_LocalScale.x
@@ -8462,7 +8476,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!108 &651824720
 Light:
   m_ObjectHideFlags: 0
@@ -8859,7 +8873,7 @@ GameObject:
   - component: {fileID: 702276574}
   - component: {fileID: 702276573}
   - component: {fileID: 702276572}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Collider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10230,17 +10244,21 @@ PrefabInstance:
       propertyPath: m_Name
       value: InteractObject_FlowerPot (5)
       objectReference: {fileID: 0}
+    - target: {fileID: 5873588716313353872, guid: 73f0f14dc21019740aa7655c636c93f4, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6541757176265425962, guid: 73f0f14dc21019740aa7655c636c93f4, type: 3}
       propertyPath: m_LocalScale.x
-      value: 2.04
+      value: 2.652408
       objectReference: {fileID: 0}
     - target: {fileID: 6541757176265425962, guid: 73f0f14dc21019740aa7655c636c93f4, type: 3}
       propertyPath: m_LocalScale.y
-      value: 2.04
+      value: 2.652408
       objectReference: {fileID: 0}
     - target: {fileID: 6541757176265425962, guid: 73f0f14dc21019740aa7655c636c93f4, type: 3}
       propertyPath: m_LocalScale.z
-      value: 2.04
+      value: 2.652408
       objectReference: {fileID: 0}
     - target: {fileID: 6541757176265425962, guid: 73f0f14dc21019740aa7655c636c93f4, type: 3}
       propertyPath: m_LocalPosition.x
@@ -10248,7 +10266,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6541757176265425962, guid: 73f0f14dc21019740aa7655c636c93f4, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.697
+      value: 1.728
       objectReference: {fileID: 0}
     - target: {fileID: 6541757176265425962, guid: 73f0f14dc21019740aa7655c636c93f4, type: 3}
       propertyPath: m_LocalPosition.z
@@ -10381,7 +10399,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   objectName: Object
-  objectDescription: Description
+  objectDescription: 'A dense, teardrop-shaped green bush with fine, wispy foliage
+    is planted in a white, faceted cylindrical pot filled with light brown soil. '
   gazeHightlightColor: {r: 1, g: 0, b: 0, a: 1}
   colliderRange: {fileID: 0}
 --- !u!114 &816769552
@@ -10537,17 +10556,21 @@ PrefabInstance:
       propertyPath: m_Name
       value: InteractObject_FlowerPot (8)
       objectReference: {fileID: 0}
+    - target: {fileID: 6082271209912779809, guid: 51bebbb62a3c55d4087146b6d986050b, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6855395471823707803, guid: 51bebbb62a3c55d4087146b6d986050b, type: 3}
       propertyPath: m_LocalScale.x
-      value: 1.57
+      value: 3.8283753
       objectReference: {fileID: 0}
     - target: {fileID: 6855395471823707803, guid: 51bebbb62a3c55d4087146b6d986050b, type: 3}
       propertyPath: m_LocalScale.y
-      value: 1.57
+      value: 1.9812558
       objectReference: {fileID: 0}
     - target: {fileID: 6855395471823707803, guid: 51bebbb62a3c55d4087146b6d986050b, type: 3}
       propertyPath: m_LocalScale.z
-      value: 1.57
+      value: 3.6498485
       objectReference: {fileID: 0}
     - target: {fileID: 6855395471823707803, guid: 51bebbb62a3c55d4087146b6d986050b, type: 3}
       propertyPath: m_LocalPosition.x
@@ -10555,7 +10578,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6855395471823707803, guid: 51bebbb62a3c55d4087146b6d986050b, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.576
+      value: 0.592
       objectReference: {fileID: 0}
     - target: {fileID: 6855395471823707803, guid: 51bebbb62a3c55d4087146b6d986050b, type: 3}
       propertyPath: m_LocalPosition.z
@@ -10591,7 +10614,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6855395471823707803, guid: 51bebbb62a3c55d4087146b6d986050b, type: 3}
       propertyPath: m_ConstrainProportionsScale
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -10773,7 +10796,7 @@ GameObject:
   - component: {fileID: 834895220}
   - component: {fileID: 834895219}
   - component: {fileID: 834895218}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Collider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10998,7 +11021,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   objectName: Object
-  objectDescription: Description
+  objectDescription: 'A dark green palm-like plant with long, arching fronds grows
+    from sandy soil in a white, faceted cylindrical pot. '
   gazeHightlightColor: {r: 1, g: 0, b: 0, a: 1}
   colliderRange: {fileID: 0}
 --- !u!114 &839490279
@@ -13389,7 +13413,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   objectName: Object
-  objectDescription: Description
+  objectDescription: 'A simple, smooth, dark brown clay pot with a rounded rim and
+    slightly tapered sides. '
   gazeHightlightColor: {r: 1, g: 0, b: 0, a: 1}
   colliderRange: {fileID: 0}
 --- !u!114 &983059740
@@ -13524,7 +13549,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   objectName: Object
-  objectDescription: Description
+  objectDescription: 'A spiky, symmetrical green plant with long, narrow leaves radiates
+    outward from sandy soil in a white, faceted cylindrical pot. '
   gazeHightlightColor: {r: 1, g: 0, b: 0, a: 1}
   colliderRange: {fileID: 0}
 --- !u!114 &995708479
@@ -13976,7 +14002,7 @@ GameObject:
   - component: {fileID: 1038427518}
   - component: {fileID: 1038427517}
   - component: {fileID: 1038427516}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Collider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14354,6 +14380,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: InteractObject_FlowerPot (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 7049819195710459157, guid: 5229e5c5f21c5cf4d9da7687a8e480bf, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7682628146838706095, guid: 5229e5c5f21c5cf4d9da7687a8e480bf, type: 3}
       propertyPath: m_LocalScale.x
       value: 1.46
@@ -14645,7 +14675,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   objectName: Object
-  objectDescription: Description
+  objectDescription: 'A tall, narrow, weathered clay pot with a light grayish-brown
+    surface and subtle ridged bands near the top and base. '
   gazeHightlightColor: {r: 1, g: 0, b: 0, a: 1}
   colliderRange: {fileID: 0}
 --- !u!4 &1076605774 stripped
@@ -14664,6 +14695,10 @@ PrefabInstance:
     - target: {fileID: 7454149496207913996, guid: f80f5d3400041244da338e23ee04c6d5, type: 3}
       propertyPath: m_Name
       value: InteractObject_FlowerPot (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 7454149496207913996, guid: f80f5d3400041244da338e23ee04c6d5, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7798446566205910710, guid: f80f5d3400041244da338e23ee04c6d5, type: 3}
       propertyPath: m_LocalScale.x
@@ -19100,6 +19135,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: InteractObject_FlowerPot
       objectReference: {fileID: 0}
+    - target: {fileID: 5151449538997097129, guid: e5107538de1de6746a7450a396d4dbda, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5491700642902034451, guid: e5107538de1de6746a7450a396d4dbda, type: 3}
       propertyPath: m_LocalScale.x
       value: 1.22
@@ -19409,7 +19448,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   objectName: Object
-  objectDescription: Description
+  objectDescription: 'A small reddish-brown clay pot with a flared rim and decorative
+    embossed triangular patterns around the body. '
   gazeHightlightColor: {r: 1, g: 0, b: 0, a: 1}
   colliderRange: {fileID: 0}
 --- !u!114 &1368352398
@@ -20422,7 +20462,7 @@ GameObject:
   - component: {fileID: 1390891649}
   - component: {fileID: 1390891648}
   - component: {fileID: 1390891647}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Collider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -20439,7 +20479,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.12245907, y: 0.100063056, z: 0.12323155}
+  m_LocalScale: {x: 0.122458905, y: 0.10006307, z: 0.12323156}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 580055978}
@@ -20466,7 +20506,7 @@ CapsuleCollider:
   m_Radius: 0.5
   m_Height: 1
   m_Direction: 1
-  m_Center: {x: -0.00039434523, y: -0.00008157275, z: 0.00026425257}
+  m_Center: {x: -0.0003946362, y: -0.000081477, z: 0.00026424605}
 --- !u!135 &1390891648
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -20487,7 +20527,7 @@ SphereCollider:
   m_Enabled: 0
   serializedVersion: 3
   m_Radius: 0.5
-  m_Center: {x: -0.00039434523, y: -0.00008157275, z: 0.00026425257}
+  m_Center: {x: -0.0003946362, y: -0.000081477, z: 0.00026424605}
 --- !u!114 &1390891649
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20502,8 +20542,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   detectorType: 1
   bounds:
-    m_Center: {x: 2.555924, y: 0.57598716, z: -0.23594888}
-    m_Extent: {x: 0.09613037, y: 0.078549504, z: 0.096736774}
+    m_Center: {x: 2.5558147, y: 0.59198385, z: -0.23588115}
+    m_Extent: {x: 0.23440933, y: 0.099125266, z: 0.22488827}
 --- !u!1 &1393303666 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5151449538997097129, guid: e5107538de1de6746a7450a396d4dbda, type: 3}
@@ -20527,7 +20567,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   objectName: Object
-  objectDescription: Description
+  objectDescription: 'A round, vertically grooved terracotta pot with a flared rim
+    and weathered brown finish. '
   gazeHightlightColor: {r: 1, g: 0, b: 0, a: 1}
   colliderRange: {fileID: 0}
 --- !u!114 &1393303671
@@ -20924,7 +20965,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a79441f348de89743a2939f4d699eac1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_RenderShadows: 1
+  m_RenderShadows: 0
   m_RequiresDepthTextureOption: 2
   m_RequiresOpaqueTextureOption: 2
   m_CameraType: 0
@@ -21024,7 +21065,7 @@ Transform:
   m_GameObject: {fileID: 1444260465}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.506, y: 1.494, z: -0.706}
+  m_LocalPosition: {x: 0.797, y: 1.949, z: -0.977}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -21345,7 +21386,7 @@ GameObject:
   - component: {fileID: 1468414203}
   - component: {fileID: 1468414202}
   - component: {fileID: 1468414201}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Collider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -22074,7 +22115,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   objectName: Object
-  objectDescription: Description
+  objectDescription: 'A short, wide clay pot in a muted brown tone with a slightly
+    raised rim and faint surface scratches. '
   gazeHightlightColor: {r: 1, g: 0, b: 0, a: 1}
   colliderRange: {fileID: 0}
 --- !u!114 &1525858358
@@ -22986,6 +23028,100 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1569311165}
   m_Mesh: {fileID: 4300050, guid: 9bde7338ed7c8a141b7a2e71c75febbe, type: 3}
+--- !u!1 &1574800293
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1574800294}
+  - component: {fileID: 1574800297}
+  - component: {fileID: 1574800296}
+  - component: {fileID: 1574800295}
+  m_Layer: 7
+  m_Name: Collider
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1574800294
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1574800293}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.10948429, y: 0.09998601, z: 0.10682488}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1764935415}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!136 &1574800295
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1574800293}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Height: 1
+  m_Direction: 1
+  m_Center: {x: 0.00007678274, y: -0.0005649403, z: 0.0003982087}
+--- !u!135 &1574800296
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1574800293}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 0
+  serializedVersion: 3
+  m_Radius: 0.5
+  m_Center: {x: 0.00007678274, y: -0.0005649403, z: 0.0003982087}
+--- !u!114 &1574800297
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1574800293}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ed1ce0bee8c00d144b9f6f0690f1298e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  detectorType: 1
+  bounds:
+    m_Center: {x: -1.8899822, y: 0.33082426, z: -0.25590983}
+    m_Extent: {x: 0.11605334, y: 0.15554237, z: 0.11323437}
 --- !u!1 &1575379039
 GameObject:
   m_ObjectHideFlags: 0
@@ -24027,7 +24163,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   objectName: Object
-  objectDescription: Description
+  objectDescription: 'A small, tapered terracotta pot with a rough dark upper half
+    and a smoother, weathered lower portion in reddish-brown. '
   gazeHightlightColor: {r: 1, g: 0, b: 0, a: 1}
   colliderRange: {fileID: 0}
 --- !u!114 &1657014923
@@ -24593,7 +24730,7 @@ GameObject:
   - component: {fileID: 1704699069}
   - component: {fileID: 1704699068}
   - component: {fileID: 1704699067}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Collider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -25389,6 +25526,132 @@ Transform:
   m_Children: []
   m_Father: {fileID: 46721525}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &1764935414
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 53908490}
+    m_Modifications:
+    - target: {fileID: 4029142501577861840, guid: d791f791bd8a86f4bb8c86b48b625563, type: 3}
+      propertyPath: m_Name
+      value: InteractObject_FlowerPot (9)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4029142501577861840, guid: d791f791bd8a86f4bb8c86b48b625563, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4368970401125658730, guid: d791f791bd8a86f4bb8c86b48b625563, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 2.12
+      objectReference: {fileID: 0}
+    - target: {fileID: 4368970401125658730, guid: d791f791bd8a86f4bb8c86b48b625563, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 3.1112828
+      objectReference: {fileID: 0}
+    - target: {fileID: 4368970401125658730, guid: d791f791bd8a86f4bb8c86b48b625563, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 2.12
+      objectReference: {fileID: 0}
+    - target: {fileID: 4368970401125658730, guid: d791f791bd8a86f4bb8c86b48b625563, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.18
+      objectReference: {fileID: 0}
+    - target: {fileID: 4368970401125658730, guid: d791f791bd8a86f4bb8c86b48b625563, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.331
+      objectReference: {fileID: 0}
+    - target: {fileID: 4368970401125658730, guid: d791f791bd8a86f4bb8c86b48b625563, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.08200002
+      objectReference: {fileID: 0}
+    - target: {fileID: 4368970401125658730, guid: d791f791bd8a86f4bb8c86b48b625563, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4368970401125658730, guid: d791f791bd8a86f4bb8c86b48b625563, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4368970401125658730, guid: d791f791bd8a86f4bb8c86b48b625563, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4368970401125658730, guid: d791f791bd8a86f4bb8c86b48b625563, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4368970401125658730, guid: d791f791bd8a86f4bb8c86b48b625563, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4368970401125658730, guid: d791f791bd8a86f4bb8c86b48b625563, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4368970401125658730, guid: d791f791bd8a86f4bb8c86b48b625563, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4368970401125658730, guid: d791f791bd8a86f4bb8c86b48b625563, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 4368970401125658730, guid: d791f791bd8a86f4bb8c86b48b625563, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1574800294}
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 4029142501577861840, guid: d791f791bd8a86f4bb8c86b48b625563, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1764935418}
+    - targetCorrespondingSourceObject: {fileID: 4029142501577861840, guid: d791f791bd8a86f4bb8c86b48b625563, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1764935417}
+  m_SourcePrefab: {fileID: 100100000, guid: d791f791bd8a86f4bb8c86b48b625563, type: 3}
+--- !u!4 &1764935415 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4368970401125658730, guid: d791f791bd8a86f4bb8c86b48b625563, type: 3}
+  m_PrefabInstance: {fileID: 1764935414}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1764935416 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4029142501577861840, guid: d791f791bd8a86f4bb8c86b48b625563, type: 3}
+  m_PrefabInstance: {fileID: 1764935414}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1764935417
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1764935416}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 14a329b77c24e714c9d92046fa9e7c57, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  interactObject: {fileID: 0}
+--- !u!114 &1764935418
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1764935416}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d64fa78041440a54c9850254574a1d5f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  objectName: Object
+  objectDescription: 'A tall terracotta pot with a tapered shape, featuring a rough
+    dark brown upper half blending into a smoother reddish-orange lower section. '
+  gazeHightlightColor: {r: 1, g: 0, b: 0, a: 1}
+  colliderRange: {fileID: 0}
 --- !u!1 &1770670559
 GameObject:
   m_ObjectHideFlags: 0
@@ -27524,6 +27787,7 @@ MonoBehaviour:
   - {fileID: 621905283}
   - {fileID: 2025317053}
   - {fileID: 580055982}
+  - {fileID: 1764935417}
   targetGatherItemIdList: 
   collectNumber: 3
   currentTargetItemIndex: 0
@@ -28371,6 +28635,10 @@ PrefabInstance:
     - target: {fileID: 6082271209912779809, guid: 51bebbb62a3c55d4087146b6d986050b, type: 3}
       propertyPath: m_Name
       value: InteractObject_FlowerPot (4)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6082271209912779809, guid: 51bebbb62a3c55d4087146b6d986050b, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6855395471823707803, guid: 51bebbb62a3c55d4087146b6d986050b, type: 3}
       propertyPath: m_LocalScale.x
@@ -29537,7 +29805,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   objectName: Object
-  objectDescription: Description
+  objectDescription: 'A dark reddish-brown terracotta pot with a rounded body, flared
+    rim, and evenly spaced vertical grooves along the surface. '
   gazeHightlightColor: {r: 1, g: 0, b: 0, a: 1}
   colliderRange: {fileID: 0}
 --- !u!114 &2025317053
@@ -29693,7 +29962,7 @@ GameObject:
   - component: {fileID: 2040376042}
   - component: {fileID: 2040376041}
   - component: {fileID: 2040376040}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Collider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -30171,6 +30440,127 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1311786598}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2063410511
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2063410512}
+  - component: {fileID: 2063410514}
+  - component: {fileID: 2063410513}
+  m_Layer: 0
+  m_Name: Directional Light (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2063410512
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2063410511}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.42261827, y: 0, z: 0, w: 0.9063079}
+  m_LocalPosition: {x: 0, y: 3, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 565377222}
+  m_LocalEulerAnglesHint: {x: 50, y: 0, z: 0}
+--- !u!114 &2063410513
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2063410511}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 474bcb49853aa07438625e644c072ee6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Version: 3
+  m_UsePipelineSettings: 1
+  m_AdditionalLightsShadowResolutionTier: 2
+  m_LightLayerMask: 1
+  m_RenderingLayers: 1
+  m_CustomShadowLayers: 0
+  m_ShadowLayerMask: 1
+  m_ShadowRenderingLayers: 1
+  m_LightCookieSize: {x: 1, y: 1}
+  m_LightCookieOffset: {x: 0, y: 0}
+  m_SoftShadowQuality: 0
+--- !u!108 &2063410514
+Light:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2063410511}
+  m_Enabled: 1
+  serializedVersion: 11
+  m_Type: 1
+  m_Color: {r: 1, g: 0.95686275, b: 0.8392157, a: 1}
+  m_Intensity: 1
+  m_Range: 10
+  m_SpotAngle: 30
+  m_InnerSpotAngle: 21.80208
+  m_CookieSize: 10
+  m_Shadows:
+    m_Type: 2
+    m_Resolution: -1
+    m_CustomResolution: -1
+    m_Strength: 1
+    m_Bias: 0.05
+    m_NormalBias: 0.4
+    m_NearPlane: 0.2
+    m_CullingMatrixOverride:
+      e00: 1
+      e01: 0
+      e02: 0
+      e03: 0
+      e10: 0
+      e11: 1
+      e12: 0
+      e13: 0
+      e20: 0
+      e21: 0
+      e22: 1
+      e23: 0
+      e30: 0
+      e31: 0
+      e32: 0
+      e33: 1
+    m_UseCullingMatrixOverride: 0
+  m_Cookie: {fileID: 0}
+  m_DrawHalo: 0
+  m_Flare: {fileID: 0}
+  m_RenderMode: 0
+  m_CullingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_RenderingLayerMask: 1
+  m_Lightmapping: 4
+  m_LightShadowCasterMode: 0
+  m_AreaSize: {x: 1, y: 1}
+  m_BounceIntensity: 1
+  m_ColorTemperature: 6570
+  m_UseColorTemperature: 0
+  m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
+  m_UseBoundingSphereOverride: 0
+  m_UseViewFrustumForShadowCasterCull: 1
+  m_ForceVisible: 0
+  m_ShadowRadius: 0
+  m_ShadowAngle: 0
+  m_LightUnit: 1
+  m_LuxAtDistance: 1
+  m_EnableSpotReflector: 1
 --- !u!1 &2064951034
 GameObject:
   m_ObjectHideFlags: 0
@@ -31321,7 +31711,7 @@ MonoBehaviour:
   maxDistance: 10
   detectionLayer:
     serializedVersion: 2
-    m_Bits: 1
+    m_Bits: 128
   maxGazeMemory: 5
   showGazeResult: 1
   gazeFollower: {fileID: 489400616}
