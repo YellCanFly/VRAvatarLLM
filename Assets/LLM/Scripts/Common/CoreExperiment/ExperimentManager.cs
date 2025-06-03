@@ -66,6 +66,13 @@ public class ExperimentManager : MonoBehaviour
     void Start()
     {
         onParticipantIDConfirmed += OnParticipantIDConfirmed;
+
+#if UNITY_ANDROID && !UNITY_EDITOR
+        if (!Permission.HasUserAuthorizedPermission(Permission.Microphone))
+        {
+            Permission.RequestUserPermission(Permission.Microphone);
+        }
+#endif
     }
 
 
