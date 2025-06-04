@@ -137,7 +137,7 @@ public class GatherItemManager : MonoBehaviour
     {
         InitAvatar();
         InitGazeDetector();
-        InitRandomTargetIDList();
+        InitRandomTargetIDList((int)condition);
         InitAllGatherItems();
     }
 
@@ -202,12 +202,12 @@ public class GatherItemManager : MonoBehaviour
         }
     }
 
-    private void InitRandomTargetIDList()
+    private void InitRandomTargetIDList(int seed)
     {
         if (collectNumber > allGatherObjects.Length)
         {
             Debug.LogWarning("Collect number exceeds available gather items. Adjusting to maximum available items.");
-            collectNumber = allGatherObjects.Length; // Adjust collect number to the maximum available items
+            collectNumber = allGatherObjects.Length;
         }
 
         targetGatherItemIdList.Clear();
@@ -216,11 +216,14 @@ public class GatherItemManager : MonoBehaviour
         {
             availableIndices.Add(i);
         }
+
+        System.Random rng = new System.Random(seed);  // random number generator with a specific seed
+
         for (int i = 0; i < collectNumber && availableIndices.Count > 0; i++)
         {
-            int randomIndex = Random.Range(0, availableIndices.Count);
+            int randomIndex = rng.Next(availableIndices.Count);  // random index from 0 to availableIndices.Count - 1
             targetGatherItemIdList.Add(availableIndices[randomIndex]);
-            availableIndices.RemoveAt(randomIndex); // Remove the selected index to avoid duplicates
+            availableIndices.RemoveAt(randomIndex);
         }
     }
 

@@ -25,7 +25,7 @@ public class ExperimentManager : MonoBehaviour
         new int[] { 1, 2, 3, 4 },
         new int[] { 2, 1, 4, 3 },
         new int[] { 3, 4, 1, 2 },
-        new int[] { 4, 3, 1, 1 }
+        new int[] { 4, 3, 2, 1 }
     };
 
     public static List<InteractCondition> GetConditionOrder(int participantID)
