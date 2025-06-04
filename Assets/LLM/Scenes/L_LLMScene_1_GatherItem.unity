@@ -12398,6 +12398,11 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 9021661640666677619, guid: 5cb37f59bf2d9cc47804254486d8982e, type: 3}
   m_PrefabInstance: {fileID: 940861739}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &941445175 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 109308, guid: 126d619cf4daa52469682f85c1378b4a, type: 3}
+  m_PrefabInstance: {fileID: 1106356471}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &959472914
 GameObject:
   m_ObjectHideFlags: 0
@@ -22624,6 +22629,11 @@ Transform:
   - {fileID: 1065904167}
   m_Father: {fileID: 1634337179}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1550760807 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 113768, guid: 126d619cf4daa52469682f85c1378b4a, type: 3}
+  m_PrefabInstance: {fileID: 1106356471}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1556644507
 GameObject:
   m_ObjectHideFlags: 0
@@ -25256,8 +25266,8 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 0}
+  m_audioClip: {fileID: 1890347135}
+  m_Resource: {fileID: 1890347135}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -27248,6 +27258,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d8bd9b8f8156fd45b2b6e14d5118fa9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  allInteractObjects: []
 --- !u!4 &1844919071
 Transform:
   m_ObjectHideFlags: 0
@@ -27750,6 +27761,7 @@ GameObject:
   - component: {fileID: 1890056564}
   - component: {fileID: 1890056563}
   - component: {fileID: 1890056565}
+  - component: {fileID: 1890056566}
   m_Layer: 0
   m_Name: GatherItemManager
   m_TagString: Untagged
@@ -27791,6 +27803,7 @@ MonoBehaviour:
   targetGatherItemIdList: 
   collectNumber: 3
   currentTargetItemIndex: 0
+  isCollecting: 0
   renderCamera: {fileID: 1444260468}
   avatarBaseline: {fileID: 1755567907}
   avatarUniDirecInput: {fileID: 360041295}
@@ -27806,6 +27819,7 @@ MonoBehaviour:
   audioSource: {fileID: 1890056565}
   collectCorrectSound: {fileID: 8300000, guid: 3f0bb75fc11168a438ece3f9f4efc6f2, type: 3}
   collectWrongSound: {fileID: 8300000, guid: 4ca6878cd6808c842b2c49e4884b7c72, type: 3}
+  userBehaviorSaveInterval: 0.033333335
 --- !u!4 &1890056564
 Transform:
   m_ObjectHideFlags: 0
@@ -27918,6 +27932,50 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &1890056566
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1890056562}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 192643e7be3a40d4db7ba76707712e88, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  avatarHeadTransform: {fileID: 1106356480}
+  avatarLeftHandTransform: {fileID: 941445175}
+  avatarRightHandTransform: {fileID: 1550760807}
+  avatarGazeTransform: {fileID: 1896954281}
+--- !u!83 &1890347135
+AudioClip:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: alloy-20250604T06431007461.pcm
+  m_LoadType: 0
+  m_Channels: 1
+  m_Frequency: 48000
+  m_BitsPerSample: 32
+  m_Length: 0
+  m_IsTrackerFormat: 0
+  m_Ambisonic: 0
+  m_SubsoundIndex: 0
+  m_PreloadAudioData: 1
+  m_LoadInBackground: 0
+  m_Legacy3D: 0
+  m_Resource:
+    m_Source: 
+    m_Offset: 0
+    m_Size: 0
+  m_CompressionFormat: 0
+  m_EditorResource:
+    m_Source: 
+    m_Offset: 0
+    m_Size: 0
+  m_EditorCompressionFormat: 0
 --- !u!1 &1893526826
 GameObject:
   m_ObjectHideFlags: 0

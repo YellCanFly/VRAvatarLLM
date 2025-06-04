@@ -7,8 +7,10 @@ using Utilities.Extensions;
 using System.Collections;
 using UnityEditor.Rendering;
 using System.IO;
+using OpenAI.Chat;
 
 [RequireComponent(typeof(AudioSource))]
+[RequireComponent(typeof(ExperimentDataCollector))]
 public class GatherItemManager : MonoBehaviour
 {
     public static GatherItemManager Instance { get; private set; }
@@ -24,9 +26,10 @@ public class GatherItemManager : MonoBehaviour
     public List<int> targetGatherItemIdList = new();
     public int collectNumber = 3; // Number of items to collect in each round
     public int currentTargetItemIndex = 0;
+    public bool isCollecting = false; // Flag to indicate if the user is currently collecting items
     public Camera renderCamera;
-    public UnityAction onStartCollectRound;
-    public UnityAction onAllTargetItemCollected;
+    public UnityAction onOneConditionStarted;
+    public UnityAction onOneConditionFinished;
 
     [Header("Avatar Settings")]
     public GameObject avatarBaseline;
@@ -55,6 +58,14 @@ public class GatherItemManager : MonoBehaviour
     public AudioClip collectCorrectSound; // Sound to play when an item is collected correctly
     public AudioClip collectWrongSound; // Sound to play when an item is collected incorrectly
 
+
+    [Header("Data Collection Settings")]
+    public float userBehaviorSaveInterval = 1f / 30f;
+    private float userBehaviorSaveTimer = 0f; // Timer to control the saving of user behavior data
+
+    private ExperimentDataCollector dataCollector;
+    private TaskData_CollectItem dataPerCondition;
+
     private void Awake()
     {
         // Singleton pattern to ensure only one instance of GatherItemManager exists
@@ -68,6 +79,7 @@ public class GatherItemManager : MonoBehaviour
         // Variables initialization
         conditionOrders = ExperimentManager.GetConditionOrder(ExperimentManager.Instance.participantID);
         audioSource = GetComponent<AudioSource>();
+        dataCollector = GetComponent<ExperimentDataCollector>();
 
         // Initialize for the whole experiment process
         InitCanvasRefs();
@@ -80,9 +92,26 @@ public class GatherItemManager : MonoBehaviour
         StartExperimentRound(currentExperimentIndex); // Start the first experiment round
     }
 
+    void Update()
+    {
+        // Check if the user is behaving
+        if (isCollecting)
+        {
+            userBehaviorSaveTimer += Time.deltaTime;
+            if (userBehaviorSaveTimer >= userBehaviorSaveInterval)
+            {
+                userBehaviorSaveTimer = 0f; // Reset the timer
+                OnUserBehaving(); // Call the method to save user behavior data
+            }
+        }
+        else
+        {
+            userBehaviorSaveTimer = 0f; // Reset the timer if not collecting
+        }
+    }
+
 
     #region Initialization Methods
-
     // ------ Initialization for the whole experiment process ------
     private void InitCanvasRefs()
     {
@@ -127,8 +156,8 @@ public class GatherItemManager : MonoBehaviour
 
     private void InitActionBinds()
     {
-        onStartCollectRound += OnStartCollectItem;
-        onAllTargetItemCollected += OnAllTargetItemCollected;
+        onOneConditionStarted += OnOneConditionStarted;
+        onOneConditionFinished += OnOneConditionFinished;
         onAllConditionsFinished += OnAllConditionsFinished;
     }
 
@@ -143,40 +172,30 @@ public class GatherItemManager : MonoBehaviour
 
     private void InitAvatar()
     {
+        avatarBaseline.SetActive(condition == InteractCondition.Baseline);
+        avatarUniDirecInput.SetActive(condition == InteractCondition.UniDirectional_Input);
+        avatarUniDirecOutput.SetActive(condition == InteractCondition.UniDirectional_Output);
+        avatarBiDirec.SetActive(condition == InteractCondition.BiDirectional);
         switch (condition)
         {
             case InteractCondition.Baseline:
-                avatarBaseline.SetActive(true);
-                avatarUniDirecInput.SetActive(false);
-                avatarUniDirecOutput.SetActive(false);
-                avatarBiDirec.SetActive(false);
                 avatarAcitivate = avatarBaseline;
                 break;
             case InteractCondition.UniDirectional_Input:
-                avatarBaseline.SetActive(false);
-                avatarUniDirecInput.SetActive(true);
-                avatarUniDirecOutput.SetActive(false);
-                avatarBiDirec.SetActive(false);
                 avatarAcitivate = avatarUniDirecInput;
                 break;
             case InteractCondition.UniDirectional_Output:
-                avatarBaseline.SetActive(false);
-                avatarUniDirecInput.SetActive(false);
-                avatarUniDirecOutput.SetActive(true);
-                avatarBiDirec.SetActive(false);
                 avatarAcitivate = avatarUniDirecOutput;
                 break;
             case InteractCondition.BiDirectional:
-                avatarBaseline.SetActive(false);
-                avatarUniDirecInput.SetActive(false);
-                avatarUniDirecOutput.SetActive(false);
-                avatarBiDirec.SetActive(true);
                 avatarAcitivate = avatarBiDirec;
                 break;
         }
 
         // Initialize the gaze sphere detector for the active avatar
         avatarAcitivate.GetComponentInChildren<LLMAPI>().gazeSphereDetector = gazeSphereDetector;
+        avatarAcitivate.GetComponentInChildren<LLMAPI>().onUserMessageSent += OnUserMessageSent;
+        avatarAcitivate.GetComponentInChildren<LLMAPI>().onAIResponseReceived += OnAIMessageReceived;
     }
 
     private void InitGazeDetector()
@@ -240,9 +259,7 @@ public class GatherItemManager : MonoBehaviour
         currentTargetItemIndex = 0; // Reset the current target item index
         SetItemAsTargetItem(GetCurrentTargetGatherItem()); // Set the first item as the target item
     }
-
     #endregion
-
 
     #region Task processing methods
     public GatherItemObject GetCurrentTargetGatherItem()
@@ -283,7 +300,7 @@ public class GatherItemManager : MonoBehaviour
             else
             {
                 Debug.Log("All items have been gathered.");
-                onAllTargetItemCollected?.Invoke(); // Invoke the event when all items are gathered
+                onOneConditionFinished?.Invoke(); // Invoke the event when all items are gathered
             }
         }
     }
@@ -335,18 +352,31 @@ public class GatherItemManager : MonoBehaviour
         item.transform.position = avatarAcitivate.transform.position + avatarAcitivate.transform.forward * 1 + new Vector3(0, 1f, 0); // Position the item in front of the camera
     }
 
-    // Debug
-    //public GatherItemObject testDisplayItem;
-    //[ContextMenu("Test Display Item")]
-    //public void TestDisplay()
-    //{
-    //    if (testDisplayItem != null)
-    //        testDisplayItem.SetActive(true); // Ensure the item is active before displaying
-    //    else
-    //        Debug.LogWarning("Test display item is not assigned.");
-    //}
-    [ContextMenu("Temp Move Render Camera")]
-    public void temp_MoveRenderCam()
+    public void StartExperimentRound(int expIndex)
+    {
+        if (expIndex < 0 || expIndex >= conditionOrders.Count)
+        {
+            Debug.LogError("Invalid experiment index: " + expIndex);
+            return;
+        }
+
+        condition = conditionOrders[expIndex];
+        InitExperimentCondition();
+
+
+        if (expIndex == 0)
+        {
+            collectGuidanceCanvas.SetActive(true); // Show guidance for the first round
+        }
+        else
+        {
+            collectNewRoundCanvas.SetActive(true); // Show new round canvas for subsequent rounds
+        }
+
+    }
+
+    [ContextMenu("Start Process Render And Save")]
+    public void StartProcessRenderAndSave()
     {
         StartCoroutine(ProcessRenderAndSave());
     }
@@ -376,41 +406,55 @@ public class GatherItemManager : MonoBehaviour
             obj.SetItemToDefaultLayer();
         }
     }
-
-    public void StartExperimentRound(int expIndex)
-    {
-        if (expIndex < 0 || expIndex >= conditionOrders.Count)
-        {
-            Debug.LogError("Invalid experiment index: " + expIndex);
-            return;
-        }
-
-        condition = conditionOrders[expIndex];
-        InitExperimentCondition();
-
-
-        if (expIndex == 0)
-        {
-            collectGuidanceCanvas.SetActive(true); // Show guidance for the first round
-        }
-        else
-        {
-            collectNewRoundCanvas.SetActive(true); // Show new round canvas for subsequent rounds
-        }
-
-    }
     #endregion
 
-
     #region Event Handlers
-    private void OnStartCollectItem()
+    private void OnUserBehaving()
     {
-        // Todo: Implement the logic to start record conversation history, time, etc.
+        dataPerCondition.behaviorFrames.Add(dataCollector.GetCurrentUserBehaviorFrame());
     }
 
-    private void OnAllTargetItemCollected()
+    private void OnUserMessageSent(Message message, float startRecordingTime)
+    {
+        dataPerCondition.conversationFrames.Add(new ConversationData_MessageFrame()
+        {
+            sentTime = Time.time,
+            startRecordingTime = startRecordingTime,
+            message = message
+        });
+    }
+
+    private void OnAIMessageReceived(Message message)
+    {
+        dataPerCondition.conversationFrames.Add(new ConversationData_MessageFrame()
+        {
+            sentTime = Time.time,
+            startRecordingTime = 0f, // AI messages do not have a recording start time
+            message = message
+        });
+    }
+
+    private void OnOneConditionStarted()
+    {
+        // Todo: Implement the logic to start record conversation history, time, etc.
+        dataPerCondition = new();
+        dataPerCondition.condition = condition;
+        dataPerCondition.participantID = ExperimentManager.Instance.participantID;
+        dataPerCondition.behaviorFrames.Clear(); // Clear previous frames for the new round
+        dataPerCondition.conversationFrames.Clear(); // Clear previous conversation frames for the new round
+        isCollecting = true; // Set the collecting flag to true
+    }
+
+    private void OnOneConditionFinished()
     {
         // Todo: Implement the logic to handle when all target items are collected
+        isCollecting = false; // Set the collecting flag to false
+        string dataFileName = string.Format(
+            "User{0:D2}_Condition{1:D2}_Task1_Data.json",
+            ExperimentManager.Instance.participantID,
+            (int)condition
+        );
+        ExperimentDataCollector.SaveTaskDataToJson(dataPerCondition, dataFileName);
 
         // Trigger to next round or finish the experiment
         if (currentExperimentIndex < conditionOrders.Count - 1)
@@ -429,12 +473,11 @@ public class GatherItemManager : MonoBehaviour
     }
     #endregion
 
-
     #region UI Button Callbacks
     private void OnCollecGuidanceButtonClicked()
     {
         collectGuidanceCanvas.SetActive(false); // Hide the guidance canvas
-        onStartCollectRound?.Invoke(); // Invoke the action to start the collection round
+        onOneConditionStarted?.Invoke(); // Invoke the action to start the collection round
     }
 
     private void OnCollectCompletedButtonClicked()
@@ -451,6 +494,7 @@ public class GatherItemManager : MonoBehaviour
     private void OnCollectNewRoundButtonClicked()
     {
         collectNewRoundCanvas.SetActive(false); // Hide the new round canvas
+        onOneConditionStarted?.Invoke(); // Invoke the action to start the new collection round
     }
 
     private void OnTaskCompletedButtonClicked()
@@ -498,18 +542,18 @@ public class GatherItemManager : MonoBehaviour
         tex.ReadPixels(new Rect(0, 0, rt.width, rt.height), 0, 0);
         tex.Apply();
 
-        // Gamma 修正（可选）
+        // Gamma adjuastment
         for (int y = 0; y < tex.height; y++)
         {
             for (int x = 0; x < tex.width; x++)
             {
                 Color c = tex.GetPixel(x, y);
-                tex.SetPixel(x, y, c.gamma);  // 加这一行亮度会和编辑器一致
+                tex.SetPixel(x, y, c.gamma);
             }
         }
         tex.Apply();
 
-        byte[] bytes = tex.EncodeToPNG();  // 保留 alpha 通道
+        byte[] bytes = tex.EncodeToPNG();
         string path = Path.Combine(Application.persistentDataPath, filename);
         File.WriteAllBytes(path, bytes);
 

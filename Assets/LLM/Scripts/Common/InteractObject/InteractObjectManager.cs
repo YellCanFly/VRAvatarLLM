@@ -5,7 +5,7 @@ public class InteractObjectManager : MonoBehaviour
 {
     public static InteractObjectManager Instance { get; private set; }
 
-    private readonly List<InteractObject> allInteractObjects = new();
+    public List<InteractObject> allInteractObjects = new();
 
     private void Awake()
     {
@@ -86,6 +86,7 @@ public class InteractObjectManager : MonoBehaviour
             }
         }
 
+        Debug.LogWarning($"InteractObject with name '{objectName}' not found.");
         return null; // ц╩спур╣╫
     }
 

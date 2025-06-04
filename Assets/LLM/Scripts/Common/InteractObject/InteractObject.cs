@@ -14,6 +14,11 @@ public class InteractObject : MonoBehaviour
 
     public ObjectColliderRange colliderRange;
 
+    private void OnEnable()
+    {
+        InteractObjectManager.Instance?.Register(this); // Register this object with the manager
+    }
+
     private void OnDisable()
     {
         InteractObjectManager.Instance?.Unregister(this); // Unregister this object from the manager

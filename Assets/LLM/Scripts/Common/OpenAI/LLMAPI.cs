@@ -47,8 +47,11 @@ public class LLMAPI : MonoBehaviour
     private AudioSource audioSource;
     private MemoryStream transcriptionStream;
     private CancellationTokenSource recordingCts;
-    protected UnityAction<float> onStartSpeak;
-    protected UnityAction onFinishSpeak;
+    protected float startRecordingTime;
+
+    public UnityAction<Message, float> onUserMessageSent; // Message, Start recording time
+    public UnityAction<Message> onAIResponseReceived; // AI response message
+    public UnityAction<float> onAvatarStartSpeak;
 
     // Debug Vars
     protected float debugTime;
@@ -83,7 +86,7 @@ public class LLMAPI : MonoBehaviour
 
         audioSource = GetComponent<AudioSource>();
 
-        onStartSpeak += AvatarAnimationWhileSpeaking;
+        onAvatarStartSpeak += AvatarAnimationWhileSpeaking;
     }
 
     /// <summary>
@@ -148,7 +151,7 @@ public class LLMAPI : MonoBehaviour
         audioSource.clip = speechClip;
         audioSource.Play();
         Debug.Log("Clip Length = " + speechClip.Length);
-        onStartSpeak?.Invoke(speechClip.Length);
+        onAvatarStartSpeak?.Invoke(speechClip.Length);
 
         // Debug output
         float ttsTime = Time.time - debugTime;
@@ -189,6 +192,7 @@ public class LLMAPI : MonoBehaviour
     protected void StartMicRecording()
     {
         Debug.Log("Recording started...");
+        startRecordingTime = Time.time;
         debugTime = Time.time;
         isRecording = true;
         recordingCts = new CancellationTokenSource();
