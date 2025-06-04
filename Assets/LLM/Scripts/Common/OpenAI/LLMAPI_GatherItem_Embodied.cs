@@ -47,33 +47,31 @@ public class LLMAPI_GatherItem_Embodied : LLMAPI
             var gazeObjectNameList = gazeSphereDetector.GetGazeObjectList(); // List<string> For gaze history
             var allObjectInEyeFieldList = gazeSphereDetector.GetAllObjectInEyeFieldList(); // List<string> For all objects in eye field
 
-            Dictionary<string, RelativePosition> objRelativePosDict = new();
-            foreach (var obj in allObjectInEyeFieldList)
+            var objectInformationList = new List<GatherItemObjectInfo>();
+            foreach (var objName in allObjectInEyeFieldList)
             {
-                Debug.Log($"Object in eye field: {obj}");
-                var interactObj = InteractObjectManager.Instance?.GetObjectByName(obj);
-                if (interactObj != null && !objRelativePosDict.ContainsKey(obj))
+                Debug.Log($"Object in eye field: {objName}");
+                var interactObj = InteractObjectManager.Instance?.GetObjectByName(objName);
+                if (interactObj != null)
                 {
-                    objRelativePosDict.Add(obj, interactObj.GetRelativePositionToCamera(Camera.main.transform));
+                    objectInformationList.Add(interactObj.GetComponentInChildren<GatherItemObject>().GetGrabItemInfo());
                 }
             }
-            foreach (var obj in gazeObjectNameList)
+            foreach (var objName in gazeObjectNameList)
             {
-                var interactObj = InteractObjectManager.Instance?.GetObjectByName(obj);
-                if (interactObj != null && !objRelativePosDict.ContainsKey(obj))
+                if (allObjectInEyeFieldList.Contains(objName))
+                    continue;
+                var interactObj = InteractObjectManager.Instance?.GetObjectByName(objName);
+                if (interactObj != null)
                 {
-                    objRelativePosDict.Add(obj, interactObj.GetRelativePositionToCamera(Camera.main.transform));
+                    objectInformationList.Add(interactObj.GetComponentInChildren<GatherItemObject>().GetGrabItemInfo());
                 }
             }
 
             userInput.current_gaze_object = gazeObjectName;
             userInput.gaze_history = gazeObjectNameList;
             userInput.objects_in_view = allObjectInEyeFieldList;
-            userInput.objects_info = objRelativePosDict.Select(kvp => new ObjectInfo
-            {
-                object_name = kvp.Key,
-                object_relative_position = kvp.Value
-            }).ToList();
+            userInput.objects_info = objectInformationList;
         }
         else
         {
@@ -81,7 +79,7 @@ public class LLMAPI_GatherItem_Embodied : LLMAPI
             userInput.current_gaze_object = "null";
             userInput.gaze_history = new List<string>();
             userInput.objects_in_view = new List<string>();
-            userInput.objects_info = new List<ObjectInfo>();
+            userInput.objects_info = new List<GatherItemObjectInfo>();
         }
 
         // Add user input to the message list
@@ -178,6 +176,13 @@ public class LLMAPI_GatherItem_Embodied : LLMAPI
         }
     }
 
+    //[ContextMenu("Test Func")]
+    //public void TestFunc()
+    //{
+    //    Debug.Log("Avatar is speaking while pointing InteractObject_PottedPlant (1).");
+    //    AvatarStartPointingByName("InteractObject_PottedPlant (1)", 8f);
+    //}
+
     public void OnSendButtonClick()
     {
         string userInput = inputField.text;
@@ -206,19 +211,8 @@ public class LLMAPI_GatherItem_Embodied : LLMAPI
         public List<string> objects_in_view;
 
         [JsonProperty("objects_info")]
-        public List<ObjectInfo> objects_info;
+        public List<GatherItemObjectInfo> objects_info;
     }
-
-    [System.Serializable]
-    public class ObjectInfo
-    {
-        [JsonProperty("object_name")]
-        public string object_name;
-
-        [JsonProperty("object_relative_position")]
-        public RelativePosition object_relative_position;
-    }
-
 
     /// <summary>
     /// Serializable response class for JSON parsing.

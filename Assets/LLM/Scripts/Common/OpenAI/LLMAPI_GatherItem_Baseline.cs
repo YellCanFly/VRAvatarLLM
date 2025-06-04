@@ -181,16 +181,6 @@ public class LLMAPI_GatherItem_Baseline : LLMAPI
         public List<GatherItemObjectInfo> objects_info; 
     }
 
-    [System.Serializable]
-    public class ObjectInfo
-    {
-        [JsonProperty("object_name")]
-        public string object_name;
-
-        [JsonProperty("object_relative_position")]
-        public RelativePosition object_relative_position;
-    }
-
 
     /// <summary>
     /// Serializable response class for JSON parsing.

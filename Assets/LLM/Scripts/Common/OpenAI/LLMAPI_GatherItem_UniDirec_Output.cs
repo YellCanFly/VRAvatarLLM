@@ -45,28 +45,25 @@ public class LLMAPI_GatherItem_UniDirec_Output : LLMAPI
         {
             var allObjectInEyeFieldList = gazeSphereDetector.GetAllObjectInEyeFieldList(); // List<string> For all objects in eye field
 
-            Dictionary<string, RelativePosition> objRelativePosDict = new();
-            foreach (var obj in allObjectInEyeFieldList)
+            var allObjectInformationList = new List<GatherItemObjectInfo>();
+            foreach (var objName in allObjectInEyeFieldList)
             {
-                Debug.Log($"Object in eye field: {obj}");
-                var interactObj = InteractObjectManager.Instance?.GetObjectByName(obj);
-                if (interactObj != null && !objRelativePosDict.ContainsKey(obj))
+                Debug.Log($"Object in eye field: {objName}");
+                var interactObj = InteractObjectManager.Instance?.GetObjectByName(objName);
+                if (interactObj != null)
                 {
-                    objRelativePosDict.Add(obj, interactObj.GetRelativePositionToCamera(Camera.main.transform));
+                    allObjectInformationList.Add(interactObj.GetComponentInChildren<GatherItemObject>().GetGrabItemInfo());
                 }
             }
 
             userInput.objects_in_view = allObjectInEyeFieldList;
-            userInput.objects_info = objRelativePosDict.Select(kvp => new ObjectInfo
-            {
-                object_name = kvp.Key,
-                object_relative_position = kvp.Value
-            }).ToList();
+            userInput.objects_info = allObjectInformationList;
         }
         else
         {
+            // Fallback to default values if GazeSphereDetector is not available
             userInput.objects_in_view = new List<string>();
-            userInput.objects_info = new List<ObjectInfo>();
+            userInput.objects_info = new List<GatherItemObjectInfo>();
         }
 
         // Add user input to the message list
@@ -185,19 +182,8 @@ public class LLMAPI_GatherItem_UniDirec_Output : LLMAPI
         public List<string> objects_in_view;
 
         [JsonProperty("objects_info")]
-        public List<ObjectInfo> objects_info;
+        public List<GatherItemObjectInfo> objects_info;
     }
-
-    [System.Serializable]
-    public class ObjectInfo
-    {
-        [JsonProperty("object_name")]
-        public string object_name;
-
-        [JsonProperty("object_relative_position")]
-        public RelativePosition object_relative_position;
-    }
-
 
     /// <summary>
     /// Serializable response class for JSON parsing.
