@@ -1,11 +1,9 @@
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 using Utilities.Extensions;
 using System.Collections;
-using UnityEditor.Rendering;
 using System.IO;
 using OpenAI.Chat;
 
