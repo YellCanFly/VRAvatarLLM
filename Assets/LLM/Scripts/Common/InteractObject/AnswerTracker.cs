@@ -7,11 +7,20 @@ namespace BlockPuzzleGame
     {
         public string locationName;
 
+        private PlaceCollisionTracker[] trackers;
+
+        private void Awake()
+        {
+            trackers = GetComponentsInChildren<PlaceCollisionTracker>();
+            foreach (PlaceCollisionTracker tracker in trackers)
+            {
+                tracker.onObjectPlaced += OnObjectPlacedInTrack;
+            }
+        }
+
         public AnswerEvaluationResult EvaluateAnswer()
         {
             List<GameObject> placedObjects = new();
-
-            PlaceCollisionTracker[] trackers = GetComponentsInChildren<PlaceCollisionTracker>();
             foreach (var tracker in trackers)
             {
                 foreach (GameObject obj in tracker.objectsOnPlane)
@@ -25,6 +34,19 @@ namespace BlockPuzzleGame
 
             bool isCorrect = placedObjects.Exists(obj => obj.name == locationName);
             return new AnswerEvaluationResult(isCorrect, locationName, placedObjects);
+        }
+
+        private void OnObjectPlacedInTrack(GameObject obj)
+        {
+            if (obj.name == locationName)
+            {
+                GameManager.Instance.OnCorrectObjectPlaced();
+            }
+            else
+            {
+                GameManager.Instance.OnWrongObjectPlaced();
+            }
+            GameManager.Instance.OnObjectPlaced();
         }
     }
 

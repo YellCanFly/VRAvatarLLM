@@ -3,10 +3,11 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 using OpenAI.Chat;
+using UnityEngine.Audio;
 
 namespace BlockPuzzleGame
 {
-
+    [RequireComponent(typeof(AudioSource))]
     [RequireComponent(typeof(ExperimentDataCollector))]
     public class GameManager : MonoBehaviour
     {
@@ -44,9 +45,11 @@ namespace BlockPuzzleGame
         public float userBehaviorSaveInterval = 1f / 30f;
         private float userBehaviorSaveTimer = 0f; // Timer to control the saving of user behavior data
 
+        [Header("Audio Settings")]
+        public AudioSource audioSource;
+        public AudioClip correctSound; // Sound to play when an item is collected correctly
+        public AudioClip wrongSound; // Sound to play when an item is collected incorrectly
 
-        private float checkInterval = 0.5f; // Interval to check task progress
-        private float checkTimer = 0f;
         private bool currentConditionComplted = true;
         private float currentProgress = 0f;
 
@@ -84,29 +87,13 @@ namespace BlockPuzzleGame
             // Start the first experiment round
             currentExperimentIndex = 0;
             StartExperimentRound(currentExperimentIndex);
+
+            //GrabInteractObjectManager.Instance.onHeldObject += ;
+            //GrabInteractObjectManager.Instance.onDropedObject += ;
         }
 
         private void Update()
         {
-            // Check if the task progress should be updated
-            if (checkTimer >= checkInterval)
-            {
-                if (CheckOneConditionFinished(out float checkProgress) && !currentConditionComplted)
-                {
-                    onOneConditionFinished?.Invoke(); // Trigger the event for one condition started
-                }
-                if (checkProgress > currentProgress)
-                {
-                    Debug.Log($"Task progress updated: {checkProgress * 100:F1}% complete.");
-                }
-                currentProgress = checkProgress;
-                checkTimer = 0f; // Reset the timer
-            }
-            else
-            {
-                checkTimer += Time.deltaTime; // Increment the timer
-            }
-
             // Check if the user is behaving
             if (!currentConditionComplted)
             {
@@ -184,6 +171,31 @@ namespace BlockPuzzleGame
 
             progress = (float)correctCount / results.Count;
             return correctCount == results.Count;
+        }
+
+        public void OnObjectPlaced()
+        {
+            bool conditionEnd = CheckOneConditionFinished(out float checkProgress);
+            if (checkProgress > currentProgress)
+            {
+                Debug.Log($"Task progress updated: {checkProgress * 100:F1}% complete.");
+            }
+            currentProgress = checkProgress;
+
+            if (conditionEnd)
+            {
+                onOneConditionFinished?.Invoke();
+            }
+        }
+
+        public void OnCorrectObjectPlaced()
+        {
+            PlayCorrectSound();
+        }
+
+        public void OnWrongObjectPlaced()
+        {
+            PlayWrongSound();
         }
 
         // Initialization methods for event bindings and canvas setup
@@ -362,6 +374,31 @@ namespace BlockPuzzleGame
             else
             {
                 canvas_3_StartNewCondition.SetActive(true);
+            }
+        }
+
+
+        public void PlayCorrectSound()
+        {
+            if (audioSource != null && correctSound != null)
+            {
+                audioSource.PlayOneShot(correctSound);
+            }
+            else
+            {
+                Debug.LogWarning("AudioSource or collectCorrectSound is not assigned.");
+            }
+        }
+
+        public void PlayWrongSound()
+        {
+            if (audioSource != null && wrongSound != null)
+            {
+                audioSource.PlayOneShot(wrongSound);
+            }
+            else
+            {
+                Debug.LogWarning("AudioSource or collectWrongSound is not assigned.");
             }
         }
 

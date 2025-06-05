@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace BlockPuzzleGame
 {
@@ -7,6 +8,9 @@ namespace BlockPuzzleGame
         public static GrabInteractObjectManager Instance { get; private set; }
 
         public ObjectInfo CurrentHeldObject;
+
+        public UnityAction onHeldObject;
+        public UnityAction onDropedObject;
 
         private void Awake()
         {
@@ -28,6 +32,7 @@ namespace BlockPuzzleGame
             }
 
             CurrentHeldObject = obj;
+            onHeldObject?.Invoke();
 
             // Log the name of the held object for debugging
             Debug.Log($"Held Object Set: {obj.ObjectName}");
@@ -38,6 +43,7 @@ namespace BlockPuzzleGame
             if (CurrentHeldObject != null)
             {
                 Debug.Log($"Clearing Held Object: {CurrentHeldObject.ObjectName}");
+                onDropedObject?.Invoke();
             }
             CurrentHeldObject = null;
         }

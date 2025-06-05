@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace BlockPuzzleGame{
     public class PlaceCollisionTracker : MonoBehaviour
@@ -7,8 +8,11 @@ namespace BlockPuzzleGame{
         public float detectionHeight = 0.2f;
         public LayerMask detectableLayer;
         public List<GameObject> objectsOnPlane = new List<GameObject>();
+        private List<GameObject> objectsOnPlaneRecord = new List<GameObject>();
 
         private MeshCollider meshCollider;
+
+        public UnityAction<GameObject> onObjectPlaced;
 
         void Start()
         {
@@ -41,6 +45,17 @@ namespace BlockPuzzleGame{
                 {
                     objectsOnPlane.Add(col.gameObject);
                 }
+
+                if (!objectsOnPlaneRecord.Contains(col.gameObject))
+                {
+                    onObjectPlaced?.Invoke(col.gameObject);
+                }
+            }
+
+            objectsOnPlaneRecord.Clear();
+            foreach (var obj in objectsOnPlane)
+            {
+                objectsOnPlaneRecord.Add(obj);
             }
         }
 
