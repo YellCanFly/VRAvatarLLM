@@ -160,7 +160,7 @@ public class LLMAPI_GatherItem_VoiceOnly : LLMAPI
         Debug.Log("Raw Chat Response: " + rawResponse);
 
         // Add response to message list
-        Message avatarMessage = new Message(Role.Assistant, jsonObjResponse.answer);
+        Message avatarMessage = new Message(Role.Assistant, rawResponse);
         AddMessage(avatarMessage);
         onAIResponseReceived?.Invoke(avatarMessage);
 
