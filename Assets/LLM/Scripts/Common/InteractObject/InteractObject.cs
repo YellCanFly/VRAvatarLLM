@@ -26,6 +26,7 @@ public class InteractObject : MonoBehaviour
 
     private void Awake()
     {
+        objectName = gameObject.name;
         colliderRange = GetComponentInChildren<ObjectColliderRange>();
 
     }
@@ -33,7 +34,6 @@ public class InteractObject : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        objectName = gameObject.name;
         InteractObjectManager.Instance?.Register(this); // Register this object with the manager
         InitDefaultColor();
     }

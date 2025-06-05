@@ -160,7 +160,13 @@ public class LLMAPI : MonoBehaviour
         Debug.Log("TTS Time = " + ttsTime);
     }
 
+
     #region Message Management
+    public virtual void AddObjectInfoToSystemPrompot()
+    {
+
+    }
+
     public void ResetMessages()
     {
         systemMessage = new Message(Role.System, systemPrompt);

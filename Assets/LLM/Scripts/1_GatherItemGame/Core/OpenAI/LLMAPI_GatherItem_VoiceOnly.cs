@@ -10,6 +10,7 @@ using System.Linq;
 using Newtonsoft.Json;
 using TMPro;
 using UnityEditor;
+using static LLMAPI_GatherItem_Baseline;
 
 
 public class LLMAPI_GatherItem_VoiceOnly : LLMAPI
@@ -34,6 +35,19 @@ public class LLMAPI_GatherItem_VoiceOnly : LLMAPI
         }
     }
 
+    override public void AddObjectInfoToSystemPrompot()
+    {
+        // Add objects info to system prompt
+        ObjectsInfo objectsInfo = new ObjectsInfo();
+        foreach (var interactObj in InteractObjectManager.Instance.allInteractObjects)
+        {
+            objectsInfo.objects_info.Add(interactObj.GetComponentInChildren<GatherItemObject>().GetGrabItemInfoInt());
+        }
+        string objectsInfoJsonStr = JsonUtility.ToJson(objectsInfo, true);
+        systemPrompt += objectsInfoJsonStr;
+        ResetMessages();
+    }
+
     override public async void UserChatInput(string userContent)
     {
         debugTime = Time.time;
@@ -49,31 +63,10 @@ public class LLMAPI_GatherItem_VoiceOnly : LLMAPI
             var gazeObjectNameList = gazeSphereDetector.GetGazeObjectList(); // List<string> For gaze history
             var allObjectInEyeFieldList = gazeSphereDetector.GetAllObjectInEyeFieldList(); // List<string> For all objects in eye field
 
-            var objectInformationList = new List<GatherItemObjectInfo>();
-            foreach (var objName in allObjectInEyeFieldList)
-            {
-                Debug.Log($"Object in eye field: {objName}");
-                var interactObj = InteractObjectManager.Instance?.GetObjectByName(objName);
-                if (interactObj != null)
-                {
-                    objectInformationList.Add(interactObj.GetComponentInChildren<GatherItemObject>().GetGrabItemInfo());
-                }
-            }
-            foreach (var objName in gazeObjectNameList)
-            {
-                if (allObjectInEyeFieldList.Contains(objName))
-                    continue;
-                var interactObj = InteractObjectManager.Instance?.GetObjectByName(objName);
-                if (interactObj != null)
-                {
-                    objectInformationList.Add(interactObj.GetComponentInChildren<GatherItemObject>().GetGrabItemInfo());
-                }
-            }
 
             userInput.current_gaze_object = gazeObjectName;
             userInput.gaze_history = gazeObjectNameList;
             userInput.objects_in_view = allObjectInEyeFieldList;
-            userInput.objects_info = objectInformationList;
         }
         else
         {
@@ -81,7 +74,6 @@ public class LLMAPI_GatherItem_VoiceOnly : LLMAPI
             userInput.current_gaze_object = "null";
             userInput.gaze_history = new List<string>();
             userInput.objects_in_view = new List<string>();
-            userInput.objects_info = new List<GatherItemObjectInfo>();
         }
 
         // Add user input to the message list
@@ -203,8 +195,8 @@ public class LLMAPI_GatherItem_VoiceOnly : LLMAPI
         [JsonProperty("objects_in_view")]
         public List<string> objects_in_view;
 
-        [JsonProperty("objects_info")]
-        public List<GatherItemObjectInfo> objects_info;
+        //[JsonProperty("objects_info")]
+        //public List<GatherItemObjectInfo> objects_info;
     }
 
 

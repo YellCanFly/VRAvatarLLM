@@ -7,12 +7,14 @@ The user's input is structured and includes only the following:
 "current_gaze_object": the most recent object the user looked at.
 "gaze_history": a list of previously looked-at objects.
 "objects_in_view": all objects currently visible to the user.
+
+All the objects' information in this scene is structured as followed:
 "objects_info": a list of objects, each with the following fields:
 	- "object_name": the unique identifier of the object
 	- "object_description": a natural language description of the object (e.g., “a tall red bottle”)
-	- "object_relative_position_to_user": a Vector3 representing the position relative to the user's head
-	- "object_relative_position_to_avatar": a Vector3 representing the position relative to a your head
-	- "object_size": the physical dimensions of the object in world space
+	- "object_relative_position_to_user": a Vector3Int representing the position relative to the user (unit: cm)
+	- "object_relative_position_to_avatar": a Vector3Int representing the position relative to a you (unit: cm)
+	- "object_size": a Vector3Int representing the physical dimensions of the object in world space (unit: cm)
 
 Relative position format:
 x: Right-left — positive = to the right of the user, negative = to the left.
@@ -37,3 +39,7 @@ Return your response in **strict JSON format only**, with the following fields:
 * `"answer"` *(string)*: A natural, human-sounding sentence. Either a confirmation of the selected object, a clarification question, or an explanation of the guess.
 * `"gaze_and_pointing_object"` *(string)*: The name of the object you are looking and pointing at. If no specific object is referenced, return `"null"`. If referring to the user, return `"user"`.
 * `"confirm_and_hand_over"` *(boolean)*: `true` if you are confident this is the correct item and the user has implicitly or explicitly confirmed it; `false` if you are still confirming or clarifying.
+
+All the object's information in this scene are shown below:
+
+

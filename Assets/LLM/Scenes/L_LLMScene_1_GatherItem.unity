@@ -6402,6 +6402,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   eyeObject: {fileID: 1896954281}
+  testDisplay: 0
   distance: 2
   defaultDistance: 2
   maxRayDistance: 20
@@ -6940,7 +6941,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 036483fdd1afc8349b7fcae42c6870d0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  participantID: 4
+  participantID: 2
   conditionOrder: 
 --- !u!1 &542597567
 GameObject:
@@ -27069,6 +27070,7 @@ MonoBehaviour:
   detectionLayer:
     serializedVersion: 2
     m_Bits: 1
+  gazeDirection: {x: 0, y: 0, z: 0}
   maxGazeMemory: 5
   showGazeResult: 1
   gazeFollower: {fileID: 2144364751}
@@ -27810,8 +27812,8 @@ MonoBehaviour:
   avatarUniDirecOutput: {fileID: 1812962273}
   avatarBiDirec: {fileID: 2018660216}
   avatarAcitivate: {fileID: 0}
-  isUserUseGaze: 1
   gazeSphereDetector: {fileID: 2099610853}
+  showGazeResult: 1
   collectGuidanceCanvas: {fileID: 940861741}
   collectCompletedCanvas: {fileID: 2120768695}
   collectNewRoundCanvas: {fileID: 1158122937}
@@ -31770,6 +31772,7 @@ MonoBehaviour:
   detectionLayer:
     serializedVersion: 2
     m_Bits: 128
+  gazeDirection: {x: 0, y: 0, z: 0}
   maxGazeMemory: 5
   showGazeResult: 1
   gazeFollower: {fileID: 489400616}
@@ -32315,6 +32318,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   eyeObject: {fileID: 1487914234}
+  testDisplay: 0
   distance: 2
   defaultDistance: 2
   maxRayDistance: 20

@@ -191,6 +191,7 @@ public class GatherItemManager : MonoBehaviour
         }
 
         // Initialize the gaze sphere detector for the active avatar
+        avatarAcitivate.GetComponentInChildren<LLMAPI>().AddObjectInfoToSystemPrompot();
         avatarAcitivate.GetComponentInChildren<LLMAPI>().gazeSphereDetector = gazeSphereDetector;
         avatarAcitivate.GetComponentInChildren<LLMAPI>().onUserMessageSent += OnUserMessageSent;
         avatarAcitivate.GetComponentInChildren<LLMAPI>().onAIResponseReceived += OnAIMessageReceived;
