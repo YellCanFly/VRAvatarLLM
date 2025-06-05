@@ -31765,7 +31765,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gazeEye: {fileID: 1896954281}
-  sphereRadius: 0.025
+  sphereRadius: 0.1
   maxDistance: 10
   detectionLayer:
     serializedVersion: 2

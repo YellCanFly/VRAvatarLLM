@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
+using Utilities.Extensions;
 
 public class GazeSphereDetector : MonoBehaviour
 {
@@ -11,14 +12,14 @@ public class GazeSphereDetector : MonoBehaviour
     public float maxDistance = 10f;
     public LayerMask detectionLayer;
     private float detectionDistance;
-    private Vector3 gazeDirection;
+    public Vector3 gazeDirection;
 
     private GameObject lastGazedObject = null;
     private Queue<string> gazeObjectQueue = new();
     private List<string> allObjectInEyeFieldList = new();
     public int maxGazeMemory = 5;
 
-    public bool showGazeResult = true;
+    public bool showGazeResult = false;
     public GazeFollower gazeFollower;
 
     [Header("Debug")]
@@ -28,7 +29,7 @@ public class GazeSphereDetector : MonoBehaviour
 
     private void Start()
     {
-        gazeFollower.gameObject.SetActive(showGazeResult);
+        //gazeFollower.gameObject.SetActive(showGazeResult);
 
         gazeObjectQueue.Clear();
     }
@@ -71,11 +72,15 @@ public class GazeSphereDetector : MonoBehaviour
                     Debug.Log("Detected InteractObject: " + interactObj.gameObject.name);
                 }
                 hasDetectedInteractObject = true;
+                gazeFollower.SetActive(showGazeResult);
+                gazeFollower.transform.position = origin + gazeDirection * detectionDistance;
             }
         }
+        
         if (!hasDetectedInteractObject)
         {
             GazeNothing();
+            gazeFollower.SetActive(false);
         }
 
         var RangeHitResults = Physics.BoxCastAll(origin, new Vector3(10.0f, 10.0f, 0.05f), gazeDirection);

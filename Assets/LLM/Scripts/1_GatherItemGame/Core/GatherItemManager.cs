@@ -37,8 +37,8 @@ public class GatherItemManager : MonoBehaviour
     public GameObject avatarAcitivate;
 
     [Header("User Settings")]
-    public bool isUserUseGaze = true;
     public GazeSphereDetector gazeSphereDetector;
+    public bool showGazeResult = true;
 
     [Header("UI Settings")]
     public GameObject collectGuidanceCanvas;
@@ -201,22 +201,19 @@ public class GatherItemManager : MonoBehaviour
         switch (condition)
         {
             case InteractCondition.Baseline:
-                isUserUseGaze = false; // Baseline condition does not use gaze
                 gazeSphereDetector.showGazeResult = false; // Disable gaze result display
                 break;
             case InteractCondition.UniDirectional_Input:
-                isUserUseGaze = true; // UniDirectionalInput condition uses gaze
                 gazeSphereDetector.showGazeResult = true; // Enable gaze result display
                 break;
             case InteractCondition.UniDirectional_Output:
-                isUserUseGaze = false; // UniDirectionalOutput condition does not use gaze
                 gazeSphereDetector.showGazeResult = false; // Disable gaze result display
                 break;
             case InteractCondition.BiDirectional:
-                isUserUseGaze = true; // BiDirectional condition uses gaze
                 gazeSphereDetector.showGazeResult = true; // Enable gaze result display
                 break;
         }
+        gazeSphereDetector.showGazeResult = gazeSphereDetector.showGazeResult && showGazeResult; // Combine with the global setting
     }
 
     private void InitRandomTargetIDList(int seed)

@@ -8569,8 +8569,9 @@ MonoBehaviour:
   detectionLayer:
     serializedVersion: 2
     m_Bits: 1
+  gazeDirection: {x: 0, y: 0, z: 0}
   maxGazeMemory: 5
-  showGazeResult: 1
+  showGazeResult: 0
   gazeFollower: {fileID: 1120656571}
   gazeObjectName: {fileID: 0}
   showDebugGizmo: 1
@@ -15394,6 +15395,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   eyeObject: {fileID: 1148158462}
+  testDisplay: 0
   distance: 2
   defaultDistance: 2
   maxRayDistance: 20
@@ -21518,6 +21520,7 @@ MonoBehaviour:
   canvas_2_OneConditionCompleted: {fileID: 1725252933}
   canvas_3_StartNewCondition: {fileID: 1657749011}
   canvas_4_AllConditionsCompleted: {fileID: 1087862370}
+  userBehaviorSaveInterval: 0.033333335
 --- !u!4 &1533409012
 Transform:
   m_ObjectHideFlags: 0
@@ -26414,6 +26417,7 @@ MonoBehaviour:
   unidirecInputObject: {fileID: 1497040099}
   unidirecOutputObject: {fileID: 25788221}
   bidirectionalObject: {fileID: 1885134137}
+  activateAvatar: {fileID: 1684798700}
 --- !u!1 &1835905018
 GameObject:
   m_ObjectHideFlags: 0
