@@ -40,6 +40,7 @@ public class LLMAPI : MonoBehaviour
     public bool isAvatarEmbodied = true;
     public GazeSphereDetector gazeSphereDetector;
     public AvatarController avatarController;
+    public RandomVoicePlay randomVoicePlayer;
     protected string currentInteractObject = "";
 
     [Header("Voice Recording Settings")]
@@ -123,6 +124,7 @@ public class LLMAPI : MonoBehaviour
     public virtual async void UserChatInput(string userContent)
     {
         Debug.Log("User input: " + userContent);
+        PlayRandomWaitVoice();
     }
 
     /// <summary>
@@ -145,9 +147,22 @@ public class LLMAPI : MonoBehaviour
         var speechRequest = new SpeechRequest(
             model: ttsModel,
             input: speechContent,
+            voice: Voice.Echo,
             responseFormat: SpeechResponseFormat.PCM);
 
         var speechClip = await openAI.AudioEndpoint.GetSpeechAsync(speechRequest);
+
+        if (audioSource.isPlaying)
+        {
+            Debug.Log("AudioSource is currently playing. Waiting...");
+            await Task.Run(() => {
+                while (audioSource.isPlaying)
+                {
+                    Task.Delay(100).Wait(); // Every 100 ms check once
+                }
+            });
+        }
+
         audioSource.clip = speechClip;
         audioSource.Play();
         Debug.Log("Clip Length = " + speechClip.Length);
@@ -158,6 +173,17 @@ public class LLMAPI : MonoBehaviour
         debugTime = Time.time;
         Debug.Log(speechClip);
         Debug.Log("TTS Time = " + ttsTime);
+    }
+
+    protected void PlayRandomWaitVoice()
+    {
+        if (randomVoicePlayer == null)
+        {
+            Debug.LogWarning("Random voice player is not assigned. Please check it.");
+            return;
+        }
+        randomVoicePlayer.audioSource = audioSource;
+        randomVoicePlayer.PlayRandomAudio();
     }
 
 

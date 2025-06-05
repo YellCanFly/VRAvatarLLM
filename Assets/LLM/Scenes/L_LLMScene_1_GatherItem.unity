@@ -4657,6 +4657,7 @@ MonoBehaviour:
   isAvatarEmbodied: 0
   gazeSphereDetector: {fileID: 1814205369}
   avatarController: {fileID: 360041303}
+  randomVoicePlayer: {fileID: 1383188184}
   isRecording: 0
   inputField: {fileID: 1373224182}
   responseText: {fileID: 972138021}
@@ -6941,7 +6942,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 036483fdd1afc8349b7fcae42c6870d0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  participantID: 2
+  participantID: 1
   conditionOrder: 
 --- !u!1 &542597567
 GameObject:
@@ -14493,6 +14494,7 @@ Transform:
   - {fileID: 360041296}
   - {fileID: 1812962274}
   - {fileID: 2018660220}
+  - {fileID: 1383188185}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1062763615
@@ -20201,6 +20203,22 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1311786598}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1383188184 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6533083996251553716, guid: 3a00e67e9c8170b40a25fba2f5fe48e9, type: 3}
+  m_PrefabInstance: {fileID: 4442062839734144385}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 01e754406af74f04b8ea27b4a889f894, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &1383188185 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 122171451379233531, guid: 3a00e67e9c8170b40a25fba2f5fe48e9, type: 3}
+  m_PrefabInstance: {fileID: 4442062839734144385}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1383808004
 GameObject:
   m_ObjectHideFlags: 0
@@ -25386,6 +25404,7 @@ MonoBehaviour:
   isAvatarEmbodied: 0
   gazeSphereDetector: {fileID: 1814205369}
   avatarController: {fileID: 1755567915}
+  randomVoicePlayer: {fileID: 1383188184}
   isRecording: 0
   inputField: {fileID: 1373224182}
   responseText: {fileID: 972138021}
@@ -26525,6 +26544,7 @@ MonoBehaviour:
   isAvatarEmbodied: 1
   gazeSphereDetector: {fileID: 1814205369}
   avatarController: {fileID: 1812962282}
+  randomVoicePlayer: {fileID: 1383188184}
   isRecording: 0
   inputField: {fileID: 1373224182}
   responseText: {fileID: 972138021}
@@ -29776,6 +29796,7 @@ MonoBehaviour:
   isAvatarEmbodied: 1
   gazeSphereDetector: {fileID: 1814205369}
   avatarController: {fileID: 2018660219}
+  randomVoicePlayer: {fileID: 1383188184}
   isRecording: 0
   inputField: {fileID: 1373224182}
   responseText: {fileID: 972138021}
@@ -32485,6 +32506,63 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2144801088}
   m_Mesh: {fileID: 4300022, guid: 9bde7338ed7c8a141b7a2e71c75febbe, type: 3}
+--- !u!1001 &4442062839734144385
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 1060456918}
+    m_Modifications:
+    - target: {fileID: 122171451379233531, guid: 3a00e67e9c8170b40a25fba2f5fe48e9, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 122171451379233531, guid: 3a00e67e9c8170b40a25fba2f5fe48e9, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 122171451379233531, guid: 3a00e67e9c8170b40a25fba2f5fe48e9, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 122171451379233531, guid: 3a00e67e9c8170b40a25fba2f5fe48e9, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 122171451379233531, guid: 3a00e67e9c8170b40a25fba2f5fe48e9, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 122171451379233531, guid: 3a00e67e9c8170b40a25fba2f5fe48e9, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 122171451379233531, guid: 3a00e67e9c8170b40a25fba2f5fe48e9, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 122171451379233531, guid: 3a00e67e9c8170b40a25fba2f5fe48e9, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 122171451379233531, guid: 3a00e67e9c8170b40a25fba2f5fe48e9, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 122171451379233531, guid: 3a00e67e9c8170b40a25fba2f5fe48e9, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2260125779973454247, guid: 3a00e67e9c8170b40a25fba2f5fe48e9, type: 3}
+      propertyPath: m_Name
+      value: RandomVoicePlayer
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 3a00e67e9c8170b40a25fba2f5fe48e9, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

@@ -50,6 +50,8 @@ public class LLMAPI_GatherItem_VoiceOnly : LLMAPI
 
     override public async void UserChatInput(string userContent)
     {
+        base.UserChatInput(userContent);
+
         debugTime = Time.time;
 
         // Init user input object
