@@ -106,7 +106,9 @@ namespace BlockPuzzleGame{
 
             // Add user input to the message list
             string userInputJson = JsonUtility.ToJson(userInput, true);
-            AddMessage(new Message(Role.User, userInputJson));
+            Message userMessage = new Message(Role.User, userInputJson);
+            AddMessage(userMessage);
+            onUserMessageSent?.Invoke(userMessage, startRecordingTime);
             Debug.Log($"User: {userInputJson}");
 
             // Create a chat request and send it to OpenAI, wait until get response
@@ -132,7 +134,9 @@ namespace BlockPuzzleGame{
             Debug.Log("Raw Chat Response: " + rawResponse);
 
             // Add response to message list
-            AddMessage(new Message(Role.Assistant, rawResponse));
+            Message avatarMessage = new Message(Role.Assistant, jsonObjResponse.answer);
+            AddMessage(avatarMessage);
+            onAIResponseReceived?.Invoke(avatarMessage);
 
             // Update UI textg
             responseText.text = jsonObjResponse.answer;

@@ -11,6 +11,7 @@ namespace BlockPuzzleGame
         public GameObject unidirecInputObject;
         public GameObject unidirecOutputObject;
         public GameObject bidirectionalObject;
+        public GameObject activateAvatar;
 
         public void SetMode(InteractCondition mode)
         {
@@ -32,6 +33,23 @@ namespace BlockPuzzleGame
             if (unidirecInputObject != null) unidirecInputObject.SetActive(selectedMode == InteractCondition.UniDirectional_Input);
             if (unidirecOutputObject != null) unidirecOutputObject.SetActive(selectedMode == InteractCondition.UniDirectional_Output);
             if (bidirectionalObject != null) bidirectionalObject.SetActive(selectedMode == InteractCondition.BiDirectional);
+
+            switch (selectedMode)
+            {
+                case InteractCondition.Baseline:
+                    activateAvatar = baselineObject;
+                    break;
+                case InteractCondition.UniDirectional_Input:
+                    activateAvatar = unidirecInputObject;
+                    break;
+                case InteractCondition.UniDirectional_Output:
+                    activateAvatar = unidirecOutputObject;
+                    break;
+                case InteractCondition.BiDirectional:
+                    activateAvatar = bidirectionalObject;
+                    break;
+            }
+
         }
     }
 }

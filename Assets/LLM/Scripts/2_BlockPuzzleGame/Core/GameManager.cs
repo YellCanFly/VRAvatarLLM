@@ -2,9 +2,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
+using OpenAI.Chat;
 
 namespace BlockPuzzleGame
 {
+
+    [RequireComponent(typeof(ExperimentDataCollector))]
     public class GameManager : MonoBehaviour
     {
         public static GameManager Instance { get; private set; }
@@ -37,11 +40,18 @@ namespace BlockPuzzleGame
         private Button button_3_StartNewCondition;
         private Button button_4_AllConditionsCompleted;
 
+        [Header("Data Collection Settings")]
+        public float userBehaviorSaveInterval = 1f / 30f;
+        private float userBehaviorSaveTimer = 0f; // Timer to control the saving of user behavior data
+
 
         private float checkInterval = 0.5f; // Interval to check task progress
         private float checkTimer = 0f;
-        private bool currentConditionComplted = false;
+        private bool currentConditionComplted = true;
         private float currentProgress = 0f;
+
+        private ExperimentDataCollector dataCollector;
+        private TaskData_CollectItem dataPerCondition;
 
 
         private void OnValidate()
@@ -64,6 +74,7 @@ namespace BlockPuzzleGame
 
             // Initialize
             conditionOrders = ExperimentManager.GetConditionOrder(ExperimentManager.Instance.participantID);
+            dataCollector = GetComponent<ExperimentDataCollector>();
             InitEventBinds();
             InitCanvas();
         }
@@ -95,6 +106,22 @@ namespace BlockPuzzleGame
             {
                 checkTimer += Time.deltaTime; // Increment the timer
             }
+
+            // Check if the user is behaving
+            if (!currentConditionComplted)
+            {
+                userBehaviorSaveTimer += Time.deltaTime;
+                if (userBehaviorSaveTimer >= userBehaviorSaveInterval)
+                {
+                    userBehaviorSaveTimer = 0f; // Reset the timer
+                    OnUserBehaving(); // Call the method to save user behavior data
+                }
+            }
+            else
+            {
+                userBehaviorSaveTimer = 0f; // Reset the timer if not collecting
+            }
+
         }
 
         public void CreateGrabbableBox()
@@ -240,14 +267,57 @@ namespace BlockPuzzleGame
         }
 
         // Task Event handlers
+        private void OnUserBehaving()
+        {
+            dataPerCondition.behaviorFrames.Add(dataCollector.GetCurrentUserBehaviorFrame());
+        }
+
+        private void OnUserMessageSent(Message message, float startRecordingTime)
+        {
+            dataPerCondition.conversationFrames.Add(new ConversationData_MessageFrame()
+            {
+                sentTime = Time.time,
+                startRecordingTime = startRecordingTime,
+                message = message
+            });
+        }
+
+        private void OnAIMessageReceived(Message message)
+        {
+            dataPerCondition.conversationFrames.Add(new ConversationData_MessageFrame()
+            {
+                sentTime = Time.time,
+                startRecordingTime = 0f, // AI messages do not have a recording start time
+                message = message
+            });
+        }
+
+
         public void OnOneConditionStarted()
         {
             // Todo: Add logic for when one condition starts
+            dataPerCondition = new();
+            dataPerCondition.condition = condition;
+            dataPerCondition.participantID = ExperimentManager.Instance.participantID;
+            dataPerCondition.behaviorFrames.Clear(); // Clear previous frames for the new round
+            dataPerCondition.conversationFrames.Clear(); // Clear previous conversation frames for the new round
+            currentConditionComplted = false;
         }
 
         public void OnOneConditionFinished()
         {
             Debug.Log("All the items are placed in correct position");
+
+            currentConditionComplted = true; // Mark the current condition as completed
+            string dataFileName = string.Format(
+                "User{0:D2}_Condition{1:D2}_Task2_Data.json",
+                ExperimentManager.Instance.participantID,
+                (int)condition
+            );
+            ExperimentDataCollector.SaveTaskDataToJson(dataPerCondition, dataFileName);
+
+
+
             if (currentExperimentIndex < conditionOrders.Count - 1)
             {
                 canvas_2_OneConditionCompleted.SetActive(true);
@@ -276,12 +346,14 @@ namespace BlockPuzzleGame
             currentExperimentIndex = expIndex;
             condition = conditionOrders[currentExperimentIndex];
             conditionManager.SetMode(condition);
+            conditionManager.activateAvatar.GetComponentInChildren<LLMAPI>().onUserMessageSent += OnUserMessageSent;
+            conditionManager.activateAvatar.GetComponentInChildren<LLMAPI>().onAIResponseReceived += OnAIMessageReceived;
+
             Debug.Log($"Starting experiment round {currentExperimentIndex + 1} with condition: {condition}");
 
             // Initialize the game state
             CreateGrabbableBox();
             CreateGoal();
-            currentConditionComplted = false;
 
             if (expIndex == 0)
             {
