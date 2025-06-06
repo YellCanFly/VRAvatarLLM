@@ -288,19 +288,18 @@ public class LLMAPI : MonoBehaviour
         AvatarStartPointingByName(currentInteractObject, speechDuration);
     }
 
-    // DEBUG
+    //// DEBUG
     //private void LateUpdate()
     //{
     //    FakeAvatarStartPointing();
     //}
 
-    // DEBUG
-    //[ContextMenu("Fake Avatar Start Pointing")]
+    //// DEBUG
     //public void FakeAvatarStartPointing()
     //{
     //    if (Keyboard.current.gKey.wasPressedThisFrame)
     //    {
-    //        AvatarStartPointingByName("InteractObject_PottedPlant (1)", 5.0f);
+    //        AvatarStartPointingByName("InteractObject_PottedPlant (1)", 10.0f);
     //    }
     //}
 
