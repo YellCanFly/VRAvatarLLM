@@ -126,6 +126,7 @@ public class LLMAPI : MonoBehaviour
     {
         Debug.Log("User input: " + userContent);
         PlayRandomWaitVoice();
+        avatarController.TriggerThinkingAnimation();
     }
 
     /// <summary>

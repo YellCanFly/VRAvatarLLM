@@ -1,9 +1,11 @@
+using System.Collections;
 using UnityEngine;
 
 public class RandomVoicePlay : MonoBehaviour
 {
     public AudioClip[] audioClips;
     public AudioSource audioSource;
+    public float playDelay = 1f; // Delay before playing the audio clip
 
     private void Awake()
     {
@@ -18,6 +20,8 @@ public class RandomVoicePlay : MonoBehaviour
             return;
         }
 
+
+
         int randomID = Random.Range(0, audioClips.Length);
         var audioClip = audioClips[randomID];
         if (audioClip == null)
@@ -27,9 +31,15 @@ public class RandomVoicePlay : MonoBehaviour
         }
 
         audioSource.clip = audioClip;
-        audioSource.Play();
+        //audioSource.Play();
+
+        StartCoroutine(DelayPlayClip(playDelay));
     }
 
-
+    IEnumerator DelayPlayClip(float duration)
+    {
+        yield return new WaitForSeconds(duration);
+        audioSource.Play();
+    }
     
 }
