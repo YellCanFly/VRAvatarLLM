@@ -45,6 +45,7 @@ public class LLMAPI : MonoBehaviour
 
     [Header("Voice Recording Settings")]
     public bool isRecording;
+    public GameObject RecordingIcon;
     private AudioSource audioSource;
     private MemoryStream transcriptionStream;
     private CancellationTokenSource recordingCts;
@@ -234,6 +235,10 @@ public class LLMAPI : MonoBehaviour
         {
             if (!recordingCts.Token.IsCancellationRequested)
             {
+                if (RecordingIcon != null)
+                {
+                    RecordingIcon.SetActive(true);
+                }
                 await transcriptionStream.WriteAsync(buffer, CancellationToken.None);
             }
         }, 24000, recordingCts.Token);
@@ -251,6 +256,10 @@ public class LLMAPI : MonoBehaviour
 
         isRecording = false;
         recordingCts?.Cancel();
+        if (recordingCts != null)
+        {
+            RecordingIcon.SetActive(false);
+        }
 
         transcriptionStream.Position = 0;
 
