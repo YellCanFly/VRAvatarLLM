@@ -4760,6 +4760,7 @@ MonoBehaviour:
   avatarController: {fileID: 360041303}
   randomVoicePlayer: {fileID: 1383188184}
   isRecording: 0
+  RecordingIcon: {fileID: 805256950}
   inputField: {fileID: 1373224182}
   responseText: {fileID: 972138021}
   sendButton: {fileID: 1976012069}
@@ -10365,6 +10366,116 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.00616638, y: -0.030066561, z: -0.020585023}
     m_Extent: {x: 0.033926036, y: 0.041736547, z: 0.054627255}
   m_DirtyAABB: 0
+--- !u!1001 &805256949
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 9178396268774429249, guid: 946efac4692a443408528c35145f8e29, type: 3}
+      propertyPath: m_Pivot.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 9178396268774429249, guid: 946efac4692a443408528c35145f8e29, type: 3}
+      propertyPath: m_Pivot.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 9178396268774429249, guid: 946efac4692a443408528c35145f8e29, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9178396268774429249, guid: 946efac4692a443408528c35145f8e29, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9178396268774429249, guid: 946efac4692a443408528c35145f8e29, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9178396268774429249, guid: 946efac4692a443408528c35145f8e29, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9178396268774429249, guid: 946efac4692a443408528c35145f8e29, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 60
+      objectReference: {fileID: 0}
+    - target: {fileID: 9178396268774429249, guid: 946efac4692a443408528c35145f8e29, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 60
+      objectReference: {fileID: 0}
+    - target: {fileID: 9178396268774429249, guid: 946efac4692a443408528c35145f8e29, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.0009999999
+      objectReference: {fileID: 0}
+    - target: {fileID: 9178396268774429249, guid: 946efac4692a443408528c35145f8e29, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.0009999999
+      objectReference: {fileID: 0}
+    - target: {fileID: 9178396268774429249, guid: 946efac4692a443408528c35145f8e29, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9178396268774429249, guid: 946efac4692a443408528c35145f8e29, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9178396268774429249, guid: 946efac4692a443408528c35145f8e29, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -2.78
+      objectReference: {fileID: 0}
+    - target: {fileID: 9178396268774429249, guid: 946efac4692a443408528c35145f8e29, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9178396268774429249, guid: 946efac4692a443408528c35145f8e29, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9178396268774429249, guid: 946efac4692a443408528c35145f8e29, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9178396268774429249, guid: 946efac4692a443408528c35145f8e29, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9178396268774429249, guid: 946efac4692a443408528c35145f8e29, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9178396268774429249, guid: 946efac4692a443408528c35145f8e29, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9178396268774429249, guid: 946efac4692a443408528c35145f8e29, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9178396268774429249, guid: 946efac4692a443408528c35145f8e29, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9178396268774429249, guid: 946efac4692a443408528c35145f8e29, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9178396268774429253, guid: 946efac4692a443408528c35145f8e29, type: 3}
+      propertyPath: m_Name
+      value: Canvas_Microphone
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 946efac4692a443408528c35145f8e29, type: 3}
+--- !u!1 &805256950 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 9178396268774429253, guid: 946efac4692a443408528c35145f8e29, type: 3}
+  m_PrefabInstance: {fileID: 805256949}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &809170973
 GameObject:
   m_ObjectHideFlags: 0
@@ -25794,6 +25905,7 @@ MonoBehaviour:
   avatarController: {fileID: 1755567915}
   randomVoicePlayer: {fileID: 1383188184}
   isRecording: 0
+  RecordingIcon: {fileID: 805256950}
   inputField: {fileID: 1373224182}
   responseText: {fileID: 972138021}
   sendButton: {fileID: 1976012069}
@@ -26937,6 +27049,7 @@ MonoBehaviour:
   avatarController: {fileID: 1812962282}
   randomVoicePlayer: {fileID: 1383188184}
   isRecording: 0
+  RecordingIcon: {fileID: 805256950}
   inputField: {fileID: 1373224182}
   responseText: {fileID: 972138021}
   sendButton: {fileID: 1976012069}
@@ -30202,6 +30315,7 @@ MonoBehaviour:
   avatarController: {fileID: 2018660219}
   randomVoicePlayer: {fileID: 1383188184}
   isRecording: 0
+  RecordingIcon: {fileID: 805256950}
   inputField: {fileID: 1373224182}
   responseText: {fileID: 972138021}
   sendButton: {fileID: 1976012069}
@@ -32985,5 +33099,6 @@ SceneRoots:
   - {fileID: 2120768693}
   - {fileID: 1158122936}
   - {fileID: 793217871}
+  - {fileID: 805256949}
   - {fileID: 541210424}
   - {fileID: 1444260469}
