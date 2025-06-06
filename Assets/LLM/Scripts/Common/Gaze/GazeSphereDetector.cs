@@ -13,8 +13,9 @@ public class GazeSphereDetector : MonoBehaviour
     public LayerMask detectionLayer;
     private float detectionDistance;
     public Vector3 gazeDirection;
+    public float gazeDurationThreshold = 0.5f; // Duration to consider an object as gazed at
 
-    private GameObject lastGazedObject = null;
+    private InteractObject lastGazedObject = null;
     private Queue<string> gazeObjectQueue = new();
     private List<string> allObjectInEyeFieldList = new();
     public int maxGazeMemory = 5;
@@ -58,19 +59,33 @@ public class GazeSphereDetector : MonoBehaviour
                     gazeObjectName.text = "Gaze object: " + interactObj.name;
                 }
 
-                // Update the last gazed object and add to the queue
-                if (hit.collider.gameObject != lastGazedObject)
+                interactObj.beGazedDuration += Time.fixedDeltaTime;
+                if (interactObj.beGazedDuration >= gazeDurationThreshold)
                 {
-                    lastGazedObject = hit.collider.gameObject;
-                    AddGazeObject(interactObj.name);
+                    if (GetLatestGazeObject() != interactObj.objectName)
+                    {
+                        AddGazeObject(interactObj.objectName);
+                        Debug.Log("Detected InteractObject: " + interactObj.objectName);
+                    }
+
+                    if (showGazeResult)
+                    {
+                        interactObj.SetObjectToHeightLightColor();
+                    }
                 }
 
-                // Highlight the object if it is not already gazed at
-                if (!interactObj.IsGazed && showGazeResult)
+                // Update the last gazed object and add to the queue
+                if (interactObj != lastGazedObject)
                 {
-                    interactObj.ChangeColorForDuration(interactObj.gazeHightlightColor, 0.1f);
-                    Debug.Log("Detected InteractObject: " + interactObj.gameObject.name);
+                    if (lastGazedObject != null)
+                    {
+                        // Reset the last gazed object's duration
+                        lastGazedObject.beGazedDuration = 0f;
+                        lastGazedObject.ResetObjectToDefaultColor();
+                    }
+                    lastGazedObject = interactObj;
                 }
+
                 hasDetectedInteractObject = true;
                 gazeFollower.SetActive(showGazeResult);
                 gazeFollower.transform.position = origin + gazeDirection * detectionDistance;
@@ -93,7 +108,7 @@ public class GazeSphereDetector : MonoBehaviour
             }
         }
          //Debug.Log("All objects in eye field: " + string.Join(", ", allObjectInEyeFieldList));
-
+         
     }
 
     private void OnDrawGizmos()
@@ -140,14 +155,19 @@ public class GazeSphereDetector : MonoBehaviour
         {
             gazeObjectName.text = "Gaze object: None";
         }
-        lastGazedObject = null;
+        if (lastGazedObject != null)
+        {
+            lastGazedObject.beGazedDuration = 0f; // Reset the duration if no object is gazed at
+            lastGazedObject.ResetObjectToDefaultColor(); // Reset color to default
+            lastGazedObject = null; // Clear the last gazed object
+        }
     }
 
     private bool CheckHitObject(RaycastHit hit, out InteractObject interactObj)
     {
         if (hit.collider.GetComponent<ObjectColliderRange>() != null && hit.collider.transform.parent != null)
         {
-            var interactable = hit.collider.transform.parent.GetComponent<InteractObject>();
+            var interactable = hit.collider.GetComponentInParent<InteractObject>();
             if (interactable != null)
             {
                 interactObj = interactable;

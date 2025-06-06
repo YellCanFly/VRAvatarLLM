@@ -9,8 +9,7 @@ public class InteractObject : MonoBehaviour
     private Material mat;
     private Color baseColor;
     public Color gazeHightlightColor = Color.red;
-    bool isGazed = false; // Flag to check if the object is gazed at
-    public bool IsGazed => isGazed; // Public property to access the gazed state
+    public float beGazedDuration = 0f;
 
     public ObjectColliderRange colliderRange;
 
@@ -49,24 +48,16 @@ public class InteractObject : MonoBehaviour
             baseColor = Color.white; // fallback
     }
 
-    public void ChangeColorForDuration(Color color, float duration)
+    public void SetObjectToHeightLightColor()
     {
-        // Set the flag to true when the object is gazed at
-        isGazed = true;
         // Change the color of the object
         mat.color = baseColor * gazeHightlightColor;
-        // Start a coroutine to reset the color after the duration
-        StartCoroutine(ResetColorAfterDuration(duration, baseColor));
     }
 
-    IEnumerator ResetColorAfterDuration(float duration, Color defaultColor)
+    public void  ResetObjectToDefaultColor()
     {
-        // Wait for the specified duration
-        yield return new WaitForSeconds(duration);
         // Reset the color to white
-        mat.color = defaultColor;
-        // Reset the flag to false after the duration
-        isGazed = false; 
+        mat.color = baseColor;
     }
 
     public RelativePosition GetRelativePositionToCamera(Transform camTransform)

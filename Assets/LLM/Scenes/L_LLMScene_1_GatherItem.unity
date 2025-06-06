@@ -452,7 +452,7 @@ Transform:
   m_GameObject: {fileID: 35038652}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.346, y: 0, z: 0.743}
+  m_LocalPosition: {x: 2.346, y: 0, z: 1.344}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -814,7 +814,7 @@ Transform:
   m_GameObject: {fileID: 74250249}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.346, y: 0, z: 0.743}
+  m_LocalPosition: {x: 2.346, y: 0, z: 1.433}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1703,6 +1703,7 @@ MonoBehaviour:
   objectDescription: 'Tall green bamboo stalks with slender leaves grow from a light
     sand-like base, held in a white, slightly faceted cylindrical pot. '
   gazeHightlightColor: {r: 1, g: 0, b: 0, a: 1}
+  beGazedDuration: 0
   colliderRange: {fileID: 0}
 --- !u!114 &133604916
 MonoBehaviour:
@@ -3952,6 +3953,7 @@ MonoBehaviour:
   objectDescription: 'A single thin-trunked plant with long, narrow, pointed green
     leaves grows from a light brown soil base in a white, faceted cylindrical pot. '
   gazeHightlightColor: {r: 1, g: 0, b: 0, a: 1}
+  beGazedDuration: 0
   colliderRange: {fileID: 0}
 --- !u!114 &325399350
 MonoBehaviour:
@@ -7075,7 +7077,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 036483fdd1afc8349b7fcae42c6870d0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  participantID: 1
+  participantID: 4
   conditionOrder: 
 --- !u!1 &542597567
 GameObject:
@@ -7708,6 +7710,7 @@ MonoBehaviour:
   objectDescription: 'A wide, shallow dark brown pot with smooth sides and a thick,
     rounded rim. '
   gazeHightlightColor: {r: 1, g: 0, b: 0, a: 1}
+  beGazedDuration: 0
   colliderRange: {fileID: 0}
 --- !u!114 &580055982
 MonoBehaviour:
@@ -8234,6 +8237,7 @@ MonoBehaviour:
   objectDescription: 'A small, weathered grayish clay pot with a flared rim, subtle
     decorative ridge lines, and an uneven surface texture. '
   gazeHightlightColor: {r: 1, g: 0, b: 0, a: 1}
+  beGazedDuration: 0
   colliderRange: {fileID: 0}
 --- !u!114 &621905283
 MonoBehaviour:
@@ -10000,7 +10004,7 @@ Transform:
   m_GameObject: {fileID: 785216583}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.346, y: 0, z: 0.743}
+  m_LocalPosition: {x: 2.346, y: 0, z: 1.244}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -10740,6 +10744,7 @@ MonoBehaviour:
   objectDescription: 'A dense, teardrop-shaped green bush with fine, wispy foliage
     is planted in a white, faceted cylindrical pot filled with light brown soil. '
   gazeHightlightColor: {r: 1, g: 0, b: 0, a: 1}
+  beGazedDuration: 0
   colliderRange: {fileID: 0}
 --- !u!114 &816769552
 MonoBehaviour:
@@ -11362,6 +11367,7 @@ MonoBehaviour:
   objectDescription: 'A dark green palm-like plant with long, arching fronds grows
     from sandy soil in a white, faceted cylindrical pot. '
   gazeHightlightColor: {r: 1, g: 0, b: 0, a: 1}
+  beGazedDuration: 0
   colliderRange: {fileID: 0}
 --- !u!114 &839490279
 MonoBehaviour:
@@ -13790,6 +13796,7 @@ MonoBehaviour:
   objectDescription: 'A simple, smooth, dark brown clay pot with a rounded rim and
     slightly tapered sides. '
   gazeHightlightColor: {r: 1, g: 0, b: 0, a: 1}
+  beGazedDuration: 0
   colliderRange: {fileID: 0}
 --- !u!114 &983059740
 MonoBehaviour:
@@ -13926,6 +13933,7 @@ MonoBehaviour:
   objectDescription: 'A spiky, symmetrical green plant with long, narrow leaves radiates
     outward from sandy soil in a white, faceted cylindrical pot. '
   gazeHightlightColor: {r: 1, g: 0, b: 0, a: 1}
+  beGazedDuration: 0
   colliderRange: {fileID: 0}
 --- !u!114 &995708479
 MonoBehaviour:
@@ -15053,6 +15061,7 @@ MonoBehaviour:
   objectDescription: 'A tall, narrow, weathered clay pot with a light grayish-brown
     surface and subtle ridged bands near the top and base. '
   gazeHightlightColor: {r: 1, g: 0, b: 0, a: 1}
+  beGazedDuration: 0
   colliderRange: {fileID: 0}
 --- !u!4 &1076605774 stripped
 Transform:
@@ -19826,6 +19835,7 @@ MonoBehaviour:
   objectDescription: 'A small reddish-brown clay pot with a flared rim and decorative
     embossed triangular patterns around the body. '
   gazeHightlightColor: {r: 1, g: 0, b: 0, a: 1}
+  beGazedDuration: 0
   colliderRange: {fileID: 0}
 --- !u!114 &1368352398
 MonoBehaviour:
@@ -20961,6 +20971,7 @@ MonoBehaviour:
   objectDescription: 'A round, vertically grooved terracotta pot with a flared rim
     and weathered brown finish. '
   gazeHightlightColor: {r: 1, g: 0, b: 0, a: 1}
+  beGazedDuration: 0
   colliderRange: {fileID: 0}
 --- !u!114 &1393303671
 MonoBehaviour:
@@ -22509,6 +22520,7 @@ MonoBehaviour:
   objectDescription: 'A short, wide clay pot in a muted brown tone with a slightly
     raised rim and faint surface scratches. '
   gazeHightlightColor: {r: 1, g: 0, b: 0, a: 1}
+  beGazedDuration: 0
   colliderRange: {fileID: 0}
 --- !u!114 &1525858358
 MonoBehaviour:
@@ -23741,7 +23753,7 @@ Transform:
   m_GameObject: {fileID: 1605877431}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.346, y: 0, z: 0.743}
+  m_LocalPosition: {x: 2.346, y: 0, z: 1.393}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -24655,6 +24667,7 @@ MonoBehaviour:
   objectDescription: 'A small, tapered terracotta pot with a rough dark upper half
     and a smoother, weathered lower portion in reddish-brown. '
   gazeHightlightColor: {r: 1, g: 0, b: 0, a: 1}
+  beGazedDuration: 0
   colliderRange: {fileID: 0}
 --- !u!114 &1657014923
 MonoBehaviour:
@@ -26181,6 +26194,7 @@ MonoBehaviour:
   objectDescription: 'A tall terracotta pot with a tapered shape, featuring a rough
     dark brown upper half blending into a smoother reddish-orange lower section. '
   gazeHightlightColor: {r: 1, g: 0, b: 0, a: 1}
+  beGazedDuration: 0
   colliderRange: {fileID: 0}
 --- !u!1 &1770670559
 GameObject:
@@ -27600,6 +27614,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1
   gazeDirection: {x: 0, y: 0, z: 0}
+  gazeDurationThreshold: 0.5
   maxGazeMemory: 5
   showGazeResult: 1
   gazeFollower: {fileID: 2144364751}
@@ -30407,6 +30422,7 @@ MonoBehaviour:
   objectDescription: 'A dark reddish-brown terracotta pot with a rounded body, flared
     rim, and evenly spaced vertical grooves along the surface. '
   gazeHightlightColor: {r: 1, g: 0, b: 0, a: 1}
+  beGazedDuration: 0
   colliderRange: {fileID: 0}
 --- !u!114 &2025317053
 MonoBehaviour:
@@ -32312,6 +32328,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 128
   gazeDirection: {x: 0, y: 0, z: 0}
+  gazeDurationThreshold: 0.75
   maxGazeMemory: 5
   showGazeResult: 1
   gazeFollower: {fileID: 489400616}
