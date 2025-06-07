@@ -393,7 +393,7 @@ public class GatherItemManager : MonoBehaviour
             yield return new WaitForSeconds(1f);
 
             // ±£´æÍ¼Æ¬
-            SaveRenderTextureAsImage(renderCamera.targetTexture, "RT_" + i + ".png");
+            SaveRenderTextureAsImage(renderCamera.targetTexture, "RT_" + i + "_" + obj.name + ".png");
 
             // µÈ´ý 1 Ãë
             yield return new WaitForSeconds(2f);
