@@ -32,7 +32,7 @@ namespace BlockPuzzleGame
         [ContextMenu("Spawn Prefabs")]
         public void Spawn()
         {
-#if UNITY_EDITOR
+
             Clear();
 
             List<int> shuffledIndices = new List<int>();
@@ -45,7 +45,11 @@ namespace BlockPuzzleGame
                 for (int i = 0; i < positionLists.Count; i++)
                 {
                     Transform targetPos = positionLists[i];
+#if UNITY_EDITOR
                     GameObject obj = PrefabUtility.InstantiatePrefab(prefab) as GameObject;
+#else
+                    GameObject obj = Instantiate(prefab);
+#endif
                     if (obj == null || targetPos == null) continue;
 
                     obj.transform.SetParent(targetPos, false);
@@ -80,7 +84,11 @@ namespace BlockPuzzleGame
                 {
                     for (int i = 0; i < numberPerParent; i++)
                     {
+#if UNITY_EDITOR
                         GameObject obj = PrefabUtility.InstantiatePrefab(prefab) as GameObject;
+#else
+                        GameObject obj = Instantiate(prefab);
+#endif
                         if (obj == null) continue;
 
                         obj.transform.SetParent(parent, false);
@@ -110,7 +118,7 @@ namespace BlockPuzzleGame
                     }
                 }
             }
-#endif
+
         }
 
         void ApplyRandomColor(GameObject obj)
