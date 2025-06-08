@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.IO;
+using System.Threading.Tasks;
 using UnityEngine;
 using Newtonsoft.Json;
 using OpenAI.Chat;
@@ -38,6 +39,27 @@ public class ExperimentDataCollector : MonoBehaviour
         File.WriteAllText(path, json);
 
         Debug.Log($"Task data saved to {path}");
+    }
+
+    public static async Task SaveTaskDataToJsonAsync(TaskData_CollectItem taskData, string fileName)
+    {
+        // 1. 序列化为格式化 JSON 字符串（此处仍是同步处理）
+        string json = JsonConvert.SerializeObject(taskData, Formatting.Indented);
+
+        // 2. 构造保存路径
+        string path = Path.Combine(Application.persistentDataPath, fileName);
+
+        try
+        {
+            // 3. 异步写入文件
+            await File.WriteAllTextAsync(path, json);
+
+            Debug.Log($"Task data saved to {path}");
+        }
+        catch (IOException e)
+        {
+            Debug.LogError($"Failed to save task data: {e.Message}");
+        }
     }
 
     [ContextMenu("Test Save TaskData")]

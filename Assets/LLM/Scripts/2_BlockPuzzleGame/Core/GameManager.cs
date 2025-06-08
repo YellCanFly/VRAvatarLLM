@@ -355,7 +355,7 @@ namespace BlockPuzzleGame
             currentConditionComplted = false;
         }
 
-        public void OnOneConditionFinished()
+        public async void OnOneConditionFinished()
         {
             Debug.Log("All the items are placed in correct position");
 
@@ -363,9 +363,10 @@ namespace BlockPuzzleGame
             string dataFileName = string.Format(
                 "User{0:D2}_Condition{1:D2}_Task2_Data.json",
                 ExperimentManager.Instance.participantID,
-                (int)condition
+                (int)condition + 1
             );
-            ExperimentDataCollector.SaveTaskDataToJson(dataPerCondition, dataFileName);
+            //ExperimentDataCollector.SaveTaskDataToJson(dataPerCondition, dataFileName);
+            await ExperimentDataCollector.SaveTaskDataToJsonAsync(dataPerCondition, dataFileName);
 
 
             if (currentExperimentIndex < conditionOrders.Count - 1)

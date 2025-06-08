@@ -441,16 +441,17 @@ public class GatherItemManager : MonoBehaviour
         isCollecting = true; // Set the collecting flag to true
     }
 
-    private void OnOneConditionFinished()
+    private async void OnOneConditionFinished()
     {
         // Todo: Implement the logic to handle when all target items are collected
         isCollecting = false; // Set the collecting flag to false
         string dataFileName = string.Format(
             "User{0:D2}_Condition{1:D2}_Task1_Data.json",
             ExperimentManager.Instance.participantID,
-            (int)condition
+            (int)condition + 1
         );
-        ExperimentDataCollector.SaveTaskDataToJson(dataPerCondition, dataFileName);
+        //ExperimentDataCollector.SaveTaskDataToJson(dataPerCondition, dataFileName);
+        await ExperimentDataCollector.SaveTaskDataToJsonAsync(dataPerCondition, dataFileName);
 
         // Trigger to next round or finish the experiment
         if (currentExperimentIndex < conditionOrders.Count - 1)
