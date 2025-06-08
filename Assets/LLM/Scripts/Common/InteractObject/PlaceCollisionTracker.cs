@@ -8,11 +8,12 @@ namespace BlockPuzzleGame{
         public float detectionHeight = 0.2f;
         public LayerMask detectableLayer;
         public List<GameObject> objectsOnPlane = new List<GameObject>();
-        private List<GameObject> objectsOnPlaneRecord = new List<GameObject>();
+        public List<GameObject> objectsOnPlaneRecord = new List<GameObject>();
 
         private MeshCollider meshCollider;
 
         public UnityAction<GameObject> onObjectPlaced;
+        public UnityAction<GameObject> onObjectRemoved;
 
         void Start()
         {
@@ -21,6 +22,8 @@ namespace BlockPuzzleGame{
             {
                 Debug.LogError("Need MeshCollider component on the GameObject.");
             }
+
+            GameManager.Instance.onOneConditionFinished += ClearObjectRecords;
         }
 
         void Update()
@@ -52,11 +55,29 @@ namespace BlockPuzzleGame{
                 }
             }
 
+            if (objectsOnPlane.Count < objectsOnPlaneRecord.Count)
+            {
+                // Check for removed objects
+                foreach (var obj in objectsOnPlaneRecord)
+                {
+                    if (!objectsOnPlane.Contains(obj))
+                    {
+                        onObjectRemoved?.Invoke(obj);
+                    }
+                }
+            }
+
             objectsOnPlaneRecord.Clear();
             foreach (var obj in objectsOnPlane)
             {
                 objectsOnPlaneRecord.Add(obj);
             }
+        }
+
+        private void ClearObjectRecords()
+        {
+            objectsOnPlane.Clear();
+            objectsOnPlaneRecord.Clear();
         }
 
         void OnDrawGizmosSelected()

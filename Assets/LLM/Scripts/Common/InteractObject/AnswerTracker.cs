@@ -15,6 +15,7 @@ namespace BlockPuzzleGame
             foreach (PlaceCollisionTracker tracker in trackers)
             {
                 tracker.onObjectPlaced += OnObjectPlacedInTrack;
+                tracker.onObjectRemoved += OnObjectRemoved;
             }
         }
 
@@ -47,6 +48,11 @@ namespace BlockPuzzleGame
                 GameManager.Instance.OnWrongObjectPlaced();
             }
             GameManager.Instance.OnObjectPlaced();
+        }
+
+        public void OnObjectRemoved(GameObject obj)
+        {
+            GameManager.Instance.OnObjectRemoved();
         }
     }
 

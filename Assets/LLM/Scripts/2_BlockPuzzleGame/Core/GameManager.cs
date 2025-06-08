@@ -52,6 +52,8 @@ namespace BlockPuzzleGame
 
         private bool currentConditionComplted = true;
         private float currentProgress = 0f;
+        private bool isPlacingObject = false;
+        private bool isPlacingCorrectObject = false;
 
         private ExperimentDataCollector dataCollector;
         private TaskData_CollectItem dataPerCondition;
@@ -173,7 +175,7 @@ namespace BlockPuzzleGame
             return correctCount == results.Count;
         }
 
-        public void OnObjectPlaced()
+        private void CheckAndUpdateProgress()
         {
             bool conditionEnd = CheckOneConditionFinished(out float checkProgress);
             if (checkProgress > currentProgress)
@@ -188,14 +190,48 @@ namespace BlockPuzzleGame
             }
         }
 
+        public void OnObjectPlaced()
+        {
+            isPlacingObject = true;
+        }
+
+        public void OnObjectRemoved()
+        {
+            isPlacingObject = false;
+        }
+
         public void OnCorrectObjectPlaced()
         {
-            PlayCorrectSound();
+            isPlacingCorrectObject = true;
+            //PlayCorrectSound();
         }
 
         public void OnWrongObjectPlaced()
         {
-            PlayWrongSound();
+            isPlacingCorrectObject = false;
+            //PlayWrongSound();
+        }
+
+        public void OnHeldObject()
+        {
+
+        }
+
+        public void OnDropedObject()
+        {
+            if (isPlacingObject)
+            {
+                if (isPlacingCorrectObject)
+                {
+                    PlayCorrectSound();
+                    CheckAndUpdateProgress();
+                }
+                else
+                {
+                    PlayWrongSound();
+                }
+            }
+            isPlacingObject = false;
         }
 
         // Initialization methods for event bindings and canvas setup
@@ -204,6 +240,9 @@ namespace BlockPuzzleGame
             onOneConditionStarted += OnOneConditionStarted;
             onOneConditionFinished += OnOneConditionFinished;
             onAllConditionsFinished += OnAllConditionFinished;
+
+            GrabInteractObjectManager.Instance.onHeldObject += OnHeldObject;
+            GrabInteractObjectManager.Instance.onDropedObject += OnDropedObject;
         }
 
         public void InitCanvas()
@@ -329,21 +368,20 @@ namespace BlockPuzzleGame
             ExperimentDataCollector.SaveTaskDataToJson(dataPerCondition, dataFileName);
 
 
-
             if (currentExperimentIndex < conditionOrders.Count - 1)
             {
                 canvas_2_OneConditionCompleted.SetActive(true);
             }
             else
             {
-                canvas_4_AllConditionsCompleted?.SetActive(true);
+                onAllConditionsFinished?.Invoke();
             }
         }
 
         public void OnAllConditionFinished()
         {
             Debug.Log("All the conditions of this task are completed");
-            canvas_4_AllConditionsCompleted.SetActive(false);
+            canvas_4_AllConditionsCompleted?.SetActive(true);
         }
 
         // Task specific methods
