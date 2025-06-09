@@ -522,7 +522,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   objectName: Object
-  objectDescription: Description
+  objectDescription: 'A cluster of large, broad, heart-shaped green leaves emerges
+    from tall stems planted in a wide, reddish terracotta pot with a thick rounded
+    rim and tapered body. '
   gazeHightlightColor: {r: 1, g: 0, b: 0, a: 1}
   beGazedDuration: 0
   colliderRange: {fileID: 0}
@@ -3256,7 +3258,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   objectName: Object
-  objectDescription: Description
+  objectDescription: 'Trailing green ivy with pointed leaves spills over the sides
+    of a glossy dark blue rounded pot. '
   gazeHightlightColor: {r: 1, g: 0, b: 0, a: 1}
   beGazedDuration: 0
   colliderRange: {fileID: 0}
@@ -10913,6 +10916,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Canvas_Microphone
       objectReference: {fileID: 0}
+    - target: {fileID: 9178396268774429253, guid: 946efac4692a443408528c35145f8e29, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -17668,7 +17675,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   objectName: Object
-  objectDescription: Description
+  objectDescription: 'A large, dark gray clay pot with a wide rounded body, narrow
+    neck, flared rim, and a rough, aged surface. '
   gazeHightlightColor: {r: 1, g: 0, b: 0, a: 1}
   beGazedDuration: 0
   colliderRange: {fileID: 0}
@@ -18594,7 +18602,7 @@ PrefabInstance:
       propertyPath: m_text
       value: Your task is to instruct the avatar to collect some items on the shelf.
         The current target item will be displayed on the screen to your left. If
-        you are ready please, click the button below to start.
+        you are ready, please click the button below to start.
       objectReference: {fileID: 0}
     - target: {fileID: 1324653313682529973, guid: d0f5d921837d4d74ab139feae0f837f5, type: 3}
       propertyPath: m_fontSize
@@ -33545,7 +33553,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   objectName: Object
-  objectDescription: Description
+  objectDescription: 'A lush, wide-spreading palm plant with large, fan-shaped green
+    leaves is planted in a smooth, white speckled cylindrical pot. '
   gazeHightlightColor: {r: 1, g: 0, b: 0, a: 1}
   beGazedDuration: 0
   colliderRange: {fileID: 0}
@@ -34019,7 +34028,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   objectName: Object
-  objectDescription: Description
+  objectDescription: 'A small, silver-gray pot with a glossy finish, featuring an
+    embossed overlapping fan or shell pattern across its surface. '
   gazeHightlightColor: {r: 1, g: 0, b: 0, a: 1}
   beGazedDuration: 0
   colliderRange: {fileID: 0}
@@ -34506,7 +34516,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   objectName: Object
-  objectDescription: Description
+  objectDescription: 'A round, reddish-brown clay pot with a wide scalloped rim and
+    engraved decorative patterns encircling its midsection. '
   gazeHightlightColor: {r: 1, g: 0, b: 0, a: 1}
   beGazedDuration: 0
   colliderRange: {fileID: 0}
@@ -34628,7 +34639,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   objectName: Object
-  objectDescription: Description
+  objectDescription: 'A gray, stone-textured pot with a wide flared rim, rounded
+    body, and narrow pedestal-style base. '
   gazeHightlightColor: {r: 1, g: 0, b: 0, a: 1}
   beGazedDuration: 0
   colliderRange: {fileID: 0}

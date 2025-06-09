@@ -21,13 +21,19 @@ public class Tutorial_GrabItemCheck : MonoBehaviour
     void Update()
     {
 
-        float distance = Vector3.Distance(GrabItem.transform.position, PlaceTarget.transform.position);
-        if (distance < finishDistance && !isFinished)
-        {
-            isFinished = true;
-            Debug.Log("Task Finished: Item placed correctly!");
-            OnTaskFinished?.Invoke();
-        }
+        //float distance = Vector3.Distance(GrabItem.transform.position, PlaceTarget.transform.position);
+        //if (distance < finishDistance && !isFinished)
+        //{
+        //    isFinished = true;
+        //    Debug.Log("Task Finished: Item placed correctly!");
+        //    OnTaskFinished?.Invoke();
+        //}
        
+    }
+
+    public bool CheckIsFinished()
+    {
+        float distance = Vector3.Distance(GrabItem.transform.position, PlaceTarget.transform.position);
+        return distance < finishDistance;
     }
 }

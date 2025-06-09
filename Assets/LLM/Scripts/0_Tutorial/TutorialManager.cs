@@ -1,3 +1,4 @@
+using BlockPuzzleGame;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
@@ -19,6 +20,10 @@ public class TutorialManager : MonoBehaviour
     public GameObject grabGuadanceCanvas;
     public GameObject grabItemExample;
     private Tutorial_GrabItemCheck grabItemCheck;
+
+    [Header("Audio Settings")]
+    public AudioSource audioSource;
+    public AudioClip correctSound; // Sound to play when an item is collected correctly
 
     [Header("Tutorial Ending")]
     public GameObject tutorialEndingUI; // UI to show at the end of the tutorial
@@ -87,7 +92,7 @@ public class TutorialManager : MonoBehaviour
         ShowGrabGuidanceForDuration(10f);
         grabItemExample.SetActive(true);
         grabItemCheck = grabItemExample.GetComponentInChildren<Tutorial_GrabItemCheck>();
-        grabItemCheck.OnTaskFinished += OnGrabItemTaskFinished;
+        GrabInteractObjectManager.Instance.onDropedObject += OnObjectDroped; // Subscribe to the drop event
 
     }
 
@@ -103,12 +108,30 @@ public class TutorialManager : MonoBehaviour
         grabGuadanceCanvas.SetActive(false);
     }
 
+    private void OnObjectDroped()
+    {
+        Debug.Log("Object has been dropped. Checking if the grab item task is finished.");
+        if (grabItemCheck.CheckIsFinished())
+        {
+            Debug.Log("Grab item task is finished.");
+            if (audioSource != null && correctSound != null)
+            {
+                audioSource.PlayOneShot(correctSound);
+            }
+            OnGrabItemTaskFinished();
+        }
+        else
+        {
+            Debug.Log("Grab item task is not finished yet.");
+        }
+    }
+
     private void OnGrabItemTaskFinished()
     {
         Debug.Log("Grab item task finished.");
         grabItemExample.SetActive(false); // Hide the grab item example
-        grabItemCheck.OnTaskFinished -= OnGrabItemTaskFinished; // Unsubscribe from the event
-        
+        GrabInteractObjectManager.Instance.onDropedObject -= OnObjectDroped; // Unsubscribe from the drop event
+
         // Show ending UI
         tutorialEndingUI.SetActive(true);
         startExperimentButton = tutorialEndingUI.GetComponentInChildren<Button>();
