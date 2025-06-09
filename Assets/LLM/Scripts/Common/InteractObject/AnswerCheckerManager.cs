@@ -5,11 +5,18 @@ namespace BlockPuzzleGame
 {
     public class AnswerCheckerManager : MonoBehaviour
     {
+        public AnswerTracker[] trackers;
+
+        public void UpdateAnswerTracker()
+        {
+            trackers = FindObjectsByType<AnswerTracker>(FindObjectsSortMode.None);
+        }
+
         public List<AnswerEvaluationResult> GetAllResults()
         {
             List<AnswerEvaluationResult> results = new();
 
-            AnswerTracker[] trackers = FindObjectsByType<AnswerTracker>(FindObjectsSortMode.None);
+            UpdateAnswerTracker();
             foreach (var tracker in trackers)
             {
                 results.Add(tracker.EvaluateAnswer());
@@ -32,6 +39,22 @@ namespace BlockPuzzleGame
 
                 Debug.Log($"[{i}] Expected: {result.locationName}, Placed: {placedNames}, Correct: {result.isCorrect}");
             }
+        }
+
+        public List<BlockPuzzleData_TargetPlaceInfo> GetAllTrackerData()
+        {
+            UpdateAnswerTracker();
+            var trackerData = new List<BlockPuzzleData_TargetPlaceInfo>();
+            foreach (var tracker in trackers)
+            {
+                var data = new BlockPuzzleData_TargetPlaceInfo
+                {
+                    placeName = tracker.locationName,
+                    targetPosition = new SerializableVector3(tracker.transform.position),
+                };
+                trackerData.Add(data);
+            }
+            return trackerData;
         }
     }
 }

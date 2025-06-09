@@ -7,9 +7,11 @@ namespace BlockPuzzleGame
     {
         public string locationName;
 
+        private bool readyToCheck = false;
+        private GameObject placedObj;
         private PlaceCollisionTracker[] trackers;
 
-        private void Awake()
+        private void Start()
         {
             trackers = GetComponentsInChildren<PlaceCollisionTracker>();
             foreach (PlaceCollisionTracker tracker in trackers)
@@ -17,6 +19,7 @@ namespace BlockPuzzleGame
                 tracker.onObjectPlaced += OnObjectPlacedInTrack;
                 tracker.onObjectRemoved += OnObjectRemoved;
             }
+            GrabInteractObjectManager.Instance.onDropedObject += OnUserDropedObject;
         }
 
         public AnswerEvaluationResult EvaluateAnswer()
@@ -39,20 +42,26 @@ namespace BlockPuzzleGame
 
         private void OnObjectPlacedInTrack(GameObject obj)
         {
-            if (obj.name == locationName)
-            {
-                GameManager.Instance.OnCorrectObjectPlaced();
-            }
-            else
-            {
-                GameManager.Instance.OnWrongObjectPlaced();
-            }
-            GameManager.Instance.OnObjectPlaced();
+            readyToCheck = GrabInteractObjectManager.Instance.CurrentHeldObject != null;
+            placedObj = obj;
         }
 
         public void OnObjectRemoved(GameObject obj)
         {
+            readyToCheck = false;
             GameManager.Instance.OnObjectRemoved();
+        }
+
+        private void OnUserDropedObject()
+        {
+            if (readyToCheck && placedObj != null)
+            {
+                bool isCorrect = placedObj.name == locationName;
+                string objectName = placedObj.name;
+                string placeName = locationName;
+                GameManager.Instance.OnObjectPlaced(isCorrect, objectName, placeName);
+            }
+            readyToCheck = false;
         }
     }
 

@@ -27,21 +27,7 @@ public class ExperimentDataCollector : MonoBehaviour
         
     }
 
-    public static void SaveTaskDataToJson(TaskData_CollectItem taskData, string fileName)
-    {
-        // 1. 序列化为格式化 JSON 字符串
-        string json = JsonConvert.SerializeObject(taskData, Formatting.Indented);
-
-        // 2. 构造保存路径（你可以替换为其他路径）
-        string path = Path.Combine(Application.persistentDataPath, fileName);
-
-        // 3. 写入文件
-        File.WriteAllText(path, json);
-
-        Debug.Log($"Task data saved to {path}");
-    }
-
-    public static async Task SaveTaskDataToJsonAsync(TaskData_CollectItem taskData, string fileName)
+    public static async Task SaveTaskDataToJsonAsync<T>(T taskData, string fileName)
     {
         // 1. 序列化为格式化 JSON 字符串（此处仍是同步处理）
         string json = JsonConvert.SerializeObject(taskData, Formatting.Indented);
@@ -61,48 +47,6 @@ public class ExperimentDataCollector : MonoBehaviour
             Debug.LogError($"Failed to save task data: {e.Message}");
         }
     }
-
-    [ContextMenu("Test Save TaskData")]
-    public void TestSaveTaskData()
-    {
-        TaskData_CollectItem testData = new TaskData_CollectItem();
-        testData.participantID = 1;
-        testData.condition = InteractCondition.Baseline;
-
-        // 添加一些行为帧数据
-        for (int i = 0; i < 5; i++)
-        {
-            UserData_BehaviorFrame frame = new UserData_BehaviorFrame
-            {
-                timeStamp = Time.time + i,
-                headPosition = new SerializableVector3(new Vector3(i, i + 0.5f, i + 1f)),
-                headRotation = new SerializableVector3(new Vector3(0, 45 * i, 0)),
-                leftHandPosition = new SerializableVector3(new Vector3(i, 0, 0)),
-                leftHandRotation = new SerializableVector3(new Vector3(0, 0, i * 10)),
-                rightHandPosition = new SerializableVector3(new Vector3(0, i, 0)),
-                rightHandRotation = new SerializableVector3(new Vector3(0, i * 5, 0)),
-                eyeTrackingRotation = new SerializableQuaternion(Quaternion.Euler(0, i * 10, 0))
-            };
-            testData.behaviorFrames.Add(frame);
-        }
-
-
-        // 添加对话帧数据
-        for (int i = 0; i < 3; i++)
-        {
-            ConversationData_MessageFrame msgFrame = new ConversationData_MessageFrame
-            {
-                sentTime = Time.time + i,
-                startRecordingTime = Time.time + i - 0.5f,
-                message = new Message(Role.User, $"这是测试消息 {i}")
-            };
-            testData.conversationFrames.Add(msgFrame);
-        }
-
-        // 保存
-        SaveTaskDataToJson(testData, "test_task_data.json");
-    }
-
 
     public UserData_BehaviorFrame GetCurrentUserBehaviorFrame()
     {
@@ -135,7 +79,6 @@ public class TaskData_CollectItem
     [JsonProperty("conversation_frames")]
     public List<ConversationData_MessageFrame> conversationFrames = new List<ConversationData_MessageFrame>();
 }
-
 
 [System.Serializable]
 public class UserData_BehaviorFrame
@@ -176,6 +119,54 @@ public class ConversationData_MessageFrame
 
     [JsonProperty("message")]
     public Message message;
+}
+
+[System.Serializable]
+public class TaskData_BlockPuzzle
+{
+    [JsonProperty("participant_id")]
+    public int participantID;
+
+    [JsonProperty("condition")]
+    public InteractCondition condition;
+
+    [JsonProperty("target_places_info")]
+    public List<BlockPuzzleData_TargetPlaceInfo> targetPlacesInfo = new List<BlockPuzzleData_TargetPlaceInfo>();
+
+    [JsonProperty("behavior_frames")]
+    public List<UserData_BehaviorFrame> behaviorFrames = new List<UserData_BehaviorFrame>();
+
+    [JsonProperty("block_puzzle_place_records")]
+    public List<BlockPuzzleData_PlaceRecord> blockPuzzlePlaceRecords = new List<BlockPuzzleData_PlaceRecord>();
+
+    [JsonProperty("conversation_frames")]
+    public List<ConversationData_MessageFrame> conversationFrames = new List<ConversationData_MessageFrame>();
+}
+
+[System.Serializable]
+public class BlockPuzzleData_PlaceRecord
+{
+    [JsonProperty("time_stamp")]
+    public float time;
+
+    [JsonProperty("is_correct")]
+    public bool isCorrect;
+
+    [JsonProperty("place_name")]
+    public string placeName;
+
+    [JsonProperty("object_name")]
+    public string objectName;
+}
+
+[System.Serializable]
+public class BlockPuzzleData_TargetPlaceInfo
+{
+    [JsonProperty("place_name")]
+    public string placeName;
+
+    [JsonProperty("target_position")]
+    public SerializableVector3 targetPosition;
 }
 
 [System.Serializable]

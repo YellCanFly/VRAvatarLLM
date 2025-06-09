@@ -56,7 +56,7 @@ namespace BlockPuzzleGame
         private bool isPlacingCorrectObject = false;
 
         private ExperimentDataCollector dataCollector;
-        private TaskData_CollectItem dataPerCondition;
+        private TaskData_BlockPuzzle dataPerCondition;
 
 
         private void OnValidate()
@@ -190,49 +190,33 @@ namespace BlockPuzzleGame
             }
         }
 
-        public void OnObjectPlaced()
+        // Grab interact events
+        public void OnObjectPlaced(bool isCorrect, string objectName, string placeName)
         {
-            isPlacingObject = true;
+            if (isCorrect)
+            {
+                CheckAndUpdateProgress();
+                PlayCorrectSound();
+            }
+            else
+            {
+                PlayWrongSound();
+            }
+
+            BlockPuzzleData_PlaceRecord placeRecord = new();
+            placeRecord.time = Time.time;
+            placeRecord.isCorrect = isCorrect;
+            placeRecord.placeName = placeName;
+            placeRecord.objectName = objectName;
+
+            dataPerCondition.blockPuzzlePlaceRecords.Add(placeRecord);
         }
 
         public void OnObjectRemoved()
         {
-            isPlacingObject = false;
+            
         }
 
-        public void OnCorrectObjectPlaced()
-        {
-            isPlacingCorrectObject = true;
-            //PlayCorrectSound();
-        }
-
-        public void OnWrongObjectPlaced()
-        {
-            isPlacingCorrectObject = false;
-            //PlayWrongSound();
-        }
-
-        public void OnHeldObject()
-        {
-
-        }
-
-        public void OnDropedObject()
-        {
-            if (isPlacingObject)
-            {
-                if (isPlacingCorrectObject)
-                {
-                    PlayCorrectSound();
-                    CheckAndUpdateProgress();
-                }
-                else
-                {
-                    PlayWrongSound();
-                }
-            }
-            isPlacingObject = false;
-        }
 
         // Initialization methods for event bindings and canvas setup
         public void InitEventBinds()
@@ -240,9 +224,6 @@ namespace BlockPuzzleGame
             onOneConditionStarted += OnOneConditionStarted;
             onOneConditionFinished += OnOneConditionFinished;
             onAllConditionsFinished += OnAllConditionFinished;
-
-            GrabInteractObjectManager.Instance.onHeldObject += OnHeldObject;
-            GrabInteractObjectManager.Instance.onDropedObject += OnDropedObject;
         }
 
         public void InitCanvas()
@@ -343,15 +324,17 @@ namespace BlockPuzzleGame
             });
         }
 
-
         public void OnOneConditionStarted()
         {
             // Todo: Add logic for when one condition starts
             dataPerCondition = new();
             dataPerCondition.condition = condition;
             dataPerCondition.participantID = ExperimentManager.Instance.participantID;
+            dataPerCondition.targetPlacesInfo = answerCheckerManager.GetAllTrackerData();
             dataPerCondition.behaviorFrames.Clear(); // Clear previous frames for the new round
+            dataPerCondition.blockPuzzlePlaceRecords.Clear();
             dataPerCondition.conversationFrames.Clear(); // Clear previous conversation frames for the new round
+
             currentConditionComplted = false;
         }
 
