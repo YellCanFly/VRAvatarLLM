@@ -50,6 +50,10 @@ namespace BlockPuzzleGame
         public AudioClip correctSound; // Sound to play when an item is collected correctly
         public AudioClip wrongSound; // Sound to play when an item is collected incorrectly
 
+        [Header("User Settings")]
+        public GazeSphereDetector gazeSphereDetector;
+        public bool showGazeResult = true;
+
         private bool currentConditionComplted = true;
         private float currentProgress = 0f;
         private bool isPlacingObject = false;
@@ -267,6 +271,26 @@ namespace BlockPuzzleGame
             }
         }
 
+        private void InitGazeDetector()
+        {
+            switch (condition)
+            {
+                case InteractCondition.Baseline:
+                    gazeSphereDetector.showGazeResult = false; // Disable gaze result display
+                    break;
+                case InteractCondition.UniDirectional_Input:
+                    gazeSphereDetector.showGazeResult = true; // Enable gaze result display
+                    break;
+                case InteractCondition.UniDirectional_Output:
+                    gazeSphereDetector.showGazeResult = false; // Disable gaze result display
+                    break;
+                case InteractCondition.BiDirectional:
+                    gazeSphereDetector.showGazeResult = true; // Enable gaze result display
+                    break;
+            }
+            gazeSphereDetector.showGazeResult = gazeSphereDetector.showGazeResult && showGazeResult; // Combine with the global setting
+        }
+
         /// Button click handlers
         private void OnTaskGuidanceButtonClicked()
         {
@@ -386,6 +410,7 @@ namespace BlockPuzzleGame
             Debug.Log($"Starting experiment round {currentExperimentIndex + 1} with condition: {condition}");
 
             // Initialize the game state
+            InitGazeDetector();
             CreateGrabbableBox();
             CreateGoal();
 

@@ -152,8 +152,7 @@ namespace BlockPuzzleGame{
 
         protected override void AvatarAnimationWhileSpeaking(float speechDuration)
         {
-            Debug.Log("Avatar is speaking while pointing an object.");
-            AvatarStartPointingByName(currentInteractObject, speechDuration);
+            Debug.Log("Avatar can't poiting object in this condition.");
         }
 
         public void OnSendButtonClick()

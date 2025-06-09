@@ -9509,7 +9509,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 036483fdd1afc8349b7fcae42c6870d0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  participantID: 1
+  participantID: 3
   conditionOrder: 
 --- !u!4 &544532793
 Transform:
@@ -10647,13 +10647,13 @@ MonoBehaviour:
   maxDistance: 10
   detectionLayer:
     serializedVersion: 2
-    m_Bits: 1
+    m_Bits: 128
   gazeDirection: {x: 0, y: 0, z: 0}
   gazeDurationThreshold: 0.5
   maxGazeMemory: 5
-  showGazeResult: 0
+  showGazeResult: 1
   gazeFollower: {fileID: 1120656571}
-  gazeObjectName: {fileID: 0}
+  gazeObjectName: {fileID: 1084919667}
   showDebugGizmo: 1
   debugColor: {r: 0, g: 1, b: 1, a: 1}
 --- !u!114 &606418897
@@ -24675,6 +24675,8 @@ MonoBehaviour:
   audioSource: {fileID: 1533409014}
   correctSound: {fileID: 8300000, guid: 3f0bb75fc11168a438ece3f9f4efc6f2, type: 3}
   wrongSound: {fileID: 8300000, guid: 4ca6878cd6808c842b2c49e4884b7c72, type: 3}
+  gazeSphereDetector: {fileID: 606418896}
+  showGazeResult: 1
 --- !u!4 &1533409012
 Transform:
   m_ObjectHideFlags: 0
