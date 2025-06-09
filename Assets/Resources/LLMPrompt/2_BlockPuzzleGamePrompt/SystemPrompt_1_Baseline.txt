@@ -13,7 +13,7 @@ The user's input is structured and includes only the following:
   - `"place_name"`: The name of the location.
   - `"placed_objects"`: A list of object names that were actually placed at that location.
 
-Relative position format:
+Relative position format (relative to the user's head/camera):
 
 * x: Right-left — positive = to the right of the user, negative = to the left.
 * y: Up-down — positive = above the user, negative = below.
