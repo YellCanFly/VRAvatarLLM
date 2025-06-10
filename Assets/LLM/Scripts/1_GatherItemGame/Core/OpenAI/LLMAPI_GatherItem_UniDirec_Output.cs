@@ -9,8 +9,6 @@ using System.Linq;
 
 using Newtonsoft.Json;
 using TMPro;
-using UnityEditor;
-using static LLMAPI_GatherItem_Baseline;
 
 
 public class LLMAPI_GatherItem_UniDirec_Output : LLMAPI
@@ -77,12 +75,7 @@ public class LLMAPI_GatherItem_UniDirec_Output : LLMAPI
         Debug.Log($"User: {userInputJson}");
 
         // Create a chat request and send it to OpenAI, wait until get response
-        var chatRequest = new ChatRequest(GetAllMessages(), llmModel);
-        var (jsonObjResponse, response) = await openAI.ChatEndpoint.GetCompletionAsync<AIResponse>(chatRequest);
-
-        // Debug print the LLM's inference and data communication time
-        float llmTime = Time.time - debugTime;
-        Debug.Log("LLM Time = " + llmTime + " s");
+        var (jsonObjResponse, response) = await GetChatCompletionGenericAsync<AIResponse>(GetAllMessages(), llmModel);
 
         // Handle response
         HandleAIResponse(jsonObjResponse, response);
@@ -90,9 +83,9 @@ public class LLMAPI_GatherItem_UniDirec_Output : LLMAPI
 
     public async void HandleAIResponse(AIResponse jsonObjResponse, ChatResponse rawResponse)
     {
-        if (jsonObjResponse == null)
+        if (rawResponse == null)
         {
-            Debug.LogError("Error: Response is null!");
+            HandleInvalidResponse();
             return;
         }
 

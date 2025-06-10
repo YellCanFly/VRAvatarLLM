@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using System.Threading.Tasks;
 
 public class RandomVoicePlay : MonoBehaviour
 {
@@ -12,7 +13,7 @@ public class RandomVoicePlay : MonoBehaviour
         audioSource = GetComponentInParent<AudioSource>();
     }
 
-    public void PlayRandomAudio()
+    public async void PlayRandomAudio()
     {
         if (audioSource == null)
         {
@@ -30,10 +31,16 @@ public class RandomVoicePlay : MonoBehaviour
             return;
         }
 
-        audioSource.clip = audioClip;
-        //audioSource.Play();
+        while (audioSource.isPlaying)
+        {
+            Debug.Log("AudioSource is currently playing. Waiting...");
+            await Task.Delay(2000); // 不阻塞主线程
+        }
 
-        StartCoroutine(DelayPlayClip(playDelay));
+        audioSource.clip = audioClip;
+        audioSource.Play();
+
+        //StartCoroutine(DelayPlayClip(playDelay));
     }
 
     IEnumerator DelayPlayClip(float duration)

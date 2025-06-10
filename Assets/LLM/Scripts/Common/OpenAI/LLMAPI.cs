@@ -40,7 +40,8 @@ public class LLMAPI : MonoBehaviour
     public bool isAvatarEmbodied = true;
     public GazeSphereDetector gazeSphereDetector;
     public AvatarController avatarController;
-    public RandomVoicePlay randomVoicePlayer;
+    public RandomVoicePlay randomWaitVoicePlayer;
+    public RandomVoicePlay randomAskRepeatVoicePlayer;
     protected string currentInteractObject = "";
 
     [Header("Voice Recording Settings")]
@@ -54,6 +55,11 @@ public class LLMAPI : MonoBehaviour
     public UnityAction<Message, float> onUserMessageSent; // Message, Start recording time
     public UnityAction<Message> onAIResponseReceived; // AI response message
     public UnityAction<float> onAvatarStartSpeak;
+
+    public event Action onTranscriptionTimeout;
+    public event Action onChatCompletionTimeout;
+    public event Action onTextToSpeechTimeout;
+    public event Action onLLMAPIProcessWentWrong;
 
     // Debug Vars
     protected float debugTime;
@@ -89,6 +95,11 @@ public class LLMAPI : MonoBehaviour
         audioSource = GetComponent<AudioSource>();
 
         onAvatarStartSpeak += AvatarAnimationWhileSpeaking;
+
+        onTranscriptionTimeout += OnTranscriptionTimeout;
+        onChatCompletionTimeout += OnChatCompletionTimeout;
+        onTextToSpeechTimeout += OnTextToSpeechTimeout;
+        onLLMAPIProcessWentWrong += OnLLMAPIProcessWentWrong;
     }
 
     /// <summary>
@@ -125,8 +136,8 @@ public class LLMAPI : MonoBehaviour
     public virtual async void UserChatInput(string userContent)
     {
         Debug.Log("User input: " + userContent);
-        PlayRandomWaitVoice();
-        avatarController.TriggerThinkingAnimation();
+        //PlayRandomWaitVoice();
+        //avatarController.TriggerThinkingAnimation();
     }
 
     /// <summary>
@@ -141,51 +152,345 @@ public class LLMAPI : MonoBehaviour
     }
 
     /// <summary>
-    /// Convert text response to speech and play it.
+    /// 1. STT: Sends an audio transcription request to the OpenAI Whisper API.
     /// </summary>
-    protected async Task TextToSpeechRequest(string speechContent)
+    /// <param name="audioStream">The audio data as a MemoryStream.</param>
+    /// <param name="audioFileName">The name of the audio file (e.g., "mic_audio.wav").</param>
+    /// <param name="languageCode">The language of the audio (e.g., "en", "es").</param>
+    /// <returns>The transcribed text if successful, otherwise null.</returns>
+    public async Task<string> TranscribeAudioAsync(
+        MemoryStream audioStream,
+        string audioFileName,
+        string languageCode = "en",
+        int timeoutSeconds = 15)
     {
-        debugTime = Time.time;
+        if (openAI == null)
+        {
+            Debug.LogError("OpenAI API instance is not initialized. Cannot transcribe audio.");
+            await audioStream.DisposeAsync(); // Ensure stream is disposed even if API is not ready
+            return null;
+        }
+
+        audioStream.Position = 0;
+
+        var audioRequest = new AudioTranscriptionRequest(
+            audio: audioStream,
+            audioName: audioFileName,
+            model: Model.Whisper1,
+            language: languageCode
+        );
+
+        string transcriptionResult = null;
+        float transcriptionStartTime = Time.time;
+
+        // Setting maximun waiting time
+        CancellationTokenSource cts = new CancellationTokenSource();
+        cts.CancelAfter(TimeSpan.FromSeconds(timeoutSeconds));
+
+        bool hasTimedOut = false;
+        try
+        {
+            Task<string> transcriptionTask = openAI.AudioEndpoint.CreateTranscriptionTextAsync(audioRequest, cts.Token);
+            Task completedTask = await Task.WhenAny(transcriptionTask, Task.Delay(TimeSpan.FromSeconds(timeoutSeconds), cts.Token));
+
+            if (completedTask == transcriptionTask)
+            {
+                transcriptionResult = await transcriptionTask;
+                float transcriptionTime = Time.time - transcriptionStartTime;
+                Debug.Log("Transcription result: " + transcriptionResult);
+                Debug.Log("Transcription Time = " + transcriptionTime);
+            }
+            else
+            {
+                Debug.LogWarning($"Transcription request timed out after {timeoutSeconds} seconds.");
+                if (!hasTimedOut)
+                {
+                    onTranscriptionTimeout?.Invoke();
+                    hasTimedOut = true;
+                }
+                cts.Cancel();
+                transcriptionResult = null;
+            }
+        }
+        catch (OperationCanceledException)
+        {
+            // 这会捕获由于 cts.Cancel() 或 Task.Delay 超时导致的取消
+            Debug.LogWarning("Transcription request was explicitly cancelled or timed out.");
+            if (!hasTimedOut)
+            {
+                onTranscriptionTimeout?.Invoke();
+                hasTimedOut = true;
+            }
+            transcriptionResult = null;
+        }
+        catch (Exception e)
+        {
+            Debug.LogError($"Transcription failed: {e.Message}");
+            transcriptionResult = null;
+        }
+        finally
+        {
+            // Dispose the stream after use to release resources
+            await audioStream.DisposeAsync();
+            cts.Dispose();
+        }
+        return transcriptionResult;
+    }
+
+    /// <summary>
+    /// 2. LLM: Makes a chat completion request to OpenAI and deserializes the response
+    /// into a specified generic type.
+    /// </summary>
+    /// <typeparam name="T">The desired type of the return structure (e.g., AIResponse, MyCustomData).</typeparam>
+    /// <param name="messages">The list of chat messages to send.</param>
+    /// <param name="llmModel">The language model to use (e.g., "gpt-4", "gpt-3.5-turbo").</param>
+    /// <returns>A tuple containing the deserialized object of type T and the raw API response string.</returns>
+    public async Task<(T parsedResponse, ChatResponse rawResponse)> GetChatCompletionGenericAsync<T>(
+        List<Message> messages,
+        Model llmModel,
+        int timeoutSeconds =30) where T : new() // T must have a parameterless constructor
+    {
+        float llmStartTime = Time.time; // Start timing for this request    
+
+        if (openAI == null)
+        {
+            Debug.LogError("OpenAI API instance is not initialized. Please assign it in the Inspector or initialize it in code.");
+            return (default(T), null); // Return default values if API is not initialized
+        }
+
+        var chatRequest = new ChatRequest(messages, llmModel);
+
+        T jsonObjResponse = default(T);
+        ChatResponse rawResponse = null;
+
+        CancellationTokenSource cts = new CancellationTokenSource();
+        cts.CancelAfter(TimeSpan.FromSeconds(timeoutSeconds));
+
+        bool hasTimedOut = false;
+        try
+        {
+            // The core of the generic approach with cancellation token:
+            // GetCompletionAsync<T> directly handles deserialization into T
+            // Ensure your OpenAI_API library version supports passing CancellationToken to GetCompletionAsync.
+            Task<(T, ChatResponse)> completionTask = openAI.ChatEndpoint.GetCompletionAsync<T>(chatRequest, cts.Token);
+            Task completedTask = await Task.WhenAny(completionTask, Task.Delay(TimeSpan.FromSeconds(timeoutSeconds), cts.Token));
+
+            if (completedTask == completionTask)
+            {
+                (jsonObjResponse, rawResponse) = await completionTask;
+                Debug.Log("Chat completion successful.");
+                float llmTime = Time.time - llmStartTime;
+                Debug.Log("LLM Time = " + llmTime + " s");
+            }
+            else // completedTask 是 Task.Delay，表示超时了
+            {
+                Debug.LogWarning($"Chat completion request timed out after {timeoutSeconds} seconds. Cancelling operation.");
+                if (!hasTimedOut)
+                {
+                    hasTimedOut = true;
+                    onChatCompletionTimeout?.Invoke();
+                }
+                cts.Cancel();
+                jsonObjResponse = default(T);
+                rawResponse = null;
+            }
+        }
+        catch (OperationCanceledException)
+        {
+            Debug.LogWarning("Chat completion request was explicitly cancelled or timed out (OperationCanceledException).");
+            if (!hasTimedOut)
+            {
+                hasTimedOut = true;
+                onChatCompletionTimeout?.Invoke();
+            }
+            jsonObjResponse = default(T);
+            rawResponse = null;
+        }
+        catch (Exception e)
+        {
+            Debug.LogError($"Error getting chat completion: {e.Message}");
+            jsonObjResponse = default(T);
+            rawResponse = null;
+        }
+        finally
+        {
+            cts.Dispose();
+        }
+
+        return (jsonObjResponse, rawResponse);
+    }
+
+    /// <summary>
+    /// 3. TTS: Convert text response to speech and play it.
+    /// Includes a timeout mechanism for the API call.
+    /// </summary>
+    /// <param name="speechContent">The text content to convert to speech.</param>
+    /// <param name="timeoutSeconds">The maximum time to wait for the TTS response in seconds. Defaults to 30.</param>
+    protected async Task TextToSpeechRequest(
+        string speechContent, 
+        int timeoutSeconds = 30) // Added timeoutSeconds parameter
+    {
+        float ttsStartTime = Time.time; // Start timing for this request
+        Debug.Log("Start to request TTS: " + speechContent);
+
+        if (openAI == null)
+        {
+            Debug.LogError("OpenAI API instance is not initialized. Please assign it in the Inspector or initialize it in code.");
+            return;
+        }
+        if (audioSource == null)
+        {
+            Debug.LogError("AudioSource is not assigned. Cannot play speech.");
+            return;
+        }
+
         var speechRequest = new SpeechRequest(
             model: ttsModel,
             input: speechContent,
             voice: Voice.Echo,
             responseFormat: SpeechResponseFormat.PCM);
 
-        var speechClip = await openAI.AudioEndpoint.GetSpeechAsync(speechRequest);
+        AudioClip speechClip = null;
 
-        if (audioSource.isPlaying)
+        // Create CancellationTokenSource for timeout and cancellation
+        CancellationTokenSource cts = new CancellationTokenSource();
+        // Set timeout duration
+        cts.CancelAfter(TimeSpan.FromSeconds(timeoutSeconds));
+
+        // Flag to prevent multiple timeout event invokes
+        bool hasTimedOut = false;
+
+        try
+        {
+            // The TTS API call task, ensuring it supports cancellation tokens.
+            // Check your OpenAI_API library if GetSpeechAsync has an overload that takes CancellationToken.
+            Task<SpeechClip> speechTask = openAI.AudioEndpoint.GetSpeechAsync(speechRequest, partialClipCallback:null, cancellationToken: cts.Token);
+            // Race the API call against the timeout task
+            Task completedTask = await Task.WhenAny(speechTask, Task.Delay(TimeSpan.FromSeconds(timeoutSeconds), cts.Token));
+
+            if (completedTask == speechTask)
+            {
+                // TTS API call completed successfully within the timeout
+                speechClip = await speechTask;
+                float ttsTime = Time.time - debugTime;
+                Debug.Log("TTS request successful.");
+                Debug.Log("TTS Time = " + ttsTime);
+            }
+            else // completedTask is Task.Delay, indicating a timeout
+            {
+                Debug.LogWarning($"Text-to-Speech request timed out after {timeoutSeconds} seconds. Cancelling operation.");
+                if (!hasTimedOut) // Only invoke if not already timed out
+                {
+                    onTextToSpeechTimeout?.Invoke(); // Trigger the timeout event
+                    hasTimedOut = true;
+                }
+                cts.Cancel(); // Signal cancellation to the ongoing speechTask
+                speechClip = null; // Explicitly set to null for clarity
+            }
+        }
+        catch (OperationCanceledException)
+        {
+            // This catches cancellations, potentially from cts.Cancel() or Task.Delay timeout
+            Debug.LogWarning("Text-to-Speech request was explicitly cancelled or timed out (OperationCanceledException).");
+            if (!hasTimedOut) // Only invoke if not already timed out
+            {
+                onTextToSpeechTimeout?.Invoke(); // Trigger the timeout event
+                hasTimedOut = true;
+            }
+            speechClip = null; // Ensure null if cancelled
+        }
+        catch (Exception e)
+        {
+            Debug.LogError($"Error during Text-to-Speech API request: {e.Message}");
+            // Handle error gracefully, e.g., show a message to the user
+            speechClip = null; // Ensure null on error
+        }
+        finally
+        {
+            // Dispose the CancellationTokenSource resources
+            cts.Dispose();
+        }
+
+        // If speechClip is null at this point, it means the API request failed, timed out, or was cancelled
+        if (speechClip == null)
+        {
+            Debug.LogError("Speech clip was null after API request (failed, timed out, or cancelled). Cannot play audio.");
+            return; // Exit the function early if no clip
+        }
+
+        // --- Audio Playback Logic (Only proceeds if speechClip is not null) ---
+        while (audioSource.isPlaying)
         {
             Debug.Log("AudioSource is currently playing. Waiting...");
-            await Task.Run(() => {
-                while (audioSource.isPlaying)
-                {
-                    Task.Delay(100).Wait(); // Every 100 ms check once
-                }
-            });
+            await Task.Delay(2000); // 不阻塞主线程
         }
 
         audioSource.clip = speechClip;
         audioSource.Play();
-        Debug.Log("Clip Length = " + speechClip.Length);
-        onAvatarStartSpeak?.Invoke(speechClip.Length);
+        Debug.Log("Clip Length = " + speechClip.length);
+        onAvatarStartSpeak?.Invoke(speechClip.length);
 
         // Debug output
-        float ttsTime = Time.time - debugTime;
-        debugTime = Time.time;
-        Debug.Log(speechClip);
-        Debug.Log("TTS Time = " + ttsTime);
+        Debug.Log(speechClip); // This logs the AudioClip object itself, not its content
+    }
+
+    public void OnTranscriptionTimeout()
+    {
+        onLLMAPIProcessWentWrong?.Invoke();
+    }
+
+    public void OnChatCompletionTimeout()
+    {
+        onLLMAPIProcessWentWrong?.Invoke();
+    }
+
+    public void OnTextToSpeechTimeout()
+    {
+        onLLMAPIProcessWentWrong?.Invoke();
+    }
+
+    public void OnLLMAPIProcessWentWrong()
+    {
+        avatarController.TriggerThinkingAnimation();
+        PlayRandomAskRepeatVoice();
+    }
+
+    protected void HandleInvalidResponse()
+    {
+        Message errorAvatarMessage = new Message(Role.Assistant, "Sorry. Can you repeat it again?");
+        AddMessage(errorAvatarMessage); // add or not?
+        onAIResponseReceived?.Invoke(errorAvatarMessage);
+        Debug.LogError("Error: Response is null!");
     }
 
     protected void PlayRandomWaitVoice()
     {
-        if (randomVoicePlayer == null)
+        if (randomWaitVoicePlayer == null)
         {
-            Debug.LogWarning("Random voice player is not assigned. Please check it.");
+            Debug.LogWarning("Random wait voice player is not assigned. Please check it.");
             return;
         }
-        randomVoicePlayer.audioSource = audioSource;
-        randomVoicePlayer.PlayRandomAudio();
+        randomWaitVoicePlayer.audioSource = audioSource;
+        randomWaitVoicePlayer.PlayRandomAudio();
+    }
+
+    protected void PlayRandomAskRepeatVoice()
+    {
+        if (randomWaitVoicePlayer == null)
+        {
+            Debug.LogWarning("Random ask repeat voice player is not assigned. Please check it.");
+            return;
+        }
+        randomAskRepeatVoicePlayer.audioSource = audioSource;
+        randomAskRepeatVoicePlayer.PlayRandomAudio();
+    }
+
+    [ContextMenu("Test Avatar React After User Speaking")]
+    protected void AvatarReactAfterUserSpeaking()
+    {
+        Debug.Log("Avatar reacts after user speaking.");
+        PlayRandomWaitVoice();
+        avatarController.TriggerThinkingAnimation();
     }
 
 
@@ -262,31 +567,20 @@ public class LLMAPI : MonoBehaviour
             RecordingIcon.SetActive(false);
         }
 
-        transcriptionStream.Position = 0;
+        AvatarReactAfterUserSpeaking();
 
-        var audioRequest = new AudioTranscriptionRequest(
-            audio: transcriptionStream,
-            audioName: "mic_audio.wav",
-            model: Model.Whisper1,
-            language: "en"
-        );
+        // Call the new encapsulated function for transcription
+        string result = await TranscribeAudioAsync(transcriptionStream, "mic_audio.wav", "en");
 
-        try
+        // Handle the transcription result
+        if (!string.IsNullOrEmpty(result))
         {
-            var result = await openAI.AudioEndpoint.CreateTranscriptionTextAsync(audioRequest);
-            float transcriptionTime = Time.time - debugTime;
-            debugTime = Time.time;
-            Debug.Log("Transcription result: " + result);
-            Debug.Log("Transcription Time = " + transcriptionTime);
-            UserChatInput(result);
+            UserChatInput(result); // Pass the result to your chat input handler
         }
-        catch (Exception e)
+        else
         {
-            Debug.LogError("Transcription failed: " + e);
-        }
-        finally
-        {
-            await transcriptionStream.DisposeAsync();
+            Debug.LogWarning("Transcription returned empty or failed.");
+            // Optionally, provide user feedback that transcription failed
         }
     }
     #endregion

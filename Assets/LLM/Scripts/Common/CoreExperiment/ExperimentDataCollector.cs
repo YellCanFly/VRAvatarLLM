@@ -76,8 +76,21 @@ public class TaskData_CollectItem
     [JsonProperty("behavior_frames")]
     public List<UserData_BehaviorFrame> behaviorFrames = new List<UserData_BehaviorFrame>();
 
+    [JsonProperty("behavior_frames")]
+    public List<CollectItemData_CurrentTargetRecords> currentTargetRecords = new List<CollectItemData_CurrentTargetRecords>();
+
     [JsonProperty("conversation_frames")]
     public List<ConversationData_MessageFrame> conversationFrames = new List<ConversationData_MessageFrame>();
+}
+
+[System.Serializable]
+public class CollectItemData_CurrentTargetRecords
+{
+    [JsonProperty("time_stamp")]
+    public float timeStamp;
+
+    [JsonProperty("target_object_name")]
+    public string targetObjectName;
 }
 
 [System.Serializable]

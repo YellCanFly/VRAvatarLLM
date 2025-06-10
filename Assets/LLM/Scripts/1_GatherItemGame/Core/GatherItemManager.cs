@@ -428,11 +428,17 @@ public class GatherItemManager : MonoBehaviour
             Debug.LogWarning("Data per condition is not initialized. Cannot record user message.");
             return;
         }
+        float sentTime = Time.time;
         dataPerCondition.conversationFrames.Add(new ConversationData_MessageFrame()
         {
-            sentTime = Time.time,
+            sentTime = sentTime,
             startRecordingTime = startRecordingTime,
             message = message
+        });
+        dataPerCondition.currentTargetRecords.Add(new CollectItemData_CurrentTargetRecords()
+        {
+            timeStamp = sentTime,
+            targetObjectName = GetCurrentTargetGatherItem().interactObject.objectName,
         });
     }
 
