@@ -166,11 +166,13 @@ public class LLMAPI_GatherItem_Embodied : LLMAPI
         }
     }
 
+    //public string testName = "InteractObject_FlowerPot (12)";
+    //public float testPointTime = 8f;
     //[ContextMenu("Test Func")]
     //public void TestFunc()
     //{
     //    Debug.Log("Avatar is speaking while pointing InteractObject_PottedPlant (1).");
-    //    AvatarStartPointingByName("InteractObject_PottedPlant (1)", 8f);
+    //    AvatarStartPointingByName(testName, testPointTime);
     //}
 
     public void OnSendButtonClick()
