@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEditor;
 using System.Collections.Generic;
 using TMPro;
+using System;
 
 namespace BlockPuzzleGame
 {
@@ -29,9 +30,17 @@ namespace BlockPuzzleGame
         [HideInInspector]
         public List<GameObject> spawnedObjects = new List<GameObject>();
 
+        private System.Random rng;
+
         [ContextMenu("Spawn Prefabs")]
         public void Spawn()
         {
+            DateTime epoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+            DateTime nowUtc = DateTime.UtcNow;
+            TimeSpan timeSinceEpoch = nowUtc - epoch;
+            int seed = (int)timeSinceEpoch.TotalSeconds;
+            rng = new System.Random(seed);
+
 
             Clear();
 
@@ -125,7 +134,7 @@ namespace BlockPuzzleGame
         {
             if (randomColors == null || randomColors.Count == 0) return;
 
-            NamedColor selected = randomColors[Random.Range(0, randomColors.Count)];
+            NamedColor selected = randomColors[rng.Next(randomColors.Count)];
 
             Renderer rend = obj.GetComponentInChildren<Renderer>(true);
             if (rend != null)
@@ -154,7 +163,7 @@ namespace BlockPuzzleGame
         {
             for (int i = 0; i < list.Count; i++)
             {
-                int j = Random.Range(i, list.Count);
+                int j = rng.Next(i, list.Count);
                 (list[i], list[j]) = (list[j], list[i]);
             }
         }

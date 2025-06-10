@@ -6,6 +6,7 @@ using Utilities.Extensions;
 using System.Collections;
 using System.IO;
 using OpenAI.Chat;
+using System;
 
 [RequireComponent(typeof(AudioSource))]
 [RequireComponent(typeof(ExperimentDataCollector))]
@@ -164,7 +165,7 @@ public class GatherItemManager : MonoBehaviour
     {
         InitAvatar();
         InitGazeDetector();
-        InitRandomTargetIDList((int)condition);
+        InitRandomTargetIDList();
         InitAllGatherItems();
     }
 
@@ -217,8 +218,13 @@ public class GatherItemManager : MonoBehaviour
         gazeSphereDetector.showGazeResult = gazeSphereDetector.showGazeResult && showGazeResult; // Combine with the global setting
     }
 
-    private void InitRandomTargetIDList(int seed)
+    private void InitRandomTargetIDList()
     {
+        DateTime epoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+        DateTime nowUtc = DateTime.UtcNow;
+        TimeSpan timeSinceEpoch = nowUtc - epoch;
+        int seed = (int)timeSinceEpoch.TotalSeconds;
+
         if (collectNumber > allGatherObjects.Length)
         {
             Debug.LogWarning("Collect number exceeds available gather items. Adjusting to maximum available items.");
@@ -407,11 +413,21 @@ public class GatherItemManager : MonoBehaviour
     #region Event Handlers
     private void OnUserBehaving()
     {
+        if (dataPerCondition == null)
+        {
+            Debug.LogWarning("Data per condition is not initialized. Cannot record user message.");
+            return;
+        }
         dataPerCondition.behaviorFrames.Add(dataCollector.GetCurrentUserBehaviorFrame());
     }
 
     private void OnUserMessageSent(Message message, float startRecordingTime)
     {
+        if (dataPerCondition == null)
+        {
+            Debug.LogWarning("Data per condition is not initialized. Cannot record user message.");
+            return;
+        }
         dataPerCondition.conversationFrames.Add(new ConversationData_MessageFrame()
         {
             sentTime = Time.time,
@@ -422,6 +438,11 @@ public class GatherItemManager : MonoBehaviour
 
     private void OnAIMessageReceived(Message message)
     {
+        if (dataPerCondition == null)
+        {
+            Debug.LogWarning("Data per condition is not initialized. Cannot record user message.");
+            return;
+        }
         dataPerCondition.conversationFrames.Add(new ConversationData_MessageFrame()
         {
             sentTime = Time.time,
