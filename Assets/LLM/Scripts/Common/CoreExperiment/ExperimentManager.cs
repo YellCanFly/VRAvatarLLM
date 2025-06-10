@@ -90,3 +90,10 @@ public class ExperimentManager : MonoBehaviour
 
 
 }
+
+[System.Serializable]
+public class ExperimentConfig
+{
+    public bool is_gaze_previewd;
+    public int task1_collect_number;
+}

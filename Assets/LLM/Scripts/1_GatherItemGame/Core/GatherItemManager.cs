@@ -83,6 +83,9 @@ public class GatherItemManager : MonoBehaviour
         // Initialize for the whole experiment process
         InitCanvasRefs();
         InitActionBinds();
+        InitFromConfigFile();
+
+
     }
 
     void Start()
@@ -158,6 +161,20 @@ public class GatherItemManager : MonoBehaviour
         onOneConditionStarted += OnOneConditionStarted;
         onOneConditionFinished += OnOneConditionFinished;
         onAllConditionsFinished += OnAllConditionsFinished;
+    }
+
+    private void InitFromConfigFile()
+    {
+        string path = Path.Combine(Application.persistentDataPath, "config.json");
+        if (File.Exists(path))
+        {
+            string json = File.ReadAllText(path);
+            var config = JsonUtility.FromJson<ExperimentConfig>(json);
+            Debug.Log("Config loaded: " + json);
+
+            collectNumber = config.task1_collect_number; // Load the collect number from the config
+            showGazeResult = config.is_gaze_previewd; // Load the gaze preview setting from the config
+        }
     }
 
     // ------ Initialization for each experiment condition ------

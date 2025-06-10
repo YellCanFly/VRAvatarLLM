@@ -4,6 +4,7 @@ using UnityEngine.Events;
 using UnityEngine.UI;
 using OpenAI.Chat;
 using UnityEngine.Audio;
+using System.IO;
 
 namespace BlockPuzzleGame
 {
@@ -56,8 +57,6 @@ namespace BlockPuzzleGame
 
         private bool currentConditionComplted = true;
         private float currentProgress = 0f;
-        private bool isPlacingObject = false;
-        private bool isPlacingCorrectObject = false;
 
         private ExperimentDataCollector dataCollector;
         private TaskData_BlockPuzzle dataPerCondition;
@@ -86,6 +85,7 @@ namespace BlockPuzzleGame
             dataCollector = GetComponent<ExperimentDataCollector>();
             InitEventBinds();
             InitCanvas();
+            InitFromConfigFile();
         }
 
         private void Start()
@@ -115,6 +115,19 @@ namespace BlockPuzzleGame
                 userBehaviorSaveTimer = 0f; // Reset the timer if not collecting
             }
 
+        }
+
+        private void InitFromConfigFile()
+        {
+            string path = Path.Combine(Application.persistentDataPath, "config.json");
+            if (File.Exists(path))
+            {
+                string json = File.ReadAllText(path);
+                var config = JsonUtility.FromJson<ExperimentConfig>(json);
+                Debug.Log("Config loaded: " + json);
+
+                showGazeResult = config.is_gaze_previewd; // Load the gaze preview setting from the config
+            }
         }
 
         public void CreateGrabbableBox()
