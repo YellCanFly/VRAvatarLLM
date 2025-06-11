@@ -65,6 +65,9 @@ public class GatherItemManager : MonoBehaviour
     private ExperimentDataCollector dataCollector;
     private TaskData_CollectItem dataPerCondition;
 
+    private bool leftStickPressed = false; // Flag to indicate if the left stick is pressed
+    private bool rightStickPressed = false; // Flag to indicate if the right stick is pressed
+
     private void Awake()
     {
         // Singleton pattern to ensure only one instance of GatherItemManager exists
@@ -109,6 +112,31 @@ public class GatherItemManager : MonoBehaviour
         else
         {
             userBehaviorSaveTimer = 0f; // Reset the timer if not collecting
+        }
+
+        if (OVRInput.GetDown(OVRInput.Button.PrimaryThumbstick))
+        {
+            leftStickPressed = true; // Set the flag when the left stick is pressed
+        }
+        if (OVRInput.GetDown(OVRInput.Button.SecondaryThumbstick))
+        {
+            rightStickPressed = true; // Set the flag when the right stick is pressed
+        }
+        if (OVRInput.GetUp(OVRInput.Button.PrimaryThumbstick))
+        {
+            leftStickPressed = false; // Reset the flag when the left stick is released
+        }
+        if (OVRInput.GetUp(OVRInput.Button.SecondaryThumbstick))
+        {
+            rightStickPressed = false; // Reset the flag when the right stick is released
+        }
+        // Check if the user press the left and right sticks at the same time
+        if (leftStickPressed && rightStickPressed)
+        {
+            // Todo: Move to next condition
+            onOneConditionFinished?.Invoke(); // Invoke the action when both sticks are pressed
+            leftStickPressed = false; // Reset the flag after executing the action
+            rightStickPressed = false; // Reset the flag after executing the action
         }
     }
 
@@ -180,10 +208,10 @@ public class GatherItemManager : MonoBehaviour
     // ------ Initialization for each experiment condition ------
     public void InitExperimentCondition()
     {
-        InitAvatar();
-        InitGazeDetector();
         InitRandomTargetIDList();
         InitAllGatherItems();
+        InitAvatar();
+        InitGazeDetector();
     }
 
     private void InitAvatar()

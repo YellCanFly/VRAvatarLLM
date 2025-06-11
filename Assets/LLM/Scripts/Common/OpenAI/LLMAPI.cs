@@ -118,9 +118,9 @@ public class LLMAPI : MonoBehaviour
             StartMicRecording();
         }
 
-        if (
+        if (isRecording && (
             (isVRConnected && OVRInput.GetUp(OVRInput.Button.One, OVRInput.Controller.LTouch)) ||
-            (!isVRConnected && Input.GetKeyUp(KeyCode.Return))
+            (!isVRConnected && Input.GetKeyUp(KeyCode.Return)))
         )
         {
             Debug.Log("Stop recording triggered");
@@ -536,7 +536,6 @@ public class LLMAPI : MonoBehaviour
         Debug.Log("Recording started...");
         startRecordingTime = Time.time;
         debugTime = Time.time;
-        isRecording = true;
         recordingCts = new CancellationTokenSource();
         transcriptionStream = new MemoryStream();
 
@@ -548,6 +547,7 @@ public class LLMAPI : MonoBehaviour
                 {
                     RecordingIcon.SetActive(true);
                 }
+                isRecording = true;
                 await transcriptionStream.WriteAsync(buffer, CancellationToken.None);
             }
         }, 24000, recordingCts.Token);
@@ -565,7 +565,7 @@ public class LLMAPI : MonoBehaviour
 
         isRecording = false;
         recordingCts?.Cancel();
-        if (recordingCts != null)
+        if (RecordingIcon != null)
         {
             RecordingIcon.SetActive(false);
         }
@@ -621,8 +621,8 @@ public class LLMAPI : MonoBehaviour
             if (avatarController != null)
             {
                 avatarController.StartPointing(gazeObjectPosition);
-                if (pointDuration < 5f)
-                    pointDuration = 5f; // Ensure minimum pointing duration
+                if (pointDuration < 10f)
+                    pointDuration = 10f; // Ensure minimum pointing duration
                 StartCoroutine(AvatarKeepPointingInDuration(pointDuration));
             }
         }

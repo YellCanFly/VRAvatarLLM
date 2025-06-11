@@ -7,8 +7,6 @@ public class Tutorial_GrabItemCheck : MonoBehaviour
     public GameObject PlaceTarget;
     public float finishDistance = 0.25f; // Distance to consider the task finished
 
-    private bool isFinished = false;
-
     public UnityAction OnTaskFinished;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created

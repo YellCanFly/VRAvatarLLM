@@ -65,13 +65,21 @@ public class InteractObject : MonoBehaviour
     {
         // Get the main camera's position
         Vector3 cameraPosition = camTransform.position;
+        cameraPosition.y = 0.0f;
         // Calculate the relative position of this object to the camera
-        Vector3 relativePosition = transform.position - cameraPosition;
+        Vector3 objPos = transform.position;
+        objPos.y = 0.0f; // Ignore the y-axis for horizontal plane calculation
+        Vector3 relativePosition = objPos - cameraPosition;
+
+        Vector3 right = camTransform.right;
+        Vector3 forward = camTransform.forward;
+        right.y = 0.0f; // Ignore the y-axis for horizontal plane calculation
+        forward.y = 0.0f; // Ignore the y-axis for horizontal plane calculation
 
         RelativePosition result = new RelativePosition(
-            x: Vector3.Dot(relativePosition, camTransform.right),
-            y: Vector3.Dot(relativePosition, camTransform.up),
-            z: Vector3.Dot(relativePosition, camTransform.forward)
+            x: Vector3.Dot(relativePosition, right),
+            height: transform.position.y, // Use the object's y position as height
+            z: Vector3.Dot(relativePosition, forward)
             );
 
         return result;
@@ -95,12 +103,13 @@ public class InteractObject : MonoBehaviour
 public struct RelativePosition
 {
     public float x;
-    public float y;
+    public float height;
     public float z;
-    public RelativePosition(float x, float y, float z)
+    public RelativePosition(float x, float height, float z)
     {
+        const float pivotOffset = 0.2f; // Offset to adjust the height
         this.x = x;
-        this.y = y;
+        this.height = height - pivotOffset; // height only used in task 2
         this.z = z;
     }
 }

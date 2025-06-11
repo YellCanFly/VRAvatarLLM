@@ -39,7 +39,7 @@ public class LLMAPI_GatherItem_UniDirec_Output : LLMAPI
         {
             objectsInfo.objects_info.Add(interactObj.GetComponentInChildren<GatherItemObject>().GetGrabItemInfoInt());
         }
-        string objectsInfoJsonStr = JsonUtility.ToJson(objectsInfo, true);
+        string objectsInfoJsonStr = JsonUtility.ToJson(objectsInfo, false);
         systemPrompt += objectsInfoJsonStr;
         ResetMessages();
     }
@@ -55,17 +55,17 @@ public class LLMAPI_GatherItem_UniDirec_Output : LLMAPI
         userInput.question = userContent;
 
         // Parse gaze data from GazeSphereDetector
-        if (gazeSphereDetector != null)
-        {
-            var allObjectInEyeFieldList = gazeSphereDetector.GetAllObjectInEyeFieldList(); // List<string> For all objects in eye field
+        //if (gazeSphereDetector != null)
+        //{
+        //    var allObjectInEyeFieldList = gazeSphereDetector.GetAllObjectInEyeFieldList(); // List<string> For all objects in eye field
 
-            userInput.objects_in_view = allObjectInEyeFieldList;
-        }
-        else
-        {
-            // Fallback to default values if GazeSphereDetector is not available
-            userInput.objects_in_view = new List<string>();
-        }
+        //    userInput.objects_in_view = allObjectInEyeFieldList;
+        //}
+        //else
+        //{
+        //    // Fallback to default values if GazeSphereDetector is not available
+        //    userInput.objects_in_view = new List<string>();
+        //}
 
         // Add user input to the message list
         string userInputJson = JsonUtility.ToJson(userInput, true);
@@ -178,8 +178,8 @@ public class LLMAPI_GatherItem_UniDirec_Output : LLMAPI
         [JsonProperty("question")]
         public string question;
 
-        [JsonProperty("objects_in_view")]
-        public List<string> objects_in_view;
+        //[JsonProperty("objects_in_view")]
+        //public List<string> objects_in_view;
 
         //[JsonProperty("objects_info")]
         //public List<GatherItemObjectInfo> objects_info;

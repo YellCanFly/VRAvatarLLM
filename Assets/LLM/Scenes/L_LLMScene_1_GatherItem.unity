@@ -1910,9 +1910,9 @@ Transform:
   m_GameObject: {fileID: 133604913}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 2.474, y: 1.634, z: -0.006000012}
-  m_LocalScale: {x: 0.099999994, y: 0.099999994, z: 0.099999994}
-  m_ConstrainProportionsScale: 0
+  m_LocalPosition: {x: -0.158, y: 0.208, z: -0.177}
+  m_LocalScale: {x: 0.06, y: 0.06, z: 0.06}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 1632725869}
   - {fileID: 1528244119}
@@ -11055,7 +11055,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6541757176265425962, guid: 73f0f14dc21019740aa7655c636c93f4, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.458
+      value: 0.55
       objectReference: {fileID: 0}
     - target: {fileID: 6541757176265425962, guid: 73f0f14dc21019740aa7655c636c93f4, type: 3}
       propertyPath: m_LocalPosition.y
@@ -11462,7 +11462,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6855395471823707803, guid: 51bebbb62a3c55d4087146b6d986050b, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 4.397
+      value: 4.427
       objectReference: {fileID: 0}
     - target: {fileID: 6855395471823707803, guid: 51bebbb62a3c55d4087146b6d986050b, type: 3}
       propertyPath: m_LocalPosition.y
@@ -14546,9 +14546,9 @@ Transform:
   m_GameObject: {fileID: 995708476}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.94, y: 0.506, z: 0.0069999993}
-  m_LocalScale: {x: 0.099999994, y: 0.099999994, z: 0.099999994}
-  m_ConstrainProportionsScale: 0
+  m_LocalPosition: {x: 3.662, y: 2.0934, z: -0.086}
+  m_LocalScale: {x: 0.07, y: 0.07, z: 0.07}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 1298833785}
   - {fileID: 2144801089}
@@ -15855,15 +15855,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7798446566205910710, guid: f80f5d3400041244da338e23ee04c6d5, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 3.674
+      value: 0.974
       objectReference: {fileID: 0}
     - target: {fileID: 7798446566205910710, guid: f80f5d3400041244da338e23ee04c6d5, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 2.205
+      value: 0.606
       objectReference: {fileID: 0}
     - target: {fileID: 7798446566205910710, guid: f80f5d3400041244da338e23ee04c6d5, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.097
+      value: -0.025
       objectReference: {fileID: 0}
     - target: {fileID: 7798446566205910710, guid: f80f5d3400041244da338e23ee04c6d5, type: 3}
       propertyPath: m_LocalRotation.w
@@ -17794,8 +17794,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   objectName: Object
-  objectDescription: 'A large, dark gray clay pot with a wide rounded body, narrow
-    neck, flared rim, and a rough, aged surface. '
+  objectDescription: 'A dark gray clay pot with a wide rounded body, narrow neck,
+    flared rim, and a rough, aged surface. '
   gazeHightlightColor: {r: 1, g: 0, b: 0, a: 1}
   beGazedDuration: 0
   colliderRange: {fileID: 0}
@@ -19170,7 +19170,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0.000000041826464, y: 0.85811484, z: -0.00000006990231, w: 0.5134579}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.004767414, y: 0.0041238926, z: 0.004764051}
+  m_LocalScale: {x: 0.004767414, y: 0.004123892, z: 0.0047640516}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1143877160}
@@ -19197,7 +19197,7 @@ CapsuleCollider:
   m_Radius: 0.5
   m_Height: 1
   m_Direction: 1
-  m_Center: {x: 0.00047709566, y: 0.500111, z: 0.004451004}
+  m_Center: {x: 0.000477242, y: 0.50011116, z: 0.0044510304}
 --- !u!135 &1245430980
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -19218,7 +19218,7 @@ SphereCollider:
   m_Enabled: 0
   serializedVersion: 3
   m_Radius: 0.5
-  m_Center: {x: 0.00047709566, y: 0.500111, z: 0.004451004}
+  m_Center: {x: 0.000477242, y: 0.50011116, z: 0.0044510304}
 --- !u!114 &1245430981
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -19233,8 +19233,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   detectorType: 1
   bounds:
-    m_Center: {x: 2.1402273, y: 0.7022404, z: -0.24687952}
-    m_Extent: {x: 0.23837066, y: 0.20619464, z: 0.23820251}
+    m_Center: {x: 2.1401472, y: 0.6295613, z: -0.24762677}
+    m_Extent: {x: 0.15436888, y: 0.13353163, z: 0.15426}
 --- !u!1 &1251243704
 GameObject:
   m_ObjectHideFlags: 0
@@ -20877,11 +20877,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 37db6a8e93b84464398c747eb599886d, type: 3}
       propertyPath: m_LocalScale.x
-      value: 99.99998
+      value: 64.76
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 37db6a8e93b84464398c747eb599886d, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 64.76
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 37db6a8e93b84464398c747eb599886d, type: 3}
       propertyPath: m_LocalScale.z
-      value: 99.99998
+      value: 64.76
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 37db6a8e93b84464398c747eb599886d, type: 3}
       propertyPath: m_LocalPosition.x
@@ -20922,6 +20926,10 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 37db6a8e93b84464398c747eb599886d, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 37db6a8e93b84464398c747eb599886d, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 37db6a8e93b84464398c747eb599886d, type: 3}
       propertyPath: m_Name
@@ -22003,7 +22011,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   detectorType: 1
   bounds:
-    m_Center: {x: 2.6868148, y: 0.59198385, z: -0.23588115}
+    m_Center: {x: 2.716815, y: 0.59198385, z: -0.23588115}
     m_Extent: {x: 0.23440933, y: 0.099125266, z: 0.22488827}
 --- !u!1 &1393303666 stripped
 GameObject:
@@ -27254,11 +27262,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4368970401125658730, guid: d791f791bd8a86f4bb8c86b48b625563, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.18
+      value: 2.471
       objectReference: {fileID: 0}
     - target: {fileID: 4368970401125658730, guid: d791f791bd8a86f4bb8c86b48b625563, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.331
+      value: 1.788
       objectReference: {fileID: 0}
     - target: {fileID: 4368970401125658730, guid: d791f791bd8a86f4bb8c86b48b625563, type: 3}
       propertyPath: m_LocalPosition.z
@@ -31498,8 +31506,6 @@ MonoBehaviour:
   inputField: {fileID: 1373224182}
   responseText: {fileID: 972138021}
   sendButton: {fileID: 1976012069}
-  testName: InteractObject_FlowerPot (12)
-  testPointTime: 8
 --- !u!1 &2023577772
 GameObject:
   m_ObjectHideFlags: 0
@@ -33046,8 +33052,8 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8714349327457905933, guid: 4aae37b3693aaaf45844b7f55dd5bf8f, type: 3}
       propertyPath: m_text
-      value: Your task is to talk to the avartar, instruct the avatar to collect
-        the item displayed below.
+      value: Your task is to talk to the avatar, instruct the avatar to collect the
+        item displayed below.
       objectReference: {fileID: 0}
     - target: {fileID: 8714349327457905933, guid: 4aae37b3693aaaf45844b7f55dd5bf8f, type: 3}
       propertyPath: m_fontSize

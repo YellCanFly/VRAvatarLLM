@@ -38,9 +38,9 @@ public class RandomVoicePlay : MonoBehaviour
         }
 
         audioSource.clip = audioClip;
-        audioSource.Play();
+        //audioSource.Play();
 
-        //StartCoroutine(DelayPlayClip(playDelay));
+        StartCoroutine(DelayPlayClip(playDelay));
     }
 
     IEnumerator DelayPlayClip(float duration)

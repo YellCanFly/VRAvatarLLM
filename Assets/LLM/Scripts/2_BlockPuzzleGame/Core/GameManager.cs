@@ -188,8 +188,8 @@ namespace BlockPuzzleGame
                 if (result.isCorrect) correctCount++;
             }
 
-            progress = (float)correctCount / results.Count;
-            return correctCount == results.Count;
+            progress = (float)correctCount / grabbableBoxSpawner.spawnedObjects.Count;
+            return correctCount == grabbableBoxSpawner.spawnedObjects.Count;
         }
 
         private void CheckAndUpdateProgress()

@@ -76,7 +76,7 @@ public class TaskData_CollectItem
     [JsonProperty("behavior_frames")]
     public List<UserData_BehaviorFrame> behaviorFrames = new List<UserData_BehaviorFrame>();
 
-    [JsonProperty("behavior_frames")]
+    [JsonProperty("current_target_records")]
     public List<CollectItemData_CurrentTargetRecords> currentTargetRecords = new List<CollectItemData_CurrentTargetRecords>();
 
     [JsonProperty("conversation_frames")]

@@ -59,7 +59,7 @@ namespace BlockPuzzleGame{
                     var interactObj = InteractObjectManager.Instance?.GetObjectByName(obj);
                     if (interactObj != null && !objRelativePosDict.ContainsKey(obj))
                     {
-                        objRelativePosDict.Add(obj, interactObj.GetRelativePositionToCamera(Camera.main.transform));
+                        objRelativePosDict.Add(obj, interactObj.GetRelativePositionToCamera(gazeSphereDetector.transform));
                     }
                 }
                 foreach (var obj in gazePlaceNameList)
@@ -67,7 +67,7 @@ namespace BlockPuzzleGame{
                     var interactObj = InteractObjectManager.Instance?.GetObjectByName(obj);
                     if (interactObj != null && !objRelativePosDict.ContainsKey(obj))
                     {
-                        objRelativePosDict.Add(obj, interactObj.GetRelativePositionToCamera(Camera.main.transform));
+                        objRelativePosDict.Add(obj, interactObj.GetRelativePositionToCamera(gazeSphereDetector.transform));
                     }
                 }
 

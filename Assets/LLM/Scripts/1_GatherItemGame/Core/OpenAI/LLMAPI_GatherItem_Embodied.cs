@@ -39,7 +39,7 @@ public class LLMAPI_GatherItem_Embodied : LLMAPI
         {
             objectsInfo.objects_info.Add(interactObj.GetComponentInChildren<GatherItemObject>().GetGrabItemInfoInt());
         }
-        string objectsInfoJsonStr = JsonUtility.ToJson(objectsInfo, true);
+        string objectsInfoJsonStr = JsonUtility.ToJson(objectsInfo, false);
         systemPrompt += objectsInfoJsonStr;
         ResetMessages();
     }
@@ -59,18 +59,18 @@ public class LLMAPI_GatherItem_Embodied : LLMAPI
         {
             string gazeObjectName = gazeSphereDetector.GetLatestGazeObject(); // string For the latest gaze object
             var gazeObjectNameList = gazeSphereDetector.GetGazeObjectList(); // List<string> For gaze history
-            var allObjectInEyeFieldList = gazeSphereDetector.GetAllObjectInEyeFieldList(); // List<string> For all objects in eye field
+            //var allObjectInEyeFieldList = gazeSphereDetector.GetAllObjectInEyeFieldList(); // List<string> For all objects in eye field
 
             userInput.current_gaze_object = gazeObjectName;
             userInput.gaze_history = gazeObjectNameList;
-            userInput.objects_in_view = allObjectInEyeFieldList;
+            //userInput.objects_in_view = allObjectInEyeFieldList;
         }
         else
         {
             // Fallback to default values if GazeSphereDetector is not available
             userInput.current_gaze_object = "null";
             userInput.gaze_history = new List<string>();
-            userInput.objects_in_view = new List<string>();
+            //userInput.objects_in_view = new List<string>();
         }
 
         // Add user input to the message list
@@ -199,8 +199,8 @@ public class LLMAPI_GatherItem_Embodied : LLMAPI
         [JsonProperty("gaze_history")]
         public List<string> gaze_history;
 
-        [JsonProperty("objects_in_view")]
-        public List<string> objects_in_view;
+        //[JsonProperty("objects_in_view")]
+        //public List<string> objects_in_view;
 
         //[JsonProperty("objects_info")]
         //public List<GatherItemObjectInfo> objects_info;
