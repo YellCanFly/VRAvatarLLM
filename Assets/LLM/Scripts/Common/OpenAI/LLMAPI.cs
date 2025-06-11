@@ -214,7 +214,7 @@ public class LLMAPI : MonoBehaviour
         }
         catch (OperationCanceledException)
         {
-            // ’‚ª·≤∂ªÒ”…”⁄ cts.Cancel() ªÚ Task.Delay ≥¨ ±µº÷¬µƒ»°œ˚
+            // Ëøô‰ºöÊçïËé∑Áî±‰∫é cts.Cancel() Êàñ Task.Delay Ë∂ÖÊó∂ÂØºËá¥ÁöÑÂèñÊ∂à
             Debug.LogWarning("Transcription request was explicitly cancelled or timed out.");
             if (!hasTimedOut)
             {
@@ -226,6 +226,7 @@ public class LLMAPI : MonoBehaviour
         catch (Exception e)
         {
             Debug.LogError($"Transcription failed: {e.Message}");
+            onLLMAPIProcessWentWrong?.Invoke();
             transcriptionResult = null;
         }
         finally
@@ -282,7 +283,7 @@ public class LLMAPI : MonoBehaviour
                 float llmTime = Time.time - llmStartTime;
                 Debug.Log("LLM Time = " + llmTime + " s");
             }
-            else // completedTask  « Task.Delay£¨±Ì æ≥¨ ±¡À
+            else // completedTask ÊòØ Task.DelayÔºåË°®Á§∫Ë∂ÖÊó∂‰∫Ü
             {
                 Debug.LogWarning($"Chat completion request timed out after {timeoutSeconds} seconds. Cancelling operation.");
                 if (!hasTimedOut)
@@ -309,6 +310,7 @@ public class LLMAPI : MonoBehaviour
         catch (Exception e)
         {
             Debug.LogError($"Error getting chat completion: {e.Message}");
+            onLLMAPIProcessWentWrong?.Invoke();
             jsonObjResponse = default(T);
             rawResponse = null;
         }
@@ -403,6 +405,7 @@ public class LLMAPI : MonoBehaviour
         {
             Debug.LogError($"Error during Text-to-Speech API request: {e.Message}");
             // Handle error gracefully, e.g., show a message to the user
+            onLLMAPIProcessWentWrong?.Invoke();
             speechClip = null; // Ensure null on error
         }
         finally
@@ -422,7 +425,7 @@ public class LLMAPI : MonoBehaviour
         while (audioSource.isPlaying)
         {
             Debug.Log("AudioSource is currently playing. Waiting...");
-            await Task.Delay(2000); // ≤ª◊Ë»˚÷˜œﬂ≥Ã
+            await Task.Delay(2000); // ‰∏çÈòªÂ°û‰∏ªÁ∫øÁ®ã
         }
 
         audioSource.clip = speechClip;
