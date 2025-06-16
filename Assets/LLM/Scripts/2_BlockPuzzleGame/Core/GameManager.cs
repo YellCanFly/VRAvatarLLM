@@ -342,23 +342,38 @@ namespace BlockPuzzleGame
         }
 
         private void OnUserMessageSent(Message message, float startRecordingTime)
-        {
-            dataPerCondition.conversationFrames.Add(new ConversationData_MessageFrame()
+        {   
+            if (dataPerCondition != null)
             {
-                sentTime = Time.time,
-                startRecordingTime = startRecordingTime,
-                message = message
-            });
+                dataPerCondition.conversationFrames.Add(new ConversationData_MessageFrame()
+                {
+                    sentTime = Time.time,
+                    startRecordingTime = startRecordingTime,
+                    message = message
+                });
+            }
+            else
+            {
+                Debug.LogWarning("Data percondition is not assigned.");
+            }
+            
         }
 
         private void OnAIMessageReceived(Message message)
         {
-            dataPerCondition.conversationFrames.Add(new ConversationData_MessageFrame()
+            if (dataPerCondition != null)
             {
-                sentTime = Time.time,
-                startRecordingTime = 0f, // AI messages do not have a recording start time
-                message = message
-            });
+                dataPerCondition.conversationFrames.Add(new ConversationData_MessageFrame()
+                {
+                    sentTime = Time.time,
+                    startRecordingTime = 0f, // AI messages do not have a recording start time
+                    message = message
+                });
+            }
+            else
+            {
+                Debug.LogWarning("Data percondition is not assigned.");
+            }
         }
 
         public void OnOneConditionStarted()

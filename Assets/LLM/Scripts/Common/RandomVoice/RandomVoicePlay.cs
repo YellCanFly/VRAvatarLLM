@@ -21,8 +21,6 @@ public class RandomVoicePlay : MonoBehaviour
             return;
         }
 
-
-
         int randomID = Random.Range(0, audioClips.Length);
         var audioClip = audioClips[randomID];
         if (audioClip == null)

@@ -50,6 +50,7 @@ public class LLMAPI : MonoBehaviour
     private AudioSource audioSource;
     private MemoryStream transcriptionStream;
     private CancellationTokenSource recordingCts;
+    private CancellationTokenSource globalOperationCts;
     protected float startRecordingTime;
 
     public UnityAction<Message, float> onUserMessageSent; // Message, Start recording time
@@ -183,15 +184,13 @@ public class LLMAPI : MonoBehaviour
         string transcriptionResult = null;
         float transcriptionStartTime = Time.time;
 
-        // Setting maximun waiting time
-        CancellationTokenSource cts = new CancellationTokenSource();
-        cts.CancelAfter(TimeSpan.FromSeconds(timeoutSeconds));
-
+        var timeoutCts = new CancellationTokenSource(TimeSpan.FromSeconds(timeoutSeconds));
+        var linkedCts = CancellationTokenSource.CreateLinkedTokenSource(globalOperationCts.Token, timeoutCts.Token);
         bool hasTimedOut = false;
         try
         {
-            Task<string> transcriptionTask = openAI.AudioEndpoint.CreateTranscriptionTextAsync(audioRequest, cts.Token);
-            Task completedTask = await Task.WhenAny(transcriptionTask, Task.Delay(TimeSpan.FromSeconds(timeoutSeconds), cts.Token));
+            Task<string> transcriptionTask = openAI.AudioEndpoint.CreateTranscriptionTextAsync(audioRequest, linkedCts.Token);
+            Task completedTask = await Task.WhenAny(transcriptionTask, Task.Delay(Timeout.Infinite, linkedCts.Token));
 
             if (completedTask == transcriptionTask)
             {
@@ -200,7 +199,7 @@ public class LLMAPI : MonoBehaviour
                 Debug.Log("Transcription result: " + transcriptionResult);
                 Debug.Log("Transcription Time = " + transcriptionTime);
             }
-            else
+            else if (timeoutCts.IsCancellationRequested)
             {
                 Debug.LogWarning($"Transcription request timed out after {timeoutSeconds} seconds.");
                 if (!hasTimedOut)
@@ -208,20 +207,31 @@ public class LLMAPI : MonoBehaviour
                     onTranscriptionTimeout?.Invoke();
                     hasTimedOut = true;
                 }
-                cts.Cancel();
+                transcriptionResult = null;
+            }
+            else if (globalOperationCts.IsCancellationRequested)
+            {
+                Debug.Log("Transcription cancelled by new recording.");
                 transcriptionResult = null;
             }
         }
         catch (OperationCanceledException)
         {
-            // 这会捕获由于 cts.Cancel() 或 Task.Delay 超时导致的取消
-            Debug.LogWarning("Transcription request was explicitly cancelled or timed out.");
-            if (!hasTimedOut)
+            if (timeoutCts.IsCancellationRequested)
             {
-                onTranscriptionTimeout?.Invoke();
-                hasTimedOut = true;
+                Debug.LogWarning("Transcription request was explicitly cancelled or timed out.");
+                if (!hasTimedOut)
+                {
+                    onTranscriptionTimeout?.Invoke();
+                    hasTimedOut = true;
+                }
+                transcriptionResult = null;
             }
-            transcriptionResult = null;
+            else
+            {
+                Debug.Log("OperationCanceledException: Cancelled due to new request.");
+                transcriptionResult = null;
+            }
         }
         catch (Exception e)
         {
@@ -233,7 +243,8 @@ public class LLMAPI : MonoBehaviour
         {
             // Dispose the stream after use to release resources
             await audioStream.DisposeAsync();
-            cts.Dispose();
+            timeoutCts.Dispose();
+            linkedCts.Dispose();
         }
         return transcriptionResult;
     }
@@ -249,7 +260,7 @@ public class LLMAPI : MonoBehaviour
     public async Task<(T parsedResponse, ChatResponse rawResponse)> GetChatCompletionGenericAsync<T>(
         List<Message> messages,
         Model llmModel,
-        int timeoutSeconds =30) where T : new() // T must have a parameterless constructor
+        int timeoutSeconds = 30) where T : new() // T must have a parameterless constructor
     {
         float llmStartTime = Time.time; // Start timing for this request    
 
@@ -264,8 +275,8 @@ public class LLMAPI : MonoBehaviour
         T jsonObjResponse = default(T);
         ChatResponse rawResponse = null;
 
-        CancellationTokenSource cts = new CancellationTokenSource();
-        cts.CancelAfter(TimeSpan.FromSeconds(timeoutSeconds));
+        var timeoutCts = new CancellationTokenSource(TimeSpan.FromSeconds(timeoutSeconds));
+        var linkedCts = CancellationTokenSource.CreateLinkedTokenSource(globalOperationCts.Token, timeoutCts.Token);
 
         bool hasTimedOut = false;
         try
@@ -273,8 +284,8 @@ public class LLMAPI : MonoBehaviour
             // The core of the generic approach with cancellation token:
             // GetCompletionAsync<T> directly handles deserialization into T
             // Ensure your OpenAI_API library version supports passing CancellationToken to GetCompletionAsync.
-            Task<(T, ChatResponse)> completionTask = openAI.ChatEndpoint.GetCompletionAsync<T>(chatRequest, cts.Token);
-            Task completedTask = await Task.WhenAny(completionTask, Task.Delay(TimeSpan.FromSeconds(timeoutSeconds), cts.Token));
+            Task<(T, ChatResponse)> completionTask = openAI.ChatEndpoint.GetCompletionAsync<T>(chatRequest, linkedCts.Token);
+            Task completedTask = await Task.WhenAny(completionTask, Task.Delay(Timeout.Infinite, linkedCts.Token));
 
             if (completedTask == completionTask)
             {
@@ -283,7 +294,7 @@ public class LLMAPI : MonoBehaviour
                 float llmTime = Time.time - llmStartTime;
                 Debug.Log("LLM Time = " + llmTime + " s");
             }
-            else // completedTask 是 Task.Delay，表示超时了
+            else if (timeoutCts.IsCancellationRequested)
             {
                 Debug.LogWarning($"Chat completion request timed out after {timeoutSeconds} seconds. Cancelling operation.");
                 if (!hasTimedOut)
@@ -291,21 +302,35 @@ public class LLMAPI : MonoBehaviour
                     hasTimedOut = true;
                     onChatCompletionTimeout?.Invoke();
                 }
-                cts.Cancel();
+                jsonObjResponse = default(T);
+                rawResponse = null;
+            }
+            else if (globalOperationCts.IsCancellationRequested)
+            {
+                Debug.Log("LLM Chatrequest cancelled by new recording.");
                 jsonObjResponse = default(T);
                 rawResponse = null;
             }
         }
         catch (OperationCanceledException)
         {
-            Debug.LogWarning("Chat completion request was explicitly cancelled or timed out (OperationCanceledException).");
-            if (!hasTimedOut)
+            if (timeoutCts.IsCancellationRequested)
             {
-                hasTimedOut = true;
-                onChatCompletionTimeout?.Invoke();
+                Debug.LogWarning("Chat completion request was explicitly cancelled or timed out (OperationCanceledException).");
+                if (!hasTimedOut)
+                {
+                    hasTimedOut = true;
+                    onChatCompletionTimeout?.Invoke();
+                }
+                jsonObjResponse = default(T);
+                rawResponse = null;
             }
-            jsonObjResponse = default(T);
-            rawResponse = null;
+            else
+            {
+                Debug.Log("OperationCanceledException: Cancelled due to new request.");
+                jsonObjResponse = default(T);
+                rawResponse = null;
+            }
         }
         catch (Exception e)
         {
@@ -316,7 +341,8 @@ public class LLMAPI : MonoBehaviour
         }
         finally
         {
-            cts.Dispose();
+            timeoutCts.Dispose();
+            linkedCts.Dispose();
         }
 
         return (jsonObjResponse, rawResponse);
@@ -354,10 +380,9 @@ public class LLMAPI : MonoBehaviour
 
         AudioClip speechClip = null;
 
-        // Create CancellationTokenSource for timeout and cancellation
-        CancellationTokenSource cts = new CancellationTokenSource();
-        // Set timeout duration
-        cts.CancelAfter(TimeSpan.FromSeconds(timeoutSeconds));
+
+        var timeoutCts = new CancellationTokenSource(TimeSpan.FromSeconds(timeoutSeconds));
+        var linkedCts = CancellationTokenSource.CreateLinkedTokenSource(globalOperationCts.Token, timeoutCts.Token);
 
         // Flag to prevent multiple timeout event invokes
         bool hasTimedOut = false;
@@ -366,9 +391,9 @@ public class LLMAPI : MonoBehaviour
         {
             // The TTS API call task, ensuring it supports cancellation tokens.
             // Check your OpenAI_API library if GetSpeechAsync has an overload that takes CancellationToken.
-            Task<SpeechClip> speechTask = openAI.AudioEndpoint.GetSpeechAsync(speechRequest, partialClipCallback:null, cancellationToken: cts.Token);
+            Task<SpeechClip> speechTask = openAI.AudioEndpoint.GetSpeechAsync(speechRequest, partialClipCallback:null, cancellationToken: linkedCts.Token);
             // Race the API call against the timeout task
-            Task completedTask = await Task.WhenAny(speechTask, Task.Delay(TimeSpan.FromSeconds(timeoutSeconds), cts.Token));
+            Task completedTask = await Task.WhenAny(speechTask, Task.Delay(Timeout.Infinite, linkedCts.Token));
 
             if (completedTask == speechTask)
             {
@@ -378,7 +403,7 @@ public class LLMAPI : MonoBehaviour
                 Debug.Log("TTS request successful.");
                 Debug.Log("TTS Time = " + ttsTime);
             }
-            else // completedTask is Task.Delay, indicating a timeout
+            else if (timeoutCts.IsCancellationRequested)// completedTask is Task.Delay, indicating a timeout
             {
                 Debug.LogWarning($"Text-to-Speech request timed out after {timeoutSeconds} seconds. Cancelling operation.");
                 if (!hasTimedOut) // Only invoke if not already timed out
@@ -386,20 +411,33 @@ public class LLMAPI : MonoBehaviour
                     onTextToSpeechTimeout?.Invoke(); // Trigger the timeout event
                     hasTimedOut = true;
                 }
-                cts.Cancel(); // Signal cancellation to the ongoing speechTask
+                speechClip = null; // Explicitly set to null for clarity
+            }
+            else if (globalOperationCts.IsCancellationRequested)
+            {
+                Debug.Log("TTS cancelled by new recording.");
                 speechClip = null; // Explicitly set to null for clarity
             }
         }
         catch (OperationCanceledException)
         {
-            // This catches cancellations, potentially from cts.Cancel() or Task.Delay timeout
-            Debug.LogWarning("Text-to-Speech request was explicitly cancelled or timed out (OperationCanceledException).");
-            if (!hasTimedOut) // Only invoke if not already timed out
+            if (timeoutCts.IsCancellationRequested)
             {
-                onTextToSpeechTimeout?.Invoke(); // Trigger the timeout event
-                hasTimedOut = true;
+                // This catches cancellations, potentially from cts.Cancel() or Task.Delay timeout
+                Debug.LogWarning("Text-to-Speech request was explicitly cancelled or timed out (OperationCanceledException).");
+                if (!hasTimedOut) // Only invoke if not already timed out
+                {
+                    onTextToSpeechTimeout?.Invoke(); // Trigger the timeout event
+                    hasTimedOut = true;
+                }
+                speechClip = null; // Ensure null if cancelled
             }
-            speechClip = null; // Ensure null if cancelled
+            else
+            {
+                Debug.Log("OperationCanceledException: Cancelled due to new request.");
+                speechClip = null; // Explicitly set to null for clarity
+            }
+
         }
         catch (Exception e)
         {
@@ -411,7 +449,8 @@ public class LLMAPI : MonoBehaviour
         finally
         {
             // Dispose the CancellationTokenSource resources
-            cts.Dispose();
+            timeoutCts.Dispose();
+            linkedCts.Dispose();
         }
 
         // If speechClip is null at this point, it means the API request failed, timed out, or was cancelled
@@ -454,6 +493,7 @@ public class LLMAPI : MonoBehaviour
 
     public void OnLLMAPIProcessWentWrong()
     {
+        Debug.LogError("LLMAPI went wrong");
         avatarController.TriggerThinkingAnimation();
         PlayRandomAskRepeatVoice();
     }
@@ -533,6 +573,13 @@ public class LLMAPI : MonoBehaviour
     /// </summary>
     protected void StartMicRecording()
     {
+        if (globalOperationCts != null)
+        {
+            globalOperationCts.Cancel(); // Cancel ongoing LLM/STT/TTS
+            globalOperationCts.Dispose();
+        }
+        globalOperationCts = new CancellationTokenSource();
+
         Debug.Log("Recording started...");
         startRecordingTime = Time.time;
         debugTime = Time.time;
