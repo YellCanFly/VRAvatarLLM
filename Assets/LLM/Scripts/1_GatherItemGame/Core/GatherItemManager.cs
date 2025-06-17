@@ -47,6 +47,11 @@ public class GatherItemManager : MonoBehaviour
     public GameObject collectNewRoundCanvas;
     public GameObject taskCompletedCanvas;
 
+    public GameObject canvas_1_text_1_voiceOnlyInput;
+    public GameObject canvas_1_text_2_voiceGazeInput;
+    public GameObject canvas_3_text_1_voiceOnlyInput;
+    public GameObject canvas_3_text_2_voiceGazeInput;
+
     private Button collectGuidanceButton;
     private Button collectCompletedButton;
     private Button collectNewRoundButton;
@@ -414,10 +419,14 @@ public class GatherItemManager : MonoBehaviour
         if (expIndex == 0)
         {
             collectGuidanceCanvas.SetActive(true); // Show guidance for the first round
+            canvas_1_text_1_voiceOnlyInput.SetActive(condition == InteractCondition.Baseline || condition == InteractCondition.UniDirectional_Output);
+            canvas_1_text_2_voiceGazeInput.SetActive(condition == InteractCondition.UniDirectional_Input || condition == InteractCondition.BiDirectional);
         }
         else
         {
             collectNewRoundCanvas.SetActive(true); // Show new round canvas for subsequent rounds
+            canvas_3_text_1_voiceOnlyInput.SetActive(condition == InteractCondition.Baseline || condition == InteractCondition.UniDirectional_Output);
+            canvas_3_text_2_voiceGazeInput.SetActive(condition == InteractCondition.UniDirectional_Input || condition == InteractCondition.BiDirectional);
         }
 
     }

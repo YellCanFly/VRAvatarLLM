@@ -37,6 +37,11 @@ namespace BlockPuzzleGame
         public GameObject canvas_3_StartNewCondition;
         public GameObject canvas_4_AllConditionsCompleted;
 
+        public GameObject canvas_1_text_1_voiceOnlyInput;
+        public GameObject canvas_1_text_2_voiceGazeInput;
+        public GameObject canvas_3_text_1_voiceOnlyInput;
+        public GameObject canvas_3_text_2_voiceGazeInput;
+
         private Button button_1_TaskGuidance;
         private Button button_2_OneConditionCompleted;
         private Button button_3_StartNewCondition;
@@ -453,10 +458,14 @@ namespace BlockPuzzleGame
             if (expIndex == 0)
             {
                 canvas_1_TaskGuidance.SetActive(true);
+                canvas_1_text_1_voiceOnlyInput.SetActive(condition == InteractCondition.Baseline || condition == InteractCondition.UniDirectional_Output);
+                canvas_1_text_2_voiceGazeInput.SetActive(condition == InteractCondition.UniDirectional_Input || condition == InteractCondition.BiDirectional);
             }
             else
             {
                 canvas_3_StartNewCondition.SetActive(true);
+                canvas_3_text_1_voiceOnlyInput.SetActive(condition == InteractCondition.Baseline || condition == InteractCondition.UniDirectional_Output);
+                canvas_3_text_2_voiceGazeInput.SetActive(condition == InteractCondition.UniDirectional_Input || condition == InteractCondition.BiDirectional);
             }
         }
 
