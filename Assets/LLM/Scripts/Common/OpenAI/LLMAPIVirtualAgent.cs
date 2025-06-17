@@ -83,7 +83,7 @@ public class LLMAPIVirtualAgent : LLMAPI
         }
 
         // Add user input to the message list
-        string userInputJson = JsonUtility.ToJson(userInput, true);
+        string userInputJson = JsonUtility.ToJson(userInput, false);
         AddMessage(new Message(Role.User, userInputJson));
         Debug.Log($"User: {userInputJson}");
 

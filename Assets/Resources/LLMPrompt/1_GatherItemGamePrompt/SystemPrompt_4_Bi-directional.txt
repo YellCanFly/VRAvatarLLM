@@ -6,7 +6,6 @@ The user's input is structured and includes only the following:
 "question": the user's natural language request.
 "current_gaze_object": the most recent object the user looked at.
 "gaze_history": a list of previously looked-at objects.
-"objects_in_view": all objects currently visible to the user.
 
 All the objects' information in this scene is structured as followed:
 "objects_info": a list of objects, each with the following fields:

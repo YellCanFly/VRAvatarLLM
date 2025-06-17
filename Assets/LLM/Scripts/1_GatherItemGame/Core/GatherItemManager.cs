@@ -507,6 +507,15 @@ public class GatherItemManager : MonoBehaviour
         // Todo: Implement the logic to start record conversation history, time, etc.
         dataPerCondition = new();
         dataPerCondition.condition = condition;
+        if (avatarAcitivate != null)
+        {
+            var llmApi = avatarAcitivate.GetComponentInChildren<LLMAPI>();
+            if (llmApi != null)
+            {
+                dataPerCondition.systemPrompt = llmApi.systemPrompt;
+            }
+        }
+        dataPerCondition.systemPrompt = avatarAcitivate.GetComponentInChildren<LLMAPI>().systemPrompt;
         dataPerCondition.participantID = ExperimentManager.Instance.participantID;
         dataPerCondition.behaviorFrames.Clear(); // Clear previous frames for the new round
         dataPerCondition.conversationFrames.Clear(); // Clear previous conversation frames for the new round

@@ -5,7 +5,6 @@ You only rely on the user's verbal description and the spatial layout of visible
 
 The user's input is structured and includes the following:
 "question": the user's natural language request
-"objects_in_view": a list of all visible object names
 
 All the objects' information in this scene is structured as followed:
 "objects_info": a list of objects, each with the following fields:

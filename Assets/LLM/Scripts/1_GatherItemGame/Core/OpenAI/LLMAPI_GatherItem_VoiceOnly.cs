@@ -77,7 +77,7 @@ public class LLMAPI_GatherItem_VoiceOnly : LLMAPI
         }
 
         // Add user input to the message list
-        string userInputJson = JsonUtility.ToJson(userInput, true);
+        string userInputJson = JsonUtility.ToJson(userInput, false);
         Message userMessage = new Message(Role.User, userInputJson);
         AddMessage(userMessage);
         onUserMessageSent?.Invoke(userMessage, startRecordingTime);
