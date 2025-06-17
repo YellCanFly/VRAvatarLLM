@@ -5,7 +5,6 @@ Each time, the user will grab an object and place it in the appropriate spot wit
 The user's input is structured and includes only the following:
 
 * `"question"`: the user's natural language request.
-* `"target_places_info"`: an array of places, each with `"place_name"` and `"place_relative_position"`.  Each `place_name` exactly matches the name of a possible object the user may be holding (`current_grabbed_object_name`).  This information serves as a clue for inferring the correct location where the object should be placed.
 * `"current_grabbed_object_info"`: Describes the object currently held by the user, or is `null` if nothing is held. It includes:
   - `"current_grabbed_object_name"`: The name of the object the user is holding.
   - `"current_grabbed_object_color"`: The color of the object the user is holding.
@@ -14,8 +13,10 @@ The user's input is structured and includes only the following:
   - `"place_name"`: The name of the location.
   - `"placed_objects"`: A list of object names that were actually placed at that location.
 
-Relative position format (2D projection to the ground relative to the user and the height from the ground):
+The information of all the target places is structured and includes only the following:
+* `"target_places_info"`: an array of places, each with `"place_name"` and `"place_relative_position"`.  Each `place_name` exactly matches the name of a possible object the user may be holding (`current_grabbed_object_name`).  This information serves as a clue for inferring the correct location where the object should be placed.
 
+Format of place_relative_position (2D projection to the ground relative to the user and the height from the ground):
 * x: Right-left — positive = to the right of the user, negative = to the left.
 * z: Forward-back — positive = in front of the user, negative = behind.
 * height in meters
@@ -32,3 +33,5 @@ Avoid describing spatial height using human anatomy. Instead, use neutral descri
 Return your response in **strict JSON format only**, with the following fields:
 
 * `"answer"` *(string)*: A natural, human-sounding sentence.
+
+The information of all the target places in this scene are shown below:

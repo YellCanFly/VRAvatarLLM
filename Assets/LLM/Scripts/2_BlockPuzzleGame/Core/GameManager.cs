@@ -210,23 +210,22 @@ namespace BlockPuzzleGame
         // Grab interact events
         public void OnObjectPlaced(bool isCorrect, string objectName, string placeName)
         {
-            if (isCorrect)
-            {
-                CheckAndUpdateProgress();
-                PlayCorrectSound();
-            }
-            else
-            {
-                PlayWrongSound();
-            }
-
             BlockPuzzleData_PlaceRecord placeRecord = new();
             placeRecord.time = Time.time;
             placeRecord.isCorrect = isCorrect;
             placeRecord.placeName = placeName;
             placeRecord.objectName = objectName;
-
             dataPerCondition.blockPuzzlePlaceRecords.Add(placeRecord);
+            
+            if (isCorrect)
+            {
+                PlayCorrectSound();
+                CheckAndUpdateProgress();
+            }
+            else
+            {
+                PlayWrongSound();
+            }
         }
 
         public void OnObjectRemoved()
@@ -380,6 +379,14 @@ namespace BlockPuzzleGame
         {
             // Todo: Add logic for when one condition starts
             dataPerCondition = new();
+            if (conditionManager.activateAvatar != null)
+            {
+                var llmApi = conditionManager.activateAvatar.GetComponentInChildren<LLMAPI>();
+                if (llmApi != null)
+                {
+                    dataPerCondition.systemPrompt = llmApi.systemPrompt;
+                }
+            }
             dataPerCondition.condition = condition;
             dataPerCondition.participantID = ExperimentManager.Instance.participantID;
             dataPerCondition.targetPlacesInfo = answerCheckerManager.GetAllTrackerData();
@@ -441,6 +448,7 @@ namespace BlockPuzzleGame
             InitGazeDetector();
             CreateGrabbableBox();
             CreateGoal();
+            conditionManager.activateAvatar.GetComponentInChildren<LLMAPI>().AddObjectInfoToSystemPrompot();
 
             if (expIndex == 0)
             {

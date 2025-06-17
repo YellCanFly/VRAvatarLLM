@@ -34,6 +34,24 @@ namespace BlockPuzzleGame{
             }
         }
 
+        override public void AddObjectInfoToSystemPrompot()
+        {
+            Debug.Log("Adding object info to system prompt...");
+            // Add objects info to system prompt
+            AllPlaceInfo target_places_info = new();
+            foreach (var interactObj in InteractObjectManager.Instance.allInteractObjects)
+            {
+                PlaceInfo placeInfo = new();
+                placeInfo.place_name = interactObj.name;
+                placeInfo.place_relative_position = interactObj.GetRelativePositionToCamera(gazeSphereDetector.transform);
+                target_places_info.target_places_info.Add(placeInfo);
+                Debug.Log($"Object: {interactObj.name}, Relative Position: {placeInfo.place_relative_position.x}, {placeInfo.place_relative_position.z}, {placeInfo.place_relative_position.height}");
+            }
+            string objectsInfoJsonStr = JsonUtility.ToJson(target_places_info, false);
+            systemPrompt += objectsInfoJsonStr;
+            ResetMessages();
+        }
+
         override public async void UserChatInput(string userContent)
         {
             base.UserChatInput(userContent);
@@ -49,42 +67,15 @@ namespace BlockPuzzleGame{
             {
                 string gazePlaceName = gazeSphereDetector.GetLatestGazeObject(); // string For the latest gaze object
                 var gazePlaceNameList = gazeSphereDetector.GetGazeObjectList(); // List<string> For gaze history
-                // var allPlacesInEyeFieldList = gazeSphereDetector.GetAllObjectInEyeFieldList(); // List<string> For all objects in eye field
-                var allPlaces = InteractObjectManager.Instance?.GetAllObjects().Select(obj => obj.name).ToList() ?? new List<string>();
-
-                Dictionary<string, RelativePosition> objRelativePosDict = new();
-                foreach (var obj in allPlaces)
-                {
-                    Debug.Log($"Object in eye field: {obj}");
-                    var interactObj = InteractObjectManager.Instance?.GetObjectByName(obj);
-                    if (interactObj != null && !objRelativePosDict.ContainsKey(obj))
-                    {
-                        objRelativePosDict.Add(obj, interactObj.GetRelativePositionToCamera(gazeSphereDetector.transform));
-                    }
-                }
-                foreach (var obj in gazePlaceNameList)
-                {
-                    var interactObj = InteractObjectManager.Instance?.GetObjectByName(obj);
-                    if (interactObj != null && !objRelativePosDict.ContainsKey(obj))
-                    {
-                        objRelativePosDict.Add(obj, interactObj.GetRelativePositionToCamera(gazeSphereDetector.transform));
-                    }
-                }
-
+               
                 userInput.current_gaze_place = gazePlaceName;
                 userInput.gaze_history = gazePlaceNameList;
-                userInput.target_places_info = objRelativePosDict.Select(kvp => new PlaceInfo
-                {
-                    place_name = kvp.Key,
-                    place_relative_position = kvp.Value
-                }).ToList();
             }
             else
             {
                 // Fallback to default values if GazeSphereDetector is not available
                 userInput.current_gaze_place = "null";
                 userInput.gaze_history = new List<string>();
-                userInput.target_places_info = new List<PlaceInfo>();
             }
 
             // If the user is holding an object, add it to the user input
@@ -107,7 +98,7 @@ namespace BlockPuzzleGame{
 
 
             // Add user input to the message list
-            string userInputJson = JsonUtility.ToJson(userInput, true);
+            string userInputJson = JsonUtility.ToJson(userInput, false);
             Message userMessage = new Message(Role.User, userInputJson);
             AddMessage(userMessage);
             onUserMessageSent?.Invoke(userMessage, startRecordingTime);
@@ -175,14 +166,18 @@ namespace BlockPuzzleGame{
             [JsonProperty("gaze_history")]
             public List<string> gaze_history;
 
-            [JsonProperty("target_places_info")]
-            public List<PlaceInfo> target_places_info;
-
             [JsonProperty("current_grabbed_object_info")]
             public GrabbedObjectInfo current_grabbed_object_info;
 
             [JsonProperty("placement_evaluations")]
             public List<PlacementEvaluation> placementEvaluations;
+        }
+
+        [System.Serializable]
+        public class AllPlaceInfo
+        {
+            [JsonProperty("target_places_info")]
+            public List<PlaceInfo> target_places_info = new();
         }
 
         [System.Serializable]

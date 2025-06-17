@@ -73,6 +73,9 @@ public class TaskData_CollectItem
     [JsonProperty("condition")]
     public InteractCondition condition;
 
+    [JsonProperty("system_prompt")]
+    public string systemPrompt;
+
     [JsonProperty("behavior_frames")]
     public List<UserData_BehaviorFrame> behaviorFrames = new List<UserData_BehaviorFrame>();
 
@@ -142,6 +145,9 @@ public class TaskData_BlockPuzzle
 
     [JsonProperty("condition")]
     public InteractCondition condition;
+
+    [JsonProperty("system_prompt")]
+    public string systemPrompt;
 
     [JsonProperty("target_places_info")]
     public List<BlockPuzzleData_TargetPlaceInfo> targetPlacesInfo = new List<BlockPuzzleData_TargetPlaceInfo>();
