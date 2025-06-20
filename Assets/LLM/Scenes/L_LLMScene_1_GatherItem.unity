@@ -29694,7 +29694,7 @@ MonoBehaviour:
   avatarBiDirec: {fileID: 2018660216}
   avatarAcitivate: {fileID: 0}
   gazeSphereDetector: {fileID: 2099610853}
-  showGazeResult: 1
+  showGazeResult: 0
   collectGuidanceCanvas: {fileID: 940861741}
   collectCompletedCanvas: {fileID: 2120768695}
   collectNewRoundCanvas: {fileID: 1158122937}
