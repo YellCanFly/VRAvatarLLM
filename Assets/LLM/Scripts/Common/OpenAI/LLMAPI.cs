@@ -17,6 +17,8 @@ using OpenAI.Chat;
 using OpenAI.Audio;
 using UnityEngine.InputSystem;
 using UnityEngine.PlayerLoop;
+using System.Globalization;
+using System.Text;
 
 [RequireComponent(typeof(AudioSource))]
 public class LLMAPI : MonoBehaviour
@@ -52,6 +54,10 @@ public class LLMAPI : MonoBehaviour
     private CancellationTokenSource recordingCts;
     private CancellationTokenSource globalOperationCts;
     protected float startRecordingTime;
+
+    private bool isRecordLatencyTime = true;
+    private static readonly string CsvFileName = "latency.csv";
+    private string CsvPath => Path.Combine(Application.persistentDataPath, CsvFileName);
 
     public UnityAction<Message, float> onUserMessageSent; // Message, Start recording time
     public UnityAction<Message> onAIResponseReceived; // AI response message
@@ -198,6 +204,7 @@ public class LLMAPI : MonoBehaviour
                 float transcriptionTime = Time.time - transcriptionStartTime;
                 Debug.Log("Transcription result: " + transcriptionResult);
                 Debug.Log("Transcription Time = " + transcriptionTime);
+                recordLatencyTime(0, transcriptionTime);
             }
             else if (timeoutCts.IsCancellationRequested)
             {
@@ -293,6 +300,7 @@ public class LLMAPI : MonoBehaviour
                 Debug.Log("Chat completion successful.");
                 float llmTime = Time.time - llmStartTime;
                 Debug.Log("LLM Time = " + llmTime + " s");
+                recordLatencyTime(1, llmTime);
             }
             else if (timeoutCts.IsCancellationRequested)
             {
@@ -399,9 +407,10 @@ public class LLMAPI : MonoBehaviour
             {
                 // TTS API call completed successfully within the timeout
                 speechClip = await speechTask;
-                float ttsTime = Time.time - debugTime;
+                float ttsTime = Time.time - ttsStartTime;
                 Debug.Log("TTS request successful.");
                 Debug.Log("TTS Time = " + ttsTime);
+                recordLatencyTime(2, ttsTime);
             }
             else if (timeoutCts.IsCancellationRequested)// completedTask is Task.Delay, indicating a timeout
             {
@@ -691,6 +700,113 @@ public class LLMAPI : MonoBehaviour
         currentInteractObject = "";
     }
     #endregion
+
+    #region CSV Latency Recording
+    /// <summary>
+    /// 将 recordedTime 存入 CSV：
+    /// timeIndex = 0 -> 新增一行，写第一列；
+    /// timeIndex = 1/2 -> 更新最后一行的第二/第三列（若无行则创建一行）。
+    /// </summary>
+    /// <param name="timeIndex">0/1/2</param>
+    /// <param name="recordedTime">要写入的时间(秒)</param>
+    protected void recordLatencyTime(int timeIndex, float recordedTime)
+    {
+        if (!isRecordLatencyTime) return;
+
+        // 只允许 0/1/2，超出则钳制
+        timeIndex = Mathf.Clamp(timeIndex, 0, 2);
+
+        // 统一用不随地区变化的格式，避免逗号/小数点问题
+        string timeStr = recordedTime.ToString(CultureInfo.InvariantCulture);
+
+        try
+        {
+            // 确保目录存在（persistentDataPath 一般存在，但以防万一）
+            string dir = Path.GetDirectoryName(CsvPath);
+            if (!string.IsNullOrEmpty(dir) && !Directory.Exists(dir))
+                Directory.CreateDirectory(dir);
+
+            if (!File.Exists(CsvPath))
+            {
+                // 文件不存在：按 timeIndex 创建第一行
+                using (var sw = new StreamWriter(CsvPath, false, Encoding.UTF8))
+                {
+                    // 如果你想要表头，取消下面一行的注释
+                    // sw.WriteLine("t0,t1,t2");
+
+                    string line = NewRowWithValue(timeIndex, timeStr);
+                    sw.WriteLine(line);
+                }
+                return;
+            }
+
+            // 已存在文件
+            if (timeIndex == 0)
+            {
+                // 追加新行：第一列写值，后两列空
+                using (var sw = new StreamWriter(CsvPath, true, Encoding.UTF8))
+                {
+                    sw.WriteLine($"{timeStr},,");
+                }
+            }
+            else
+            {
+                // 更新最后一行的第 2/3 列
+                var allLines = File.ReadAllLines(CsvPath, Encoding.UTF8);
+
+                // 如果文件为空（比如只有表头或误删内容），创建一行
+                if (allLines.Length == 0)
+                {
+                    string newLine = NewRowWithValue(timeIndex, timeStr);
+                    File.WriteAllLines(CsvPath, new[] { newLine }, Encoding.UTF8);
+                    return;
+                }
+
+                int lastIdx = allLines.Length - 1;
+
+                // 如果你使用了表头，可在此跳过表头行：
+                // bool hasHeader = allLines[0].StartsWith("t0,");
+                // lastIdx = Math.Max(hasHeader ? 1 : 0, allLines.Length - 1);
+
+                string[] cols = SplitCsvSimple(allLines[lastIdx]);
+                Array.Resize(ref cols, 3);               // 确保至少 3 列
+                for (int i = 0; i < 3; i++)
+                    if (cols[i] == null) cols[i] = string.Empty;
+
+                cols[timeIndex] = timeStr;               // 更新目标列
+
+                allLines[lastIdx] = string.Join(",", cols[0], cols[1], cols[2]);
+                File.WriteAllLines(CsvPath, allLines, Encoding.UTF8);
+            }
+        }
+        catch (Exception ex)
+        {
+            Debug.LogError($"recordLatencyTime 写入 CSV 失败: {ex.Message}\n路径: {CsvPath}");
+        }
+    }
+
+    /// <summary>
+    /// 按给定列创建一行（其余列留空）
+    /// </summary>
+    private static string NewRowWithValue(int timeIndex, string value)
+    {
+        string c0 = "", c1 = "", c2 = "";
+        if (timeIndex == 0) c0 = value;
+        else if (timeIndex == 1) c1 = value;
+        else c2 = value;
+        return string.Join(",", c0, c1, c2);
+    }
+
+    /// <summary>
+    /// 简单 CSV 拆分（按逗号分割；适用于本场景不含引号/逗号的数值）
+    /// </summary>
+    private static string[] SplitCsvSimple(string line)
+    {
+        if (string.IsNullOrEmpty(line)) return Array.Empty<string>();
+        return line.Split(',');
+    }
+    #endregion
+
 }
 public enum InteractCondition
 {
