@@ -18,6 +18,7 @@
 *.svd
 .vs
 .vsconfig
+.utmp
 
 # Logs
 *.log

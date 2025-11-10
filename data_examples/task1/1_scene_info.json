@@ -1,0 +1,312 @@
+{
+    "objects_info": [
+        {
+            "object_name": "InteractObject_FlowerPot (7)",
+            "object_description": "A dark reddish-brown terracotta pot with a rounded body, flared rim, and evenly spaced vertical grooves along the surface. ",
+            "height": 150,
+            "scale": 24,
+            "obj_rel_user": [
+                -95,
+                291
+            ],
+            "obj_rel_avatar": [
+                95,
+                -122
+            ]
+        },
+        {
+            "object_name": "InteractObject_PottedPlant (6)",
+            "object_description": "A lush, wide-spreading palm plant with large, fan-shaped green leaves is planted in a smooth, white speckled cylindrical pot. ",
+            "height": 163,
+            "scale": 68,
+            "obj_rel_user": [
+                -265,
+                290
+            ],
+            "obj_rel_avatar": [
+                265,
+                -120
+            ]
+        },
+        {
+            "object_name": "InteractObject_FlowerPot (10)",
+            "object_description": "A small, silver-gray pot with a glossy finish, featuring an embossed overlapping fan or shell pattern across its surface. ",
+            "height": 218,
+            "scale": 20,
+            "obj_rel_user": [
+                -193,
+                297
+            ],
+            "obj_rel_avatar": [
+                193,
+                -128
+            ]
+        },
+        {
+            "object_name": "InteractObject_FlowerPot (11)",
+            "object_description": "A round, reddish-brown clay pot with a wide scalloped rim and engraved decorative patterns encircling its midsection. ",
+            "height": 134,
+            "scale": 19,
+            "obj_rel_user": [
+                -149,
+                284
+            ],
+            "obj_rel_avatar": [
+                149,
+                -115
+            ]
+        },
+        {
+            "object_name": "InteractObject_FlowerPot (12)",
+            "object_description": "A gray, stone-textured pot with a wide flared rim, rounded body, and narrow pedestal-style base. ",
+            "height": 154,
+            "scale": 27,
+            "obj_rel_user": [
+                -59,
+                288
+            ],
+            "obj_rel_avatar": [
+                59,
+                -118
+            ]
+        },
+        {
+            "object_name": "InteractObject_PottedPlant (5)",
+            "object_description": "A cluster of large, broad, heart-shaped green leaves emerges from tall stems planted in a wide, reddish terracotta pot with a thick rounded rim and tapered body. ",
+            "height": 56,
+            "scale": 70,
+            "obj_rel_user": [
+                73,
+                297
+            ],
+            "obj_rel_avatar": [
+                -73,
+                -128
+            ]
+        },
+        {
+            "object_name": "InteractObject_PottedPlant",
+            "object_description": "Tall green bamboo stalks with slender leaves grow from a light sand-like base, held in a white, slightly faceted cylindrical pot. ",
+            "height": 21,
+            "scale": 27,
+            "obj_rel_user": [
+                -187,
+                280
+            ],
+            "obj_rel_avatar": [
+                187,
+                -110
+            ]
+        },
+        {
+            "object_name": "InteractObject_PottedPlant (1)",
+            "object_description": "A single thin-trunked plant with long, narrow, pointed green leaves grows from a light brown soil base in a white, faceted cylindrical pot. ",
+            "height": 142,
+            "scale": 52,
+            "obj_rel_user": [
+                275,
+                297
+            ],
+            "obj_rel_avatar": [
+                -275,
+                -127
+            ]
+        },
+        {
+            "object_name": "InteractObject_FlowerPot (8)",
+            "object_description": "A wide, shallow dark brown pot with smooth sides and a thick, rounded rim. ",
+            "height": 59,
+            "scale": 37,
+            "obj_rel_user": [
+                272,
+                291
+            ],
+            "obj_rel_avatar": [
+                -272,
+                -122
+            ]
+        },
+        {
+            "object_name": "InteractObject_PottedPlant (2)",
+            "object_description": "A dense, teardrop-shaped green bush with fine, wispy foliage is planted in a white, faceted cylindrical pot filled with light brown soil. ",
+            "height": 56,
+            "scale": 46,
+            "obj_rel_user": [
+                -266,
+                292
+            ],
+            "obj_rel_avatar": [
+                266,
+                -123
+            ]
+        },
+        {
+            "object_name": "InteractObject_PottedPlant (3)",
+            "object_description": "A dark green palm-like plant with long, arching fronds grows from sandy soil in a white, faceted cylindrical pot. ",
+            "height": 20,
+            "scale": 59,
+            "obj_rel_user": [
+                151,
+                290
+            ],
+            "obj_rel_avatar": [
+                -151,
+                -120
+            ]
+        },
+        {
+            "object_name": "InteractObject_FlowerPot (4)",
+            "object_description": "A simple, smooth, dark brown clay pot with a rounded rim and slightly tapered sides. ",
+            "height": 101,
+            "scale": 18,
+            "obj_rel_user": [
+                -195,
+                288
+            ],
+            "obj_rel_avatar": [
+                195,
+                -119
+            ]
+        },
+        {
+            "object_name": "InteractObject_PottedPlant (4)",
+            "object_description": "A spiky, symmetrical green plant with long, narrow leaves radiates outward from sandy soil in a white, faceted cylindrical pot. ",
+            "height": 209,
+            "scale": 45,
+            "obj_rel_user": [
+                195,
+                289
+            ],
+            "obj_rel_avatar": [
+                -195,
+                -119
+            ]
+        },
+        {
+            "object_name": "InteractObject_FlowerPot (2)",
+            "object_description": "A tall, narrow, weathered clay pot with a light grayish-brown surface and subtle ridged bands near the top and base. ",
+            "height": 61,
+            "scale": 21,
+            "obj_rel_user": [
+                -74,
+                295
+            ],
+            "obj_rel_avatar": [
+                74,
+                -125
+            ]
+        },
+        {
+            "object_name": "InteractObject_FlowerPot (13)",
+            "object_description": "A dark gray clay pot with a wide rounded body, narrow neck, flared rim, and a rough, aged surface. ",
+            "height": 50,
+            "scale": 29,
+            "obj_rel_user": [
+                214,
+                290
+            ],
+            "obj_rel_avatar": [
+                -214,
+                -120
+            ]
+        },
+        {
+            "object_name": "InteractObject_FlowerPot (3)",
+            "object_description": "A small reddish-brown clay pot with a flared rim and decorative embossed triangular patterns around the body. ",
+            "height": 217,
+            "scale": 20,
+            "obj_rel_user": [
+                -147,
+                288
+            ],
+            "obj_rel_avatar": [
+                147,
+                -118
+            ]
+        },
+        {
+            "object_name": "InteractObject_FlowerPot",
+            "object_description": "A round, vertically grooved terracotta pot with a flared rim and weathered brown finish. ",
+            "height": 143,
+            "scale": 24,
+            "obj_rel_user": [
+                -191,
+                289
+            ],
+            "obj_rel_avatar": [
+                191,
+                -120
+            ]
+        },
+        {
+            "object_name": "InteractObject_FlowerPot (1)",
+            "object_description": "A small, tapered terracotta pot with a rough dark upper half and a smoother, weathered lower portion in reddish-brown. ",
+            "height": 220,
+            "scale": 22,
+            "obj_rel_user": [
+                144,
+                289
+            ],
+            "obj_rel_avatar": [
+                -144,
+                -120
+            ]
+        },
+        {
+            "object_name": "InteractObject_FlowerPot (9)",
+            "object_description": "A tall terracotta pot with a tapered shape, featuring a rough dark brown upper half blending into a smoother reddish-orange lower section. ",
+            "height": 179,
+            "scale": 25,
+            "obj_rel_user": [
+                76,
+                289
+            ],
+            "obj_rel_avatar": [
+                -76,
+                -120
+            ]
+        },
+        {
+            "object_name": "InteractObject_PottedPlant (7)",
+            "object_description": "Trailing green ivy with pointed leaves spills over the sides of a glossy dark blue rounded pot. ",
+            "height": 135,
+            "scale": 71,
+            "obj_rel_user": [
+                171,
+                294
+            ],
+            "obj_rel_avatar": [
+                -171,
+                -125
+            ]
+        },
+        {
+            "object_name": "InteractObject_FlowerPot (5)",
+            "object_description": "A short, wide clay pot in a muted brown tone with a slightly raised rim and faint surface scratches. ",
+            "height": 58,
+            "scale": 19,
+            "obj_rel_user": [
+                -116,
+                294
+            ],
+            "obj_rel_avatar": [
+                116,
+                -124
+            ]
+        },
+        {
+            "object_name": "InteractObject_FlowerPot (6)",
+            "object_description": "A small, weathered grayish clay pot with a flared rim, subtle decorative ridge lines, and an uneven surface texture. ",
+            "height": 101,
+            "scale": 22,
+            "obj_rel_user": [
+                140,
+                288
+            ],
+            "obj_rel_avatar": [
+                -140,
+                -118
+            ]
+        }
+    ]
+}

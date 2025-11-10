@@ -1,0 +1,11 @@
+{
+    "question": "I'm looking at the item I want you to collect right now.",
+    "current_gaze_object": "InteractObject_FlowerPot (5)",
+    "gaze_history": [
+        "InteractObject_FlowerPot (5)",
+        "InteractObject_PottedPlant (5)",
+        "InteractObject_FlowerPot (2)",
+        "InteractObject_PottedPlant (5)",
+        "InteractObject_FlowerPot (5)"
+    ]
+}
