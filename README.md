@@ -1,7 +1,5 @@
 # BIRDS: Bi-directional Interaction for Referential Dialogue in Spatial Contexts for Virtual Reality
 
-<!-- <img src="./img/BIRDS_Teaser_Wide.png" alt="Teaser" style="width:100%; height:auto;"> -->
-![Teaser](./img/BIRDS_Teaser_Wide.png)
 <img src="img/BIRDS_Teaser_Wide.png" alt="Teaser" style="width:100%; height:auto;">
 
 
@@ -11,14 +9,14 @@ Embodied conversational agents in Virtual Reality (VR) are increasingly powered 
 ## System Overview
 ### System Design Overview：
 
-<img src="./img/design_system_overview.png" alt="Teaser" style="width:70%; height:auto;">
+<img src="img/design_system_overview.png" alt="Teaser" style="width:70%; height:auto;">
 
 ### System Prompt
 In the system prompts of each task, we defined the avatar's function and the meaning of input/output json schema. The prompts are saved in the dictionaries here:
-[Task 1 prompts](./Assets/Resources/LLMPrompt/1_GatherItemGamePrompt/), [Task 2 Prompts](./Assets/Resources/LLMPrompt/2_BlockPuzzleGamePrompt/).
+[Task 1 prompts](Assets/Resources/LLMPrompt/1_GatherItemGamePrompt/), [Task 2 Prompts](Assets/Resources/LLMPrompt/2_BlockPuzzleGamePrompt/).
 
 ### Json Examples
-We list the json example of Task 1 and Task 2 here: [Json Examples](./data_examples/)
+We list the json example of Task 1 and Task 2 here: [Json Examples](data_examples/)
 
 
 
