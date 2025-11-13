@@ -1,6 +1,9 @@
 # BIRDS: Bi-directional Interaction for Referential Dialogue in Spatial Contexts for Virtual Reality
 
-<img src="./img/BIRDS_Teaser_Wide.png" alt="Teaser" style="width:100%; height:auto;">
+<!-- <img src="./img/BIRDS_Teaser_Wide.png" alt="Teaser" style="width:100%; height:auto;"> -->
+![Teaser](./img/BIRDS_Teaser_Wide.png)
+<img src="img/BIRDS_Teaser_Wide.png" alt="Teaser" style="width:100%; height:auto;">
+
 
 ## Abstract
 Embodied conversational agents in Virtual Reality (VR) are increasingly powered by large language models (LLMs) to enable natural language interaction, with most prior work remaining unidirectional by using gaze, gesture, and speech as inputs from the user to the agent. However, bi-directional multimodal communication where both users and agents use these modalities remains largely unexplored. To address this gap, we present BIRDS, a system for bi-directional referential dialogue with an LLM-driven agent in VR. In a controlled study ($N$ = 24), we found that agent gestures yielded the greatest benefits by reducing conversational turns and time while improving accuracy, trust, and user experience. Interestingly, gaze input alone had limited impact, but when combined with gestures, it produced the highest accuracy.  This suggests that the value of multimodality lies not only in efficiency gains but also in how non-verbal reciprocity shapes trust, social presence, and the perceived competence of embodied agents.
